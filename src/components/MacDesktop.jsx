@@ -76,21 +76,21 @@ function MacSVG() {
         <polygon points="52,44 572,10 572,658 484,692 52,692" fill="#2a2620" opacity="0.4" />
       </g>
 
-      {/* ── Top face ── */}
-      <polygon
-        points="52,44 484,44 572,10 140,10"
+      {/* ── Top face — rounded outer corners, fills gap at front face rx ── */}
+      <path
+        d="M 66,44 L 470,44 Q 484,44 484,57 L 561,16 Q 572,10 557,10 L 150,10 Q 140,10 141,19 L 52,57 Q 52,44 66,44 Z"
         fill="url(#macTop)"
       />
-      {/* Top face edge trim */}
-      <line x1="52" y1="44" x2="484" y2="44" stroke="rgba(255,255,255,0.28)" strokeWidth="1" />
+      {/* Top face edge trim — only the flat front segment */}
+      <line x1="66" y1="44" x2="470" y2="44" stroke="rgba(255,255,255,0.28)" strokeWidth="1" />
 
-      {/* ── Right face ── */}
-      <polygon
-        points="484,44 572,10 572,658 484,692"
+      {/* ── Right face — rounded outer corners, endpoints match front face rx ── */}
+      <path
+        d="M 484,57 L 561,16 Q 572,10 572,22 L 572,645 Q 572,658 561,661 L 484,680 Z"
         fill="url(#macRight)"
       />
       {/* Right face highlight along left edge */}
-      <line x1="484" y1="44" x2="484" y2="692" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+      <line x1="484" y1="57" x2="484" y2="680" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
       {/* Ventilation slots — right face, middle third */}
       {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(i => {
         const yBase = 340 + i * 18
@@ -164,25 +164,24 @@ function MacSVG() {
       <line x1="88" y1="370" x2="446" y2="370"
         stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
 
-      {/* Apple logo — classic rainbow stripes in apple silhouette */}
+      {/* Apple logo — classic rainbow stripes with proper circular bite */}
       <g transform="translate(268, 416)">
-        {/* Apple body clip */}
         <clipPath id="appleClip">
-          <path d="M0,-18 C-12,-18 -22,-10 -22,2 C-22,16 -12,28 0,28 C4,28 7,26 10,26 C13,26 16,28 20,28 C28,28 36,20 36,8 C36,0 30,-6 26,-8 C30,-12 28,-20 22,-20 C19,-20 15,-18 10,-18 C7,-18 4,-16 0,-18 Z M8,-20 C10,-28 20,-30 16,-22" />
+          {/* Body + leaf compound path; bite is a deep concave cubic arc on upper right */}
+          <path d="M 4,-22 C -4,-24 -18,-16 -22,-6 C -26,6 -22,18 -14,26 C -8,32 2,32 6,30 C 10,32 18,28 20,20 C 24,12 24,2 20,-2 C 30,-4 28,-18 18,-18 C 12,-22 6,-24 4,-22 Z M 4,-22 C 8,-34 22,-30 16,-20 Z" />
         </clipPath>
         {/* Six-color stripes — green at top, blue at bottom */}
-        <rect x="-24" y="-20" width="64" height="10" fill="#71b832" clipPath="url(#appleClip)" />
-        <rect x="-24" y="-10" width="64" height="9"  fill="#f7be16" clipPath="url(#appleClip)" />
-        <rect x="-24" y="-1"  width="64" height="9"  fill="#f68b1f" clipPath="url(#appleClip)" />
-        <rect x="-24" y="8"   width="64" height="9"  fill="#e62e27" clipPath="url(#appleClip)" />
-        <rect x="-24" y="17"  width="64" height="9"  fill="#9c4d9b" clipPath="url(#appleClip)" />
-        <rect x="-24" y="26"  width="64" height="9"  fill="#1c7dc0" clipPath="url(#appleClip)" />
-        {/* Apple body outline */}
-        <path d="M0,-18 C-12,-18 -22,-10 -22,2 C-22,16 -12,28 0,28 C4,28 7,26 10,26 C13,26 16,28 20,28 C28,28 36,20 36,8 C36,0 30,-6 26,-8 C30,-12 28,-20 22,-20 C19,-20 15,-18 10,-18 C7,-18 4,-16 0,-18 Z"
+        <rect x="-26" y="-24" width="50" height="9"  fill="#71b832" clipPath="url(#appleClip)" />
+        <rect x="-26" y="-15" width="50" height="9"  fill="#f7be16" clipPath="url(#appleClip)" />
+        <rect x="-26" y="-6"  width="50" height="9"  fill="#f68b1f" clipPath="url(#appleClip)" />
+        <rect x="-26" y="3"   width="50" height="9"  fill="#e62e27" clipPath="url(#appleClip)" />
+        <rect x="-26" y="12"  width="50" height="9"  fill="#9c4d9b" clipPath="url(#appleClip)" />
+        <rect x="-26" y="21"  width="50" height="11" fill="#1c7dc0" clipPath="url(#appleClip)" />
+        {/* Body outline showing the bite */}
+        <path d="M 4,-22 C -4,-24 -18,-16 -22,-6 C -26,6 -22,18 -14,26 C -8,32 2,32 6,30 C 10,32 18,28 20,20 C 24,12 24,2 20,-2 C 30,-4 28,-18 18,-18 C 12,-22 6,-24 4,-22 Z"
           fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1" />
         {/* Leaf */}
-        <path d="M8,-20 C12,-30 24,-28 18,-18"
-          fill="#71b832" strokeWidth="0" />
+        <path d="M 4,-22 C 8,-34 22,-30 16,-20 Z" fill="#71b832" />
       </g>
 
       {/* "Macintosh" model name */}
@@ -221,14 +220,14 @@ function MacSVG() {
         fontFamily="monospace" fill="rgba(120,110,88,0.5)" letterSpacing="1.5">800K</text>
 
       {/* Horizontal ventilation slots — lower front face */}
-      {[0,1,2,3,4,5,6,7,8].map(i => (
+      {[0,1,2,3,4].map(i => (
         <rect key={i}
           x="134" y={556 + i * 12}
           width="272" height="5" rx="2"
           fill="rgba(0,0,0,0.14)" />
       ))}
       {/* Vent shadow inset highlight */}
-      {[0,1,2,3,4,5,6,7,8].map(i => (
+      {[0,1,2,3,4].map(i => (
         <rect key={i}
           x="134" y={561 + i * 12}
           width="272" height="1.5"
@@ -236,22 +235,26 @@ function MacSVG() {
       ))}
 
       {/* Bottom port area — subtle outlines */}
+      {/* Thin divider — clearly separates vent zone from I/O port zone */}
+      <line x1="86" y1="618" x2="484" y2="618" stroke="rgba(0,0,0,0.12)" strokeWidth="1" />
+      <line x1="86" y1="619" x2="484" y2="619" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+
       {/* ADB port (left) */}
-      <rect x="76"  y="640" width="36" height="22" rx="4" fill="rgba(0,0,0,0.1)" />
-      <rect x="76"  y="640" width="36" height="22" rx="4" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1" />
-      <text x="94"  y="636" fontSize="6" textAnchor="middle" fontFamily="monospace" fill="rgba(80,70,55,0.7)" letterSpacing="0.8">ADB</text>
+      <rect x="76"  y="626" width="36" height="22" rx="4" fill="rgba(0,0,0,0.1)" />
+      <rect x="76"  y="626" width="36" height="22" rx="4" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1" />
+      <text x="94"  y="622" fontSize="6" textAnchor="middle" fontFamily="monospace" fill="rgba(80,70,55,0.7)" letterSpacing="0.8">ADB</text>
       {/* Serial port 1 */}
-      <rect x="124" y="640" width="36" height="22" rx="4" fill="rgba(0,0,0,0.1)" />
-      <rect x="124" y="640" width="36" height="22" rx="4" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1" />
-      <text x="142" y="636" fontSize="6" textAnchor="middle" fontFamily="monospace" fill="rgba(80,70,55,0.7)">▷</text>
+      <rect x="124" y="626" width="36" height="22" rx="4" fill="rgba(0,0,0,0.1)" />
+      <rect x="124" y="626" width="36" height="22" rx="4" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1" />
+      <text x="142" y="622" fontSize="6" textAnchor="middle" fontFamily="monospace" fill="rgba(80,70,55,0.7)">▷</text>
       {/* Serial port 2 */}
-      <rect x="172" y="640" width="36" height="22" rx="4" fill="rgba(0,0,0,0.1)" />
-      <rect x="172" y="640" width="36" height="22" rx="4" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1" />
-      <text x="190" y="636" fontSize="6" textAnchor="middle" fontFamily="monospace" fill="rgba(80,70,55,0.7)">☎</text>
+      <rect x="172" y="626" width="36" height="22" rx="4" fill="rgba(0,0,0,0.1)" />
+      <rect x="172" y="626" width="36" height="22" rx="4" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1" />
+      <text x="190" y="622" fontSize="6" textAnchor="middle" fontFamily="monospace" fill="rgba(80,70,55,0.7)">☎</text>
       {/* SCSI */}
-      <rect x="220" y="640" width="60" height="22" rx="4" fill="rgba(0,0,0,0.1)" />
-      <rect x="220" y="640" width="60" height="22" rx="4" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1" />
-      <text x="250" y="636" fontSize="6" textAnchor="middle" fontFamily="monospace" fill="rgba(80,70,55,0.7)" letterSpacing="0.8">SCSI</text>
+      <rect x="220" y="626" width="60" height="22" rx="4" fill="rgba(0,0,0,0.1)" />
+      <rect x="220" y="626" width="60" height="22" rx="4" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1" />
+      <text x="250" y="622" fontSize="6" textAnchor="middle" fontFamily="monospace" fill="rgba(80,70,55,0.7)" letterSpacing="0.8">SCSI</text>
 
       {/* Bottom edge / feet */}
       <rect x="52" y="680" width="432" height="12" rx="6"

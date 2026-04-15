@@ -69,8 +69,8 @@ export default function Home() {
               </svg>
             </Link>
           </div>
-          <MacDesktop />
         </div>
+        <MacDesktop />
       </section>
 
       {/* ── ABOUT — color-blocked gallery panel ──── */}

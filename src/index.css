@@ -438,8 +438,9 @@ main { padding-top: var(--nav-height); }
 /* Mac wrapper — relative for overlay */
 .mac-wrapper {
   position: relative;
-  max-width: 640px;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 .mac-svg {
   display: block;
@@ -526,8 +527,8 @@ main { padding-top: var(--nav-height); }
 /* Icon graphic */
 .mac-icon-img {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
 }
 .mac-icon-face {
   width: 100%;
@@ -541,7 +542,7 @@ main { padding-top: var(--nav-height); }
 }
 .mac-icon-glyph {
   font-family: var(--font-mono);
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 700;
   color: #111;
   line-height: 1;
