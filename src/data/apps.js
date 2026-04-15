@@ -1,4 +1,5 @@
-// Placeholder app data — replace with your real apps as you build them
+// Placeholder app data — replace with your real apps as you build them.
+// color drives the frame border, shadow, and interior composition of each card.
 export const apps = [
   {
     id: 1,
@@ -7,7 +8,7 @@ export const apps = [
     category: 'Utility',
     status: 'live',
     href: '#',
-    color: '#00ff88',
+    color: '#e8b820',   // mustard
     icon: '///',
   },
   {
@@ -17,7 +18,7 @@ export const apps = [
     category: 'Productivity',
     status: 'live',
     href: '#',
-    color: '#00d4ff',
+    color: '#12b4c8',   // cyan
     icon: '{}',
   },
   {
@@ -27,7 +28,7 @@ export const apps = [
     category: 'Creative',
     status: 'beta',
     href: '#',
-    color: '#7b4fff',
+    color: '#f0186e',   // hot pink
     icon: '∞',
   },
   {
@@ -37,7 +38,7 @@ export const apps = [
     category: 'Data',
     status: 'soon',
     href: '#',
-    color: '#ff6b35',
+    color: '#3a8fcc',   // sky blue
     icon: '▲',
   },
 ]
