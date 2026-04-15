@@ -398,246 +398,232 @@ main { padding-top: var(--nav-height); }
 }
 
 /* ─────────────────────────────────────────────
-   GALLERY ROOM — 3D museum space
-   Back wall: muted sage green. Side walls recede in perspective.
-   Full-height arched openings at edges suggest a corridor beyond.
+   MAC SECTION — Vintage Mac Classic desktop
 ───────────────────────────────────────────── */
-.gallery-room {
-  position: relative;
-  overflow: hidden;
-  min-height: 600px;
+.mac-section {
   padding: var(--section-pad) 0;
+  background: var(--bg-primary);
 }
-
-.gallery-room-full {
+.mac-section-full {
   min-height: calc(100vh - var(--nav-height));
 }
+.mac-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.mac-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+.mac-view-all {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mustard);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 4px;
+  transition: gap 0.2s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.mac-view-all:hover { gap: 14px; }
 
-/* All background room elements live inside gallery-scene */
-.gallery-scene {
+/* Mac wrapper — relative for overlay */
+.mac-wrapper {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.mac-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Screen overlay — % matches SVG viewBox (680×760)
+   Screen glass: x=100, y=90, w=336, h=254
+   left  = 100/680 = 14.71%
+   top   = 90/760  = 11.84%
+   width = 336/680 = 49.41%
+   height= 254/760 = 33.42%
+*/
+.mac-screen-overlay {
   position: absolute;
-  inset: 0;
+  left: 14.71%;
+  top: 11.84%;
+  width: 49.41%;
+  height: 33.42%;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  pointer-events: none;
+  cursor: default;
 }
 
-/* ── Back wall — muted sage green ── */
-.gallery-back-wall {
-  position: absolute;
-  inset: 0;
-  background:
-    /* Vertical panel groove lines */
-    repeating-linear-gradient(
-      90deg,
-      transparent 0px,
-      transparent 149px,
-      rgba(0,0,0,0.12) 150px,
-      rgba(0,0,0,0.06) 151px,
-      transparent 152px
-    ),
-    /* Subtle horizontal texture */
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      rgba(0,0,0,0.025) 2px,
-      transparent 4px
-    ),
-    /* Main sage-green wall colour */
-    linear-gradient(170deg, #516d5e 0%, #475f52 45%, #3e5448 100%);
+/* Menu bar */
+.mac-menu-bar {
+  flex: 0 0 7.1%;
+  background: #d0cdc0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 5px;
+  border-bottom: 1px solid #aaa9a0;
+  font-family: 'Courier New', monospace;
+  font-size: 8px;
+  color: #1a1a1a;
+  line-height: 1;
 }
-/* Faint darkening at top and bottom edges of back wall */
-.gallery-back-wall::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to bottom,
-      rgba(0,0,0,0.22) 0%,
-      transparent 12%,
-      transparent 78%,
-      rgba(0,0,0,0.18) 100%
-    );
+.mac-menu-apple {
+  font-size: 10px;
+  margin-right: 2px;
+}
+.mac-menu-item {
+  padding: 0 2px;
+}
+.mac-menu-time {
+  margin-left: auto;
+  font-size: 7.5px;
 }
 
-/* ── Side walls — trapezoid clip-paths simulate perspective ── */
-.gallery-left-wall {
-  position: absolute;
-  top: 0; left: 0;
-  width: 22%;
+/* Desktop area */
+.mac-desktop {
+  flex: 1;
+  background: #1a2830;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  padding: 6px;
+  gap: 3px;
+}
+
+/* Icon */
+.mac-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 5px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+.mac-icon:hover,
+.mac-icon--selected {
+  background: rgba(0, 120, 215, 0.22);
+  border-color: rgba(0, 120, 215, 0.45);
+}
+
+/* Icon graphic */
+.mac-icon-img {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.mac-icon-face {
+  width: 100%;
   height: 100%;
-  /* Clip to trapezoid: full height left (viewer edge), pinched 8% on right */
-  clip-path: polygon(0 0, 100% 7%, 100% 93%, 0 100%);
-  background:
-    linear-gradient(to right,
-      #253828 0%,    /* dark far-left edge (vanishing corner) */
-      #334a3c 45%,
-      #445a4c 80%,   /* lighter where it meets back wall */
-      #506858 100%
-    );
+  background: var(--icon-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,0,0,0.2);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
 }
-/* Panel lines on left wall */
-.gallery-left-wall::after {
-  content: '';
+.mac-icon-glyph {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1;
+}
+.mac-icon-select-overlay {
   position: absolute;
   inset: 0;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      transparent 0%,
-      transparent 49%,
-      rgba(0,0,0,0.1) 50%,
-      transparent 51%
-    );
-  background-size: 100% 120px;
-  clip-path: inherit;
+  background: rgba(0, 120, 215, 0.35);
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+.mac-icon--selected .mac-icon-select-overlay {
+  opacity: 1;
 }
 
-.gallery-right-wall {
-  position: absolute;
-  top: 0; right: 0;
-  width: 22%;
-  height: 100%;
-  clip-path: polygon(0 7%, 100% 0, 100% 100%, 0 93%);
-  background:
-    linear-gradient(to left,
-      #253828 0%,
-      #334a3c 45%,
-      #445a4c 80%,
-      #506858 100%
-    );
-}
-.gallery-right-wall::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      transparent 0%,
-      transparent 49%,
-      rgba(0,0,0,0.1) 50%,
-      transparent 51%
-    );
-  background-size: 100% 120px;
-  clip-path: inherit;
-}
-
-/* ── Crown molding — decorative top strip ── */
-.gallery-crown-molding {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 28px;
-  z-index: 3;
-  background:
-    linear-gradient(to bottom,
-      #3e3228 0%,
-      #5a4a38 25%,
-      #4a3e30 50%,
-      #5a4a38 70%,
-      #3a2e24 100%
-    );
-  box-shadow:
-    0 3px 10px rgba(0,0,0,0.55),
-    inset 0 1px 0 rgba(255,255,255,0.07),
-    inset 0 -1px 0 rgba(0,0,0,0.35);
-}
-
-/* ── Wainscoting — dark lower wall rail ── */
-.gallery-wainscoting {
-  position: absolute;
-  bottom: 64px;
-  left: 0; right: 0;
-  height: 8px;
-  z-index: 3;
-  background:
-    linear-gradient(to bottom, #5a4a38, #3e3228);
-  box-shadow:
-    0 -1px 0 rgba(255,255,255,0.04),
-    0 3px 6px rgba(0,0,0,0.5);
-}
-
-/* ── Floor — dark herringbone hardwood ── */
-.gallery-floor {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 64px;
-  z-index: 1;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      #1a1612 0px, #201c17 88px,
-      #191510 90px, #1e1a15 176px
-    ),
-    linear-gradient(to bottom, #221e19, #161210);
-  box-shadow: inset 0 2px 10px rgba(0,0,0,0.7);
-}
-
-/* ── Full-height archways ── */
-.gallery-arch {
-  position: absolute;
-  top: 0;
-  bottom: 0;          /* spans full height of gallery section */
-  width: 108px;
-  z-index: 4;
-}
-.gallery-arch-left  { left: 0; }
-.gallery-arch-right { right: 0; }
-
-/* The dark arch opening — rectangular with arched top */
-.gallery-arch-opening {
-  position: absolute;
-  top: 0;
-  left: 8px;
-  right: 8px;
-  bottom: 0;
-  /* Classical arch: diameter = half the opening width */
-  border-radius: 46px 46px 0 0;
+/* Label */
+.mac-icon-label {
+  font-family: 'Courier New', monospace;
+  font-size: 7.5px;
+  color: #e8e0cc;
+  text-align: center;
+  line-height: 1.2;
+  max-width: 68px;
   overflow: hidden;
-  background:
-    /* Distant faint glow — light from far end of corridor */
-    radial-gradient(ellipse at 50% 28%, rgba(55,80,65,0.22) 0%, transparent 48%),
-    /* Deep dark receding corridor */
-    linear-gradient(to bottom, #0c1410 0%, #07100c 60%, #060e09 100%);
-  box-shadow:
-    inset 3px 0 24px rgba(0,0,0,0.85),
-    inset -3px 0 24px rgba(0,0,0,0.85),
-    inset 0 24px 48px rgba(0,0,0,0.9);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background: rgba(0,0,0,0.38);
+  padding: 1px 3px;
 }
 
-/* Architectural molding ring around the arch */
-.gallery-arch-opening::before {
-  content: '';
-  position: absolute;
-  inset: -8px -8px 0 -8px;
-  border-radius: 54px 54px 0 0;
-  border: 5px solid rgba(80,110,90,0.55);
-  border-bottom: none;
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,0.06),
-    0 0 14px rgba(0,0,0,0.55);
-  pointer-events: none;
+/* Status bar */
+.mac-status-bar {
+  flex: 0 0 11%;
+  background: #c8c5b8;
+  border-top: 1px solid #aaa9a0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 5px;
+  overflow: hidden;
+  font-family: 'Courier New', monospace;
+  font-size: 7px;
+  color: #2a2a2a;
+  line-height: 1;
 }
-
-/* Inner depth layer — receding aperture gives 3D tunnel feel */
-.gallery-arch-opening::after {
-  content: '';
-  position: absolute;
-  left: 22%; right: 22%;
-  top: 22%; bottom: 0;
-  border-radius: 28px 28px 0 0;
-  background: #030807;
-  opacity: 0.75;
+.mac-status-bar--active { background: #b8c8d8; }
+.mac-status-tag {
+  background: rgba(0,0,0,0.12);
+  padding: 1px 3px;
+  border-radius: 1px;
+  font-weight: bold;
+  flex-shrink: 0;
 }
-
-/* ── Palm tree ── */
-.gallery-palm {
-  position: absolute;
-  right: 130px;
-  bottom: 56px;
-  z-index: 3;
-  opacity: 0.85;
-  filter: drop-shadow(4px 8px 12px rgba(0,0,0,0.6));
+.mac-status-title {
+  font-weight: bold;
+  flex-shrink: 0;
 }
+.mac-status-sep {
+  opacity: 0.45;
+  flex-shrink: 0;
+}
+.mac-status-desc {
+  opacity: 0.72;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.mac-status-idle {
+  opacity: 0.52;
+  font-style: italic;
+}
+.mac-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.mac-status-dot--live { background: #22cc6e; }
+.mac-status-dot--beta { background: #12b4c8; }
+.mac-status-dot--wip  { background: #f0a030; }
 
 /* Gallery content floats above room */
 .gallery-content {
