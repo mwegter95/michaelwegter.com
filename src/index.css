@@ -384,17 +384,372 @@ main { padding-top: var(--nav-height); }
 }
 
 /* ─────────────────────────────────────────────
-   ARTWORK — hung canvas on gallery wall
-   Used for hero geometric shapes
+   ISOMETRIC CITYSCAPE SVG — replaced CSS approach
+   CityscapeScene.jsx uses proper iso math + painter sort
 ───────────────────────────────────────────── */
-.artwork {
+.cityscape-svg {
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-  /* Inner frame highlight — simulates reflected light on a frame */
+  z-index: 0;
+  display: block;
+}
+
+/* ─────────────────────────────────────────────
+   GALLERY ROOM — 3D museum space
+   Back wall: muted sage green. Side walls recede in perspective.
+   Full-height arched openings at edges suggest a corridor beyond.
+───────────────────────────────────────────── */
+.gallery-room {
+  position: relative;
+  overflow: hidden;
+  min-height: 600px;
+  padding: var(--section-pad) 0;
+}
+
+.gallery-room-full {
+  min-height: calc(100vh - var(--nav-height));
+}
+
+/* All background room elements live inside gallery-scene */
+.gallery-scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ── Back wall — muted sage green ── */
+.gallery-back-wall {
+  position: absolute;
+  inset: 0;
+  background:
+    /* Vertical panel groove lines */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 149px,
+      rgba(0,0,0,0.12) 150px,
+      rgba(0,0,0,0.06) 151px,
+      transparent 152px
+    ),
+    /* Subtle horizontal texture */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      rgba(0,0,0,0.025) 2px,
+      transparent 4px
+    ),
+    /* Main sage-green wall colour */
+    linear-gradient(170deg, #516d5e 0%, #475f52 45%, #3e5448 100%);
+}
+/* Faint darkening at top and bottom edges of back wall */
+.gallery-back-wall::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(0,0,0,0.22) 0%,
+      transparent 12%,
+      transparent 78%,
+      rgba(0,0,0,0.18) 100%
+    );
+}
+
+/* ── Side walls — trapezoid clip-paths simulate perspective ── */
+.gallery-left-wall {
+  position: absolute;
+  top: 0; left: 0;
+  width: 22%;
+  height: 100%;
+  /* Clip to trapezoid: full height left (viewer edge), pinched 8% on right */
+  clip-path: polygon(0 0, 100% 7%, 100% 93%, 0 100%);
+  background:
+    linear-gradient(to right,
+      #253828 0%,    /* dark far-left edge (vanishing corner) */
+      #334a3c 45%,
+      #445a4c 80%,   /* lighter where it meets back wall */
+      #506858 100%
+    );
+}
+/* Panel lines on left wall */
+.gallery-left-wall::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0%,
+      transparent 49%,
+      rgba(0,0,0,0.1) 50%,
+      transparent 51%
+    );
+  background-size: 100% 120px;
+  clip-path: inherit;
+}
+
+.gallery-right-wall {
+  position: absolute;
+  top: 0; right: 0;
+  width: 22%;
+  height: 100%;
+  clip-path: polygon(0 7%, 100% 0, 100% 100%, 0 93%);
+  background:
+    linear-gradient(to left,
+      #253828 0%,
+      #334a3c 45%,
+      #445a4c 80%,
+      #506858 100%
+    );
+}
+.gallery-right-wall::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0%,
+      transparent 49%,
+      rgba(0,0,0,0.1) 50%,
+      transparent 51%
+    );
+  background-size: 100% 120px;
+  clip-path: inherit;
+}
+
+/* ── Crown molding — decorative top strip ── */
+.gallery-crown-molding {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 28px;
+  z-index: 3;
+  background:
+    linear-gradient(to bottom,
+      #3e3228 0%,
+      #5a4a38 25%,
+      #4a3e30 50%,
+      #5a4a38 70%,
+      #3a2e24 100%
+    );
   box-shadow:
-    inset 0 0 0 2px rgba(255,255,255,0.10),
-    16px 16px 0 rgba(0,0,0,0.65);
-  will-change: transform;
+    0 3px 10px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.07),
+    inset 0 -1px 0 rgba(0,0,0,0.35);
+}
+
+/* ── Wainscoting — dark lower wall rail ── */
+.gallery-wainscoting {
+  position: absolute;
+  bottom: 64px;
+  left: 0; right: 0;
+  height: 8px;
+  z-index: 3;
+  background:
+    linear-gradient(to bottom, #5a4a38, #3e3228);
+  box-shadow:
+    0 -1px 0 rgba(255,255,255,0.04),
+    0 3px 6px rgba(0,0,0,0.5);
+}
+
+/* ── Floor — dark herringbone hardwood ── */
+.gallery-floor {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 64px;
+  z-index: 1;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #1a1612 0px, #201c17 88px,
+      #191510 90px, #1e1a15 176px
+    ),
+    linear-gradient(to bottom, #221e19, #161210);
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.7);
+}
+
+/* ── Full-height archways ── */
+.gallery-arch {
+  position: absolute;
+  top: 0;
+  bottom: 0;          /* spans full height of gallery section */
+  width: 108px;
+  z-index: 4;
+}
+.gallery-arch-left  { left: 0; }
+.gallery-arch-right { right: 0; }
+
+/* The dark arch opening — rectangular with arched top */
+.gallery-arch-opening {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  right: 8px;
+  bottom: 0;
+  /* Classical arch: diameter = half the opening width */
+  border-radius: 46px 46px 0 0;
+  overflow: hidden;
+  background:
+    /* Distant faint glow — light from far end of corridor */
+    radial-gradient(ellipse at 50% 28%, rgba(55,80,65,0.22) 0%, transparent 48%),
+    /* Deep dark receding corridor */
+    linear-gradient(to bottom, #0c1410 0%, #07100c 60%, #060e09 100%);
+  box-shadow:
+    inset 3px 0 24px rgba(0,0,0,0.85),
+    inset -3px 0 24px rgba(0,0,0,0.85),
+    inset 0 24px 48px rgba(0,0,0,0.9);
+}
+
+/* Architectural molding ring around the arch */
+.gallery-arch-opening::before {
+  content: '';
+  position: absolute;
+  inset: -8px -8px 0 -8px;
+  border-radius: 54px 54px 0 0;
+  border: 5px solid rgba(80,110,90,0.55);
+  border-bottom: none;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.06),
+    0 0 14px rgba(0,0,0,0.55);
+  pointer-events: none;
+}
+
+/* Inner depth layer — receding aperture gives 3D tunnel feel */
+.gallery-arch-opening::after {
+  content: '';
+  position: absolute;
+  left: 22%; right: 22%;
+  top: 22%; bottom: 0;
+  border-radius: 28px 28px 0 0;
+  background: #030807;
+  opacity: 0.75;
+}
+
+/* ── Palm tree ── */
+.gallery-palm {
+  position: absolute;
+  right: 130px;
+  bottom: 56px;
+  z-index: 3;
+  opacity: 0.85;
+  filter: drop-shadow(4px 8px 12px rgba(0,0,0,0.6));
+}
+
+/* Gallery content floats above room */
+.gallery-content {
+  position: relative;
+  z-index: 4;
+}
+
+/* ─────────────────────────────────────────────
+   PICTURE FRAMES — SVG ornate frames
+   AppCard uses inline SVG overlays for each frame style.
+   These rules handle the wrapper layout + canvas interior.
+───────────────────────────────────────────── */
+
+/* Outer container — matches SVG viewBox aspect 420 × 268 */
+.frame-wrapper {
+  position: relative;
+  aspect-ratio: 420 / 268;
+  width: 100%;
+  overflow: visible; /* let the SVG drop-shadow bleed */
+}
+
+/* Hanging wire above frame (CSS V-shape) */
+.frame-wire {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52%;
+  height: 16px;
+  border-bottom: 2px solid rgba(120,100,70,0.45);
+  border-left:   2px solid rgba(120,100,70,0.45);
+  border-right:  2px solid rgba(120,100,70,0.45);
+  border-radius: 0 0 40% 40%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Canvas window — sits behind the SVG frame overlay.
+   Inset percentages derived from viewBox coords:
+     left/right: 32px / 420px ≈ 7.6%
+     top:        30px / 268px ≈ 11.2%
+     bottom:     30px / 268px ≈ 11.2%              */
+.canvas-window {
+  position: absolute;
+  left:   7.6%;
+  right:  7.6%;
+  top:    11.2%;
+  bottom: 11.2%;
+  overflow: hidden;
+  background: #0e0d0b;
+  z-index: 0;
+}
+
+/* Painted canvas background layers */
+.canvas-bg-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at 42% 48%,
+      color-mix(in srgb, var(--cv) 18%, transparent) 0%,
+      transparent 65%
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--cv) 6%, #0e0d0b) 0%,
+      #0e0d0b 100%
+    );
+}
+.canvas-shape-1 {
+  position: absolute;
+  width: 55%;
+  height: 75%;
+  left: 6%;
+  top: 12%;
+  background: color-mix(in srgb, var(--cv) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cv) 6%, transparent);
+}
+.canvas-shape-2 {
+  position: absolute;
+  width: 30%;
+  height: 38%;
+  right: 8%;
+  bottom: 10%;
+  background: color-mix(in srgb, var(--cv) 16%, transparent);
+}
+.canvas-shape-3 {
+  position: absolute;
+  width: 14%;
+  height: 20%;
+  left: 12%;
+  top: 14%;
+  background: color-mix(in srgb, var(--cv) 28%, transparent);
+}
+
+/* Icon centered in canvas */
+.canvas-icon-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.app-card-icon {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  font-weight: 700;
+  text-shadow:
+    0 2px 16px rgba(0,0,0,0.7),
+    0 0 40px color-mix(in srgb, var(--card-color) 30%, transparent);
 }
 
 /* ─────────────────────────────────────────────
@@ -481,47 +836,28 @@ main { padding-top: var(--nav-height); }
 }
 
 /* ─────────────────────────────────────────────
-   APP CARDS — framed canvases on a gallery wall
+   APP CARDS — hung on gallery walls
 ───────────────────────────────────────────── */
 .apps-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;   /* visible wall between frames */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 52px;
 }
 
 .app-card {
-  background: var(--bg-card);
-  overflow: visible;  /* shadow bleeds outside */
+  background: transparent;
+  overflow: visible;
   cursor: pointer;
   text-decoration: none;
   display: flex;
   flex-direction: column;
   position: relative;
-  /* Shadow controlled via CSS custom property set inline */
-  box-shadow: 10px 10px 0 var(--card-shadow, rgba(0,0,0,0.55));
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  transition: transform 0.28s ease;
+  padding-top: 20px; /* space for hanging wire */
 }
 
-/* "Lift off the wall" on hover */
 .app-card:hover {
-  transform: translate(-6px, -6px);
-  box-shadow: 17px 17px 0 var(--card-shadow, rgba(0,0,0,0.55));
-}
-
-.app-card-image {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.app-card-icon {
-  font-family: var(--font-mono);
-  font-size: 28px;
-  font-weight: 700;
-  position: relative;
-  z-index: 2;
+  transform: translate(-4px, -6px);
 }
 
 .app-card-body {
@@ -529,7 +865,9 @@ main { padding-top: var(--nav-height); }
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--bg-card);
+  background: rgba(42,36,32,0.6);
+  backdrop-filter: blur(4px);
+  border-top: 1px solid rgba(255,255,255,0.04);
 }
 
 .app-card-meta {
@@ -665,14 +1003,20 @@ main { padding-top: var(--nav-height); }
 @media (max-width: 960px) {
   :root { --section-pad: 72px; }
   .container { padding: 0 24px; }
-  .apps-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .apps-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+  .cityscape-inner { width: 650px; height: 260px; }
+  .gallery-arch { width: 80px; }
+  .gallery-palm { right: 90px; }
 }
 
 @media (max-width: 640px) {
   :root { --section-pad: 56px; }
   .navbar-nav { display: none; }
   .navbar-mobile-toggle { display: flex; }
-  .apps-grid { grid-template-columns: 1fr; gap: 32px; }
+  .apps-grid { grid-template-columns: 1fr; gap: 44px; max-width: 400px; }
   .footer-inner { flex-direction: column; text-align: center; }
   .section-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .cityscape { display: none; }
+  .gallery-arch { display: none; }
+  .gallery-palm { display: none; }
 }

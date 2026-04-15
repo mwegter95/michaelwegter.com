@@ -1,5 +1,6 @@
 // Placeholder app data — replace with your real apps as you build them.
 // color drives the frame border, shadow, and interior composition of each card.
+// frameStyle picks a unique ornate picture frame for each card.
 export const apps = [
   {
     id: 1,
@@ -10,6 +11,7 @@ export const apps = [
     href: '#',
     color: '#e8b820',   // mustard
     icon: '///',
+    frameStyle: 'baroque',
   },
   {
     id: 2,
@@ -20,6 +22,7 @@ export const apps = [
     href: '#',
     color: '#12b4c8',   // cyan
     icon: '{}',
+    frameStyle: 'walnut',
   },
   {
     id: 3,
@@ -30,6 +33,7 @@ export const apps = [
     href: '#',
     color: '#f0186e',   // hot pink
     icon: '∞',
+    frameStyle: 'silver',
   },
   {
     id: 4,
@@ -40,5 +44,6 @@ export const apps = [
     href: '#',
     color: '#3a8fcc',   // sky blue
     icon: '▲',
+    frameStyle: 'ebony',
   },
 ]

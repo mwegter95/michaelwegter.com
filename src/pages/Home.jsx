@@ -1,59 +1,9 @@
 import { Link } from 'react-router-dom'
 import AppCard from '../components/AppCard'
 import { apps } from '../data/apps'
+import CityscapeScene from '../components/CityscapeScene'
 
-// Artworks hung on the gallery wall — absolutely positioned geometric canvases.
-// Each has a slight rotation and hard drop shadow for dimensionality.
-const ARTWORKS = [
-  // Large mustard rectangle — dominant piece, back wall right
-  {
-    color: '#e8b820',
-    width: 260, height: 380,
-    right: '5%', top: '8%',
-    rotate: -2.5,
-    zIndex: 1,
-  },
-  // Cyan medium rectangle — overlaps mustard, pushed forward
-  {
-    color: '#12b4c8',
-    width: 190, height: 255,
-    right: '21%', top: '28%',
-    rotate: 1.8,
-    zIndex: 3,
-  },
-  // Hot pink square — floating bottom right
-  {
-    color: '#f0186e',
-    width: 118, height: 118,
-    right: '4%', bottom: '20%',
-    rotate: 3.5,
-    zIndex: 4,
-  },
-  // Parrot green small square — top accent
-  {
-    color: '#6ed46a',
-    width: 72, height: 72,
-    right: '27%', top: '6%',
-    rotate: -5,
-    zIndex: 2,
-  },
-  // Sky blue vertical strip — far right, peeking
-  {
-    color: '#3a8fcc',
-    width: 68, height: 210,
-    right: '14%', bottom: '28%',
-    rotate: -1.2,
-    zIndex: 2,
-  },
-  // Parrot red small rectangle — mid accent
-  {
-    color: '#e83828',
-    width: 94, height: 136,
-    right: '33%', bottom: '16%',
-    rotate: 2.2,
-    zIndex: 2,
-  },
-]
+
 
 export default function Home() {
   return (
@@ -62,24 +12,8 @@ export default function Home() {
       <section className="hero">
         <div className="hero-grid-overlay" />
 
-        {/* Gallery artworks — hung on the right side of the wall */}
-        {ARTWORKS.map((a, i) => (
-          <div
-            key={i}
-            className="artwork"
-            aria-hidden="true"
-            style={{
-              background: a.color,
-              width: a.width,
-              height: a.height,
-              right: a.right,
-              top: a.top,
-              bottom: a.bottom,
-              rotate: `${a.rotate}deg`,
-              zIndex: a.zIndex,
-            }}
-          />
-        ))}
+        {/* SVG isometric cityscape — correct projection, painter's algorithm */}
+        <CityscapeScene />
 
         {/* Text — left side, safely clear of the artworks */}
         <div className="container">
@@ -121,9 +55,52 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── FEATURED APPS ────────────────────────── */}
-      <section className="section" style={{ borderTop: '1px solid var(--border-subtle)' }}>
-        <div className="container">
+      {/* ── FEATURED APPS — Gallery Room ─────── */}
+      <section className="gallery-room">
+        {/* 3D room scene — all decorative background elements */}
+        <div className="gallery-scene" aria-hidden="true">
+          <div className="gallery-back-wall" />
+          <div className="gallery-left-wall" />
+          <div className="gallery-right-wall" />
+          <div className="gallery-floor" />
+          <div className="gallery-crown-molding" />
+          <div className="gallery-wainscoting" />
+          {/* Full-height left archway — leads to a 3D corridor */}
+          <div className="gallery-arch gallery-arch-left">
+            <div className="gallery-arch-opening" />
+          </div>
+          {/* Full-height right archway */}
+          <div className="gallery-arch gallery-arch-right">
+            <div className="gallery-arch-opening" />
+          </div>
+          {/* Palm tree */}
+          <div className="gallery-palm">
+          <svg viewBox="0 0 200 400" width="180" height="360" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Pot */}
+            <path d="M80 340 L120 340 L115 390 L85 390 Z" fill="#5c3a1e" />
+            <path d="M72 330 L128 330 L124 345 L76 345 Z" fill="#6b4423" />
+            <ellipse cx="100" cy="330" rx="30" ry="5" fill="#7a5230" />
+            {/* Trunk */}
+            <path d="M96 180 Q94 260 92 330 L108 330 Q106 260 104 180 Z" fill="#6b4423" stroke="#5c3a1e" strokeWidth="1" />
+            <path d="M95 220 Q97 218 105 220" stroke="#5c3a1e" strokeWidth="1" fill="none" />
+            <path d="M94 250 Q98 248 106 250" stroke="#5c3a1e" strokeWidth="1" fill="none" />
+            <path d="M93 280 Q98 278 107 280" stroke="#5c3a1e" strokeWidth="1" fill="none" />
+            <path d="M93 310 Q98 308 107 310" stroke="#5c3a1e" strokeWidth="1" fill="none" />
+            {/* Fronds */}
+            <path d="M100 180 Q60 120 10 100 Q60 130 80 165 Q70 130 30 80 Q70 135 88 165 Z" fill="#2d6b3f" />
+            <path d="M100 180 Q140 120 190 100 Q140 130 120 165 Q130 130 170 80 Q130 135 112 165 Z" fill="#2d6b3f" />
+            <path d="M100 180 Q50 140 5 155 Q55 150 82 170 Q50 155 15 170 Q58 160 85 175 Z" fill="#348a4a" />
+            <path d="M100 180 Q150 140 195 155 Q145 150 118 170 Q150 155 185 170 Q142 160 115 175 Z" fill="#348a4a" />
+            <path d="M100 180 Q80 100 60 40 Q85 105 95 165 Q78 90 55 30 Q84 110 96 170 Z" fill="#3a7d48" />
+            <path d="M100 180 Q120 100 140 40 Q115 105 105 165 Q122 90 145 30 Q116 110 104 170 Z" fill="#3a7d48" />
+            <path d="M100 180 Q40 160 -10 180 Q50 165 84 178 Z" fill="#45a050" opacity="0.7" />
+            <path d="M100 180 Q160 160 210 180 Q150 165 116 178 Z" fill="#45a050" opacity="0.7" />
+          </svg>
+          </div>
+        </div>
+
+        {/* Content — floats above the room */}
+        <div className="container gallery-content">
           <div className="section-header">
             <div className="section-title-group">
               <span className="label">Projects &amp; Tools</span>
