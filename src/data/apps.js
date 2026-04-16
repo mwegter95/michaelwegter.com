@@ -2,6 +2,11 @@
 // color drives the frame border, shadow, and interior composition of each card.
 // frameStyle picks a unique ornate picture frame for each card.
 // href: set to the deployed URL once live; '#' means coming soon.
+//
+// VITE_GALLERY_URL overrides the gallery wall iframe src — set by `npm run dev:local`
+// to point the iframe at localhost:5173 instead of the deployed GitHub Pages URL.
+const GALLERY_URL = import.meta.env.VITE_GALLERY_URL || "https://mwegter95.github.io/gallery-wall-planner/"
+
 export const apps = [
   {
     id: 1,
@@ -11,7 +16,7 @@ export const apps = [
       "Drag-and-drop tool for planning gallery wall art layouts at scale. Upload your room photo, calibrate perspective, and arrange pieces to-the-inch before you hang anything.",
     category: "Creative",
     status: "live",
-    href: "https://mwegter95.github.io/gallery-wall-planner/", // update with your actual GitHub Pages URL
+    href: GALLERY_URL,
     color: "#7c6ff7", // purple
     icon: "🖼",
     frameStyle: "baroque",

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:local": "VITE_GALLERY_URL=http://localhost:5173 vite",
     "build": "vite build",
     "preview": "vite preview"
   },
