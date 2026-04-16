@@ -47,6 +47,16 @@ function MacSVG() {
           <stop offset="0%"   stopColor="#dbd3bc" />
           <stop offset="100%" stopColor="#c8c0a8" />
         </linearGradient>
+        {/* 3D corner cap — top-right front, blends top→right face */}
+        <linearGradient id="macCornerTR" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%"   stopColor="#b8b09a" />
+          <stop offset="100%" stopColor="#cbc3ac" />
+        </linearGradient>
+        {/* 3D corner cap — bottom-right front */}
+        <linearGradient id="macCornerBR" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stopColor="#a8a18c" />
+          <stop offset="100%" stopColor="#9e9780" />
+        </linearGradient>
         {/* Screen glass sheen — subtle diagonal highlight */}
         <linearGradient id="screenSheen" x1="0%" y1="0%" x2="60%" y2="100%">
           <stop offset="0%"   stopColor="rgba(255,255,255,0.04)" />
@@ -73,24 +83,52 @@ function MacSVG() {
 
       {/* ── Drop shadow ── */}
       <g filter="url(#macShadow)">
-        <polygon points="52,44 572,10 572,658 484,692 52,692" fill="#2a2620" opacity="0.4" />
+        <polygon points="52,44 558,10 572,24 572,644 558,658 484,692 52,692" fill="#2a2620" opacity="0.4" />
       </g>
 
-      {/* ── Top face — rounded outer corners, fills gap at front face rx ── */}
-      <path
-        d="M 66,44 L 470,44 Q 484,44 484,57 L 561,16 Q 572,10 557,10 L 150,10 Q 140,10 141,19 L 52,57 Q 52,44 66,44 Z"
+      {/*
+        ── ROUNDED RECTANGULAR PRISM GEOMETRY ──
+        Front face: <rect x=52 y=44 w=432 h=648 rx=14>
+          Top edge flat segment:   x=66..470  at y=44
+          Right edge flat segment: x=484      at y=58..678
+          Top-right arc:    center(470,58)  from (470,44)→(484,58)   sweep CW
+          Bottom-right arc: center(470,678) from (484,678)→(470,692) sweep CW
+        Perspective offset: +88px right, -34px up
+
+        Top face: parallelogram aligned to front top-edge endpoints
+          (66,44) → (470,44) → (558,10) → (154,10)
+        Right face: parallelogram aligned to front right-edge endpoints
+          (484,58) → (572,24) → (572,644) → (484,678)
+        Corner caps fill the arc-gap triangles between face edges and the curved corners.
+      */}
+
+      {/* ── Top face — starts/ends exactly at front top-edge flat endpoints ── */}
+      <polygon
+        points="66,44 470,44 558,10 154,10"
         fill="url(#macTop)"
       />
-      {/* Top face edge trim — only the flat front segment */}
       <line x1="66" y1="44" x2="470" y2="44" stroke="rgba(255,255,255,0.28)" strokeWidth="1" />
 
-      {/* ── Right face — rounded outer corners, endpoints match front face rx ── */}
-      <path
-        d="M 484,57 L 561,16 Q 572,10 572,22 L 572,645 Q 572,658 561,661 L 484,680 Z"
+      {/* ── Right face — starts/ends exactly at front right-edge flat endpoints ── */}
+      <polygon
+        points="484,58 572,24 572,644 484,678"
         fill="url(#macRight)"
       />
-      {/* Right face highlight along left edge */}
-      <line x1="484" y1="57" x2="484" y2="680" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+      <line x1="484" y1="58" x2="484" y2="678" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+
+      {/* ── Top-right 3D corner cap ──
+          Fills the gap between top face (ends at 470,44), right face (starts at 484,58),
+          and the front face rx=14 arc. This is how a rounded prism projects in 2D. ── */}
+      <path
+        d="M 470,44 A 14,14 0 0 1 484,58 L 572,24 L 558,10 Z"
+        fill="url(#macCornerTR)"
+      />
+
+      {/* ── Bottom-right 3D corner cap ── */}
+      <path
+        d="M 484,678 A 14,14 0 0 1 470,692 L 558,658 L 572,644 Z"
+        fill="url(#macCornerBR)"
+      />
       {/* Ventilation slots — right face, middle third */}
       {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(i => {
         const yBase = 340 + i * 18
@@ -164,24 +202,24 @@ function MacSVG() {
       <line x1="88" y1="370" x2="446" y2="370"
         stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
 
-      {/* Apple logo — classic rainbow stripes with proper circular bite */}
+      {/* Apple logo — classic rainbow stripes using reference path (24×24 viewBox, scaled 1.9×, centered) */}
       <g transform="translate(268, 416)">
+        {/* clipPath uses the canonical Apple path: body + leaf as subpaths */}
         <clipPath id="appleClip">
-          {/* Body + leaf compound path; bite is a deep concave cubic arc on upper right */}
-          <path d="M 4,-22 C -4,-24 -18,-16 -22,-6 C -26,6 -22,18 -14,26 C -8,32 2,32 6,30 C 10,32 18,28 20,20 C 24,12 24,2 20,-2 C 30,-4 28,-18 18,-18 C 12,-22 6,-24 4,-22 Z M 4,-22 C 8,-34 22,-30 16,-20 Z" />
+          <path transform="scale(1.9) translate(-12, -12)"
+            d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.09997 22C7.78997 22.05 6.79997 20.68 5.95997 19.47C4.24997 17 2.93997 12.45 4.69997 9.39C5.56997 7.87 7.12997 6.91 8.81997 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z" />
         </clipPath>
-        {/* Six-color stripes — green at top, blue at bottom */}
-        <rect x="-26" y="-24" width="50" height="9"  fill="#71b832" clipPath="url(#appleClip)" />
-        <rect x="-26" y="-15" width="50" height="9"  fill="#f7be16" clipPath="url(#appleClip)" />
-        <rect x="-26" y="-6"  width="50" height="9"  fill="#f68b1f" clipPath="url(#appleClip)" />
-        <rect x="-26" y="3"   width="50" height="9"  fill="#e62e27" clipPath="url(#appleClip)" />
-        <rect x="-26" y="12"  width="50" height="9"  fill="#9c4d9b" clipPath="url(#appleClip)" />
-        <rect x="-26" y="21"  width="50" height="11" fill="#1c7dc0" clipPath="url(#appleClip)" />
-        {/* Body outline showing the bite */}
-        <path d="M 4,-22 C -4,-24 -18,-16 -22,-6 C -26,6 -22,18 -14,26 C -8,32 2,32 6,30 C 10,32 18,28 20,20 C 24,12 24,2 20,-2 C 30,-4 28,-18 18,-18 C 12,-22 6,-24 4,-22 Z"
-          fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1" />
-        {/* Leaf */}
-        <path d="M 4,-22 C 8,-34 22,-30 16,-20 Z" fill="#71b832" />
+        {/* Six rainbow stripes, green at top. Rects cover the full scaled bounding box. */}
+        <rect x="-16" y="-21" width="33" height="16.5" fill="#71b832" clipPath="url(#appleClip)" />
+        <rect x="-16" y="-4.5" width="33" height="5"   fill="#f7be16" clipPath="url(#appleClip)" />
+        <rect x="-16" y="0.5"  width="33" height="5"   fill="#f68b1f" clipPath="url(#appleClip)" />
+        <rect x="-16" y="5.5"  width="33" height="5"   fill="#e62e27" clipPath="url(#appleClip)" />
+        <rect x="-16" y="10.5" width="33" height="5"   fill="#9c4d9b" clipPath="url(#appleClip)" />
+        <rect x="-16" y="15.5" width="33" height="6"   fill="#1c7dc0" clipPath="url(#appleClip)" />
+        {/* Subtle outline for depth */}
+        <path transform="scale(1.9) translate(-12, -12)"
+          d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.09997 22C7.78997 22.05 6.79997 20.68 5.95997 19.47C4.24997 17 2.93997 12.45 4.69997 9.39C5.56997 7.87 7.12997 6.91 8.81997 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"
+          fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="0.5" />
       </g>
 
       {/* "Macintosh" model name */}
