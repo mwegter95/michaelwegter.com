@@ -25,7 +25,7 @@ import { apps } from '../data/apps'
 function MacSVG() {
   return (
     <svg
-      viewBox="0 0 680 760"
+      viewBox="-28 0 680 760"
       xmlns="http://www.w3.org/2000/svg"
       className="mac-svg"
       aria-hidden="true"
@@ -387,10 +387,9 @@ export default function MacDesktop({ showAll = false }) {
             <>
               <span className="mac-status-tag">{hovered.category}</span>
               <span className="mac-status-title">{hovered.title}</span>
-              <span className="mac-status-sep">—</span>
-              <span className="mac-status-desc">{hovered.description}</span>
               {hovered.status === 'live' && <span className="mac-status-dot mac-status-dot--live" />}
               {hovered.status === 'beta' && <span className="mac-status-dot mac-status-dot--beta" />}
+              <span className="mac-status-desc">{hovered.description}</span>
             </>
           ) : (
             <span className="mac-status-idle">
