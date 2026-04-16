@@ -311,21 +311,20 @@ function MacSVG() {
 
 // ── Desktop icon component ────────────────────────────────────────────
 function DesktopIcon({ app, isSelected, onEnter, onLeave }) {
-  const isExternal = app.href !== '#'
-  const isDisabled = app.status === 'soon'
+  const isDisabled = app.status === 'soon' || app.href === '#'
+  const hasSlug    = Boolean(app.slug) && !isDisabled
 
-  return (
-    <a
-      href={isDisabled ? undefined : app.href}
-      target={isExternal && !isDisabled ? '_blank' : undefined}
-      rel={isExternal ? 'noopener noreferrer' : undefined}
-      className={`mac-icon ${isSelected ? 'mac-icon--selected' : ''} ${isDisabled ? 'mac-icon--disabled' : ''}`}
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
-      onFocus={onEnter}
-      onBlur={onLeave}
-      style={{ '--icon-color': app.color }}
-    >
+  const sharedProps = {
+    className: `mac-icon ${isSelected ? 'mac-icon--selected' : ''} ${isDisabled ? 'mac-icon--disabled' : ''}`,
+    onMouseEnter: onEnter,
+    onMouseLeave: onLeave,
+    onFocus: onEnter,
+    onBlur: onLeave,
+    style: { '--icon-color': app.color },
+  }
+
+  const iconContent = (
+    <>
       {/* Icon graphic */}
       <div className="mac-icon-img">
         <div className="mac-icon-face">
@@ -334,11 +333,27 @@ function DesktopIcon({ app, isSelected, onEnter, onLeave }) {
         {/* Selection highlight overlay */}
         <div className="mac-icon-select-overlay" />
       </div>
-
       {/* Label below icon */}
       <div className="mac-icon-label">
         <span>{app.title}</span>
       </div>
+    </>
+  )
+
+  // Apps with a slug open inside the portfolio as a full-screen iframe
+  if (hasSlug) {
+    return <Link to={`/apps/${app.slug}`} {...sharedProps}>{iconContent}</Link>
+  }
+
+  // Coming soon → non-interactive span
+  if (isDisabled) {
+    return <span {...sharedProps}>{iconContent}</span>
+  }
+
+  // External URL → new tab
+  return (
+    <a href={app.href} target="_blank" rel="noopener noreferrer" {...sharedProps}>
+      {iconContent}
     </a>
   )
 }

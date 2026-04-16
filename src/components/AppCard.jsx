@@ -296,29 +296,28 @@ const FRAMES = {
   ebony:   EbonyFrame,
 }
 
+import { Link } from 'react-router-dom'
+
 // ── AppCard ───────────────────────────────────────────
+// Apps with a `slug` open inside the portfolio as a full-screen iframe
+// (michaelwegter.com/#/apps/:slug).
+// Apps with only an `href` (and no slug) open in a new tab.
+// Apps with href='#' are "coming soon" and do nothing.
 export default function AppCard({ app }) {
   const statusLabel = { live: 'Live', beta: 'Beta', soon: 'Soon' }
   const statusClass  = { live: 'status-live', beta: 'status-beta', soon: 'status-soon' }
-  const isExternal   = app.href !== '#'
   const FrameSVG     = FRAMES[app.frameStyle] || FRAMES.baroque
   const uid          = `f${app.id}`
 
-  return (
-    <a
-      href={app.href}
-      className="app-card"
-      target={isExternal ? '_blank' : undefined}
-      rel={isExternal ? 'noopener noreferrer' : undefined}
-      aria-label={`Open ${app.title}`}
-      style={{ '--card-color': app.color }}
-    >
+  const isSoon       = app.status === 'soon' || app.href === '#'
+  const hasSlug      = Boolean(app.slug) && !isSoon
+  const isExternal   = !hasSlug && !isSoon
+
+  const inner = (
+    <>
       {/* ── Frame wrapper ── */}
       <div className="frame-wrapper">
-        {/* Wire hanger above the frame */}
         <div className="frame-wire" />
-
-        {/* Canvas — fills the painting window area, frame overlays on top */}
         <div className="canvas-window" style={{ '--cv': app.color }}>
           <div className="canvas-bg-glow" />
           <div className="canvas-shape-1" />
@@ -328,8 +327,6 @@ export default function AppCard({ app }) {
             <span className="app-card-icon" style={{ color: app.color }}>{app.icon}</span>
           </div>
         </div>
-
-        {/* SVG frame overlay */}
         <FrameSVG id={uid} />
       </div>
 
@@ -345,8 +342,8 @@ export default function AppCard({ app }) {
         <p className="app-card-desc">{app.description}</p>
         <div className="app-card-footer">
           <span className="app-card-open">
-            {app.status === 'soon' ? 'Coming soon' : 'Open app'}
-            {app.status !== 'soon' && (
+            {isSoon ? 'Coming soon' : 'Open app'}
+            {!isSoon && (
               <svg viewBox="0 0 16 16" width="12" height="12" fill="none">
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -354,6 +351,25 @@ export default function AppCard({ app }) {
           </span>
         </div>
       </div>
-    </a>
+    </>
   )
+
+  const sharedProps = {
+    className: 'app-card',
+    'aria-label': `Open ${app.title}`,
+    style: { '--card-color': app.color },
+  }
+
+  // Internal route (slug) → react-router Link (no page reload, clean URL)
+  if (hasSlug) {
+    return <Link to={`/apps/${app.slug}`} {...sharedProps}>{inner}</Link>
+  }
+
+  // External URL → plain anchor in new tab
+  if (isExternal) {
+    return <a href={app.href} target="_blank" rel="noopener noreferrer" {...sharedProps}>{inner}</a>
+  }
+
+  // Coming soon → non-interactive div
+  return <div {...sharedProps}>{inner}</div>
 }
