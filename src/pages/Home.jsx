@@ -32,18 +32,19 @@ export default function Home() {
 
             <p className="hero-sub">
               Building useful tools at the intersection of code
-              and creativity. Based in Minneapolis.
+              and creativity. Based in the Twin Cities.
             </p>
 
             <div className="hero-ctas">
-              <Link to="/apps" className="btn btn-primary">
+              <button
+                className="btn btn-primary"
+                onClick={() => document.getElementById('featured-apps')?.scrollIntoView({ behavior: 'smooth' })}
+              >
                 Explore Projects
                 <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
                   <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </Link>
-              <Link to="/experience" className="btn btn-outline">Experience</Link>
-              <Link to="/resume" className="btn btn-ghost">Resume ↗</Link>
+              </button>
             </div>
 
             <div className="hero-scroll">
@@ -55,7 +56,7 @@ export default function Home() {
       </section>
 
       {/* ── FEATURED APPS — Mac Desktop ─────── */}
-      <section className="mac-section">
+      <section id="featured-apps" className="mac-section">
         <div className="container mac-section-content">
           <div className="mac-section-header">
             <div>
@@ -76,7 +77,7 @@ export default function Home() {
       {/* ── ABOUT — color-blocked gallery panel ──── */}
       <section style={{ borderTop: '1px solid var(--border-subtle)', padding: '0 0 var(--section-pad)' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', alignItems: 'stretch', gap: '40px', paddingTop: 'var(--section-pad)' }}>
+          <div className="about-grid" style={{ alignItems: 'stretch', gap: '40px', paddingTop: 'var(--section-pad)' }}>
 
             {/* Left — bold color block, like a gallery label card */}
             <div style={{
@@ -132,7 +133,7 @@ export default function Home() {
                 color: 'rgba(0,0,0,0.45)',
                 marginTop: '32px',
               }}>
-                Minneapolis, MN
+                Twin Cities, MN
               </div>
             </div>
 

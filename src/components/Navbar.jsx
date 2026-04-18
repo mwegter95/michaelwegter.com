@@ -40,6 +40,11 @@ export default function Navbar() {
         {/* Desktop Nav */}
         <div className="navbar-nav">
 
+          {/* Home */}
+          <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
+            Home
+          </Link>
+
           {/* Apps with dropdown */}
           <div className="nav-item" ref={dropdownRef}>
             <button
@@ -93,12 +98,12 @@ export default function Navbar() {
             Experience
           </Link>
 
-          {/* Resume */}
+          {/* Résumé */}
           <Link
             to="/resume"
             className={`nav-link ${isActive('/resume') ? 'active' : ''}`}
           >
-            Resume
+            Résumé
             <svg viewBox="0 0 12 12" width="11" height="11" fill="none" style={{ color: 'var(--text-muted)' }}>
               <path d="M2.5 9.5l7-7M4 2.5h5.5v5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -125,6 +130,9 @@ export default function Navbar() {
           borderTop: '1px solid var(--border-subtle)',
           padding: '12px 20px 20px',
         }}>
+          <Link to="/" className="nav-link" style={{ display: 'block', padding: '12px 0' }}>
+            Home
+          </Link>
           <Link to="/apps" className="nav-link" style={{ display: 'block', padding: '12px 0' }}>
             Apps
           </Link>
@@ -132,7 +140,7 @@ export default function Navbar() {
             Experience
           </Link>
           <Link to="/resume" className="nav-link" style={{ display: 'block', padding: '12px 0' }}>
-            Resume
+            Résumé
           </Link>
         </div>
       )}

@@ -16,9 +16,22 @@
  *   width: 336/680 = 49.41%, height: 254/760 = 33.42%
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { apps } from '../data/apps'
+
+function useClockTime() {
+  const fmt = () => new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  const [time, setTime] = useState(fmt)
+  useEffect(() => {
+    const tick = () => setTime(fmt())
+    const msUntilNextMinute = (60 - new Date().getSeconds()) * 1000 - new Date().getMilliseconds()
+    let intervalId
+    const timeoutId = setTimeout(() => { tick(); intervalId = setInterval(tick, 60000) }, msUntilNextMinute)
+    return () => { clearTimeout(timeoutId); clearInterval(intervalId) }
+  }, [])
+  return time
+}
 
 // ── SVG sub-components ────────────────────────────────────────────────
 
@@ -361,6 +374,7 @@ function DesktopIcon({ app, isSelected, onEnter, onLeave }) {
 // ── MacDesktop component ──────────────────────────────────────────────
 export default function MacDesktop({ showAll = false }) {
   const [hovered, setHovered] = useState(null)
+  const time = useClockTime()
   const displayApps = showAll ? apps : apps.slice(0, 4)
 
   return (
@@ -378,9 +392,7 @@ export default function MacDesktop({ showAll = false }) {
           <span className="mac-menu-item">Edit</span>
           <span className="mac-menu-item">View</span>
           <span className="mac-menu-item">Special</span>
-          <span className="mac-menu-time">
-            {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-          </span>
+          <span className="mac-menu-time">{time}</span>
         </div>
 
         {/* Desktop area — icon grid */}
