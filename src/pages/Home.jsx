@@ -122,7 +122,7 @@ export default function Home() {
                   lineHeight: 1.0,
                   color: '#111',
                 }}>
-                  Code as a<br />creative<br />medium.
+                  About<br />Michael.
                 </h2>
               </div>
 
@@ -140,9 +140,8 @@ export default function Home() {
             {/* Right — description */}
             <div style={{ padding: '44px 0', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <p style={{ fontSize: '16px', color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '20px' }}>
-                I'm a software engineer who builds things that are both
-                functional and beautifully considered. I believe great software
-                respects people's time and makes hard problems feel effortless.
+                I'm a software engineer who builds things that are both functional and beautiful.
+                I believe great software can solve problems big and small, and should help people.
               </p>
               <p style={{ fontSize: '16px', color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '36px' }}>
                 This site is home to my portfolio, personal projects, and tools

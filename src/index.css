@@ -506,6 +506,18 @@ main { padding-top: var(--nav-height); }
   gap: 3px;
 }
 
+/* Standalone all-apps grid (showAll mode — no SVG Mac) */
+.mac-desktop-standalone {
+  background: #1a2830;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-auto-rows: auto;
+  gap: 8px;
+  padding: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /* Icon */
 .mac-icon {
   display: flex;
@@ -1026,6 +1038,14 @@ main { padding-top: var(--nav-height); }
   .mac-menu-apple { font-size: 10px; margin-right: 0; }
   .mac-menu-item { padding: 0 1px; }
   .mac-menu-time { font-size: 8px; }
+  /* Featured mac desktop on mobile: show only first 2 icons, scaled smaller */
+  .mac-desktop[data-featured] { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
+  .mac-desktop[data-featured] .mac-icon:nth-child(n+3) { display: none; }
+  .mac-desktop[data-featured] .mac-icon-img { width: 44px; height: 44px; }
+  .mac-desktop[data-featured] .mac-icon-glyph { font-size: 20px; }
+  .mac-desktop[data-featured] .mac-icon-label { font-size: 9px; max-width: 60px; }
+  /* Standalone grid on mobile */
+  .mac-desktop-standalone { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); padding: 16px; gap: 6px; }
 }
 
 /* ── AppFrame: full-viewport iframe shell ───────────────────────────────── */

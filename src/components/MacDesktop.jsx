@@ -21,14 +21,12 @@ import { Link } from 'react-router-dom'
 import { apps } from '../data/apps'
 
 function useClockTime() {
-  const fmt = () => new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  const fmt = () => new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' })
   const [time, setTime] = useState(fmt)
   useEffect(() => {
     const tick = () => setTime(fmt())
-    const msUntilNextMinute = (60 - new Date().getSeconds()) * 1000 - new Date().getMilliseconds()
-    let intervalId
-    const timeoutId = setTimeout(() => { tick(); intervalId = setInterval(tick, 60000) }, msUntilNextMinute)
-    return () => { clearTimeout(timeoutId); clearInterval(intervalId) }
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
   }, [])
   return time
 }
@@ -377,6 +375,23 @@ export default function MacDesktop({ showAll = false }) {
   const time = useClockTime()
   const displayApps = showAll ? apps : apps.slice(0, 4)
 
+  // All-apps view: standalone expanding grid, no SVG Mac
+  if (showAll) {
+    return (
+      <div className="mac-desktop-standalone">
+        {displayApps.map(app => (
+          <DesktopIcon
+            key={app.id}
+            app={app}
+            isSelected={hovered?.id === app.id}
+            onEnter={() => setHovered(app)}
+            onLeave={() => setHovered(null)}
+          />
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="mac-wrapper">
       {/* The SVG Mac body */}
@@ -396,7 +411,7 @@ export default function MacDesktop({ showAll = false }) {
         </div>
 
         {/* Desktop area — icon grid */}
-        <div className="mac-desktop">
+        <div className="mac-desktop" data-featured="true">
           {displayApps.map(app => (
             <DesktopIcon
               key={app.id}
