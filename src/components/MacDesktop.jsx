@@ -33,13 +33,14 @@ function useClockTime() {
 
 // ── SVG sub-components ────────────────────────────────────────────────
 
-function MacSVG() {
+function MacSVG({ expanded = false }) {
   return (
     <svg
       viewBox="-28 0 680 760"
       xmlns="http://www.w3.org/2000/svg"
       className="mac-svg"
       aria-hidden="true"
+      preserveAspectRatio={expanded ? 'none' : undefined}
     >
       <defs>
         {/* Front face gradient — brightest on left, slightly darker right */}
@@ -375,27 +376,10 @@ export default function MacDesktop({ showAll = false }) {
   const time = useClockTime()
   const displayApps = showAll ? apps : apps.slice(0, 4)
 
-  // All-apps view: standalone expanding grid, no SVG Mac
-  if (showAll) {
-    return (
-      <div className="mac-desktop-standalone">
-        {displayApps.map(app => (
-          <DesktopIcon
-            key={app.id}
-            app={app}
-            isSelected={hovered?.id === app.id}
-            onEnter={() => setHovered(app)}
-            onLeave={() => setHovered(null)}
-          />
-        ))}
-      </div>
-    )
-  }
-
   return (
-    <div className="mac-wrapper">
+    <div className={`mac-wrapper${showAll ? ' mac-wrapper--expanded' : ''}`}>
       {/* The SVG Mac body */}
-      <MacSVG />
+      <MacSVG expanded={showAll} />
 
       {/* HTML screen overlay — positioned over the glass */}
       <div className="mac-screen-overlay">
@@ -411,7 +395,7 @@ export default function MacDesktop({ showAll = false }) {
         </div>
 
         {/* Desktop area — icon grid */}
-        <div className="mac-desktop" data-featured="true">
+        <div className="mac-desktop">
           {displayApps.map(app => (
             <DesktopIcon
               key={app.id}
