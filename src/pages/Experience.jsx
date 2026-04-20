@@ -7,100 +7,98 @@ const chapters = [
   {
     num: 'I',
     company: 'Turnberry Solutions',
-    client: 'U.S. Bank',
+    client: 'consulting at U.S. Bank',
     title: 'Software Engineering Senior Associate',
     period: 'June 2022 – Dec 2024',
     location: 'Richfield, MN',
     color: 'var(--cyan-vivid)',
     colorRaw: '#12b4c8',
     stats: [
-      { value: '600',    unit: '/mo',   label: 'Internal users served'      },
-      { value: '2½',     unit: ' yrs',  label: 'On the project'             },
-      { value: '60k+',   unit: ' loc',  label: 'Lines of code'              },
-      { value: '6',      unit: ' mo',   label: 'Azure migration'            },
+      { value: '600',  unit: '/mo',  label: 'Internal users served' },
+      { value: '2½',   unit: ' yrs', label: 'On the project'        },
+      { value: '60k+', unit: ' loc', label: 'Lines of code'         },
+      { value: '6',    unit: ' mo',  label: 'Azure migration'       },
     ],
     stack: ['React', 'Python', 'SQL', 'Java', 'REST APIs', 'Docker', 'Kubernetes',
             'Jenkins', 'GitLab', 'Azure DevOps', 'Artifactory'],
     sections: [
       {
         heading: 'The Project',
-        body: `My first role out of the U of M coding bootcamp landed me on a perfect fit — a project called Test Data as a Service, or TDAAS. The tech stack was exactly what I'd learned: React on the frontend, Python on the backend, and a heavily utilized SQL database where most of the app's behavior was configured in tables we could edit without running the CI/CD pipeline. That flexibility was a huge win for development speed.`,
-      },
-      {
-        pullQuote: true,
-        body: `TDAAS helped 600 internal users every month — employees who needed real lower-environment data to run their tests and business scenarios.`,
+        body: `Working for U.S. Bank was a great experience. I landed on a perfect project that matched my history and known technologies at the time. The project was called Test Data as a Service, or TDAAS. The tech stack matched perfectly what I learned from my University of Minnesota full stack coding bootcamp and what I'd learned in college; we had a React frontend, and a Python backend, with a heavily utilized SQL database, wherein the whole setup for the app hinged on tables of configuration which we would edit when making fixes or adding new features, enabling us to make changes without running the CI/CD every time.`,
       },
       {
         heading: 'What It Did',
-        body: `TDAAS was an internal web app that hooked into the bank's mainframe in lower environments and syndicated data from it and other systems. It showed that data in helpful tables with search and filtering tools, so employees could find and condition exactly the test data they needed. Before TDAAS, that process meant a flood of one-off requests. After it, users had self-service tools and the rate of ad-hoc asks dropped dramatically.`,
-      },
-      {
-        heading: 'Becoming the SME',
-        body: `Two months in, my senior developer left for another job. For someone fresh out of bootcamp, the prospect of leading an application solo was terrifying. But the team trained me well, and I rose to it. I took ownership of the entire codebase — every feature, every bug, every user question — and became a genuine SME. If something broke, I could diagnose and fix it, often within ten minutes. If a new feature was needed, I understood all the moving parts because I had become an expert in every corner of the system.`,
+        body: `TDAAS was an internal web app just for employee use, and it will never go to production. This was great for morale because we could deploy any time, create hotfixes super quickly, and just code and develop features without so many hoops to jump through. The point of TDAAS was to provide a place for employees to look up data that they could use for testing in their business scenarios and other applications. TDAAS hooked up to the mainframe of the bank in the lower environments, and syndicated data from it and other systems. Then in a web app, it showed the information in helpful tables with search and other features for conditioning the test data so that users could get real lower environment data — faked data for testing — and they could search for and condition data to be exactly what they needed for their tests. This greatly reduced the rate of one-off emails or requests to make data a certain way, because it was easily findable and editable using TDAAS tools.`,
       },
       {
         pullQuote: true,
-        body: `If something was broken, I could fix it — often within ten minutes. I had become an expert in every corner of the system.`,
+        body: `TDAAS helped 600 internal users every month, and it was no small task.`,
       },
       {
         heading: 'Serving the Users',
-        body: `The job was as much about people as it was about code. Users had requests, edge cases, and confusion. I learned how to really listen, how to translate a vague need into a precise technical solution, and how to build features that were intuitive enough to need almost no explanation. That felt meaningful — making other people's days easier by putting in the effort to understand what they actually needed.`,
+        body: `Of course, there were still many requests for how to find data, data that wasn't findable, and new features and new ways to search and edit the data reliably. So the job was a lot about being able to listen, communicate, and teach, and it was a matter of serving our users. I learned a lot about how to help people, how to create features that were easy to use, and how to hear people about their needs and then address them with code. I enjoyed this part of the job, because it's important to me to help people and make my environment better by putting in effort and doing what I can to make everyone's experience better.`,
       },
       {
-        heading: 'The Azure Migration',
-        body: `In 2023, U.S. Bank began moving its apps off on-prem infrastructure and into Azure Cloud. TDAAS was identified as a candidate for one of the first waves — a lower-environment app that could work out the kinks before the outward-facing products made the jump. Since we were among the first thirty apps to migrate, the path was far from paved. There were hurdles, brick walls, compatibility issues across 50+ system connections, and configuration puzzles that had no precedent. I was the main technical representative from the TDAAS side — point on everything.`,
+        heading: 'Stepping Up',
+        body: `The customer service piece, and really all the pieces of running and managing the app, did end up coming down to just me shortly after I arrived at U.S. Bank, when my senior developer left for another job after my being there for hardly two months. This was a scary concept, as I had just come out of coding bootcamp and this was my first job. Now I would be leading an application team and managing it with no peer teammates, just a manager who didn't really do the code. But despite my nerves, the team did a great job training me in and I was ready for the work. I took on the challenge and really thrived; as I mentioned I loved helping the users, and I became a SME with deep expertise on the app.`,
       },
       {
-        heading: 'Six Months Later',
-        body: `After six months of daily migration work — debugging Azure configs, rewriting compatibility layers, navigating documentation that didn't exist yet — we crossed the finish line. It was one of the hardest projects I'd done, and one of the most rewarding. TDAAS kicked off my professional engineering career, and I'm grateful for every person I worked with and everything I learned there.`,
+        pullQuote: true,
+        body: `If something was broken, I could fix it, and often within 10 minutes. If we needed a new feature, I understood all the parts it would affect, because I was an expert in the codebase and its functionality.`,
+      },
+      {
+        heading: 'The Migration',
+        body: `And it's good I became a SME for the team — not only because I was managing TDAAS as the sole developer and they needed someone to be able to implement and run the app for its many users, but also because of what came next. In 2023 the bank decided to move all of its apps that it could to Azure Cloud instead of an on-prem cloud. So TDAAS was identified as one of the bunch that would go first, since it was a lower environment app and could navigate the changes before some of the outward facing apps got their chance.
+
+Since we were among the first to migrate to Azure, it was a wild world without a lot of examples of what to do. We ran into a lot of hurdles, and sometimes brick walls, but we rolled up our sleeves and got out our track spikes and wrecking balls. I was appointed to be the main representative from TDAAS for the migration, which meant I was point on everything that had to do with it, from figuring out configuration and errors, to large-scale compatibility efforts we had to work through to get TDAAS migrated to Azure. It was a grueling but rewarding effort, and after 6 months of daily work on the migration, we were able to get everything across the finish line. I learned a lot, and I'm thankful for it even though it was a hard project.`,
+      },
+      {
+        pullQuote: true,
+        body: `TDAAS kicked off my professional software engineering journey, and I'm grateful for the people I met and the things I learned there.`,
       },
     ],
   },
   {
     num: 'II',
     company: 'Turnberry Solutions',
-    client: 'Optum',
+    client: 'consulting at Optum',
     title: 'Software Engineering Consultant',
     period: 'Jan 2025 – Present',
     location: 'Eden Prairie, MN',
     color: 'var(--mustard)',
     colorRaw: '#e8b820',
     stats: [
-      { value: '100+', unit: '',      label: 'Consultants on contract' },
-      { value: '150+', unit: ' pts',  label: 'Story points delivered'  },
-      { value: '4th',  unit: '',      label: 'Iteration of RHRP'       },
-      { value: 'WON',  unit: '  ✓',   label: 'Contract — April 2026'   },
+      { value: '100+', unit: '',     label: 'Consultants on contract' },
+      { value: '150+', unit: ' pts', label: 'Story points delivered'  },
+      { value: '4th',  unit: '',     label: 'Iteration of RHRP'       },
+      { value: 'WON',  unit: ' ✓',   label: 'Contract — April 2026'   },
     ],
     stack: ['Angular', '.NET / C#', 'PostgreSQL', 'Kafka', 'Docker', 'Podman',
             'GitHub Copilot', 'Azure OpenAI', 'REST APIs', 'Onion Architecture'],
     sections: [
       {
-        heading: 'The Mission',
-        body: `I've been lucky to land on another meaningful project. RHRP 4 — the Readiness Healthcare Request Program, 4th iteration — is a large-scale government contract building an app for military service members and veterans to understand and request the healthcare they need. Optum didn't hold the 3rd iteration of this contract. We worked for over a year proving ourselves, and in April 2026 the news came: we won it. That moment hit differently.`,
+        heading: 'Landing Here',
+        body: `I've luckily landed in another great project with Optum, working on the RHRP 4 project. At Optum, I work with a team of developers in strict Agile and sprints style. It's a large-scale project, with nearly 100 Turnberry consultants working on the contract. We are making an app for military service members and veterans to easily understand and request the healthcare that they need to be ready for their next steps. This is the 4th iteration of the contract, and Optum did not win the 3rd. We worked for over a year — then finally, the word came that we won the contract April 2026!`,
       },
       {
         pullQuote: true,
-        body: `We worked for over a year proving ourselves — and in April 2026, the word came: we won the contract. That moment hit differently.`,
+        body: `We worked for over a year, then finally, the word came that we won the contract April 2026!`,
       },
       {
-        heading: 'The Work',
-        body: `The codebase is large and modern — Angular on the frontend, .NET/C# on the backend, PostgreSQL for persistence, and Kafka threading events across multiple systems. We follow onion architecture with a full separation of concerns, and everyone works full stack. My domain, Readiness Request, is the part that directly handles what service members ask for in terms of healthcare readiness. I've contributed over 150 story points and counting.`,
+        heading: 'The Team & The Work',
+        body: `On the RHRP 4 project, teams are split into roughly 4 developers and then multiple teams are assigned to a scrum master. We work efficiently to sound off on problems and bring up design questions. Then we code. 🙂 The RHRP 4 project, or at least my domain in it, called Readiness Request, is built on Angular, .NET/C#, and PostgreSQL. We have a huge code base, using onion architecture, and we all work full stack to get things done. I've contributed over 150 user story points. My team works quickly and works well together. We also integrate with stakeholders and communicate in refinement sessions to create our future work.`,
       },
       {
-        heading: 'The Team',
-        body: `Teams are structured at roughly four developers per scrum team, with multiple teams sharing a scrum master. It's efficient and collaborative — we sound off on blockers, hash out design questions, refine future work with stakeholders, and then we code. There's nearly a hundred Turnberry consultants on the wider contract, but day to day it feels like a tight crew. The environment is non-prod: chill, focused, and good at getting things done without unnecessary friction.`,
-      },
-      {
-        heading: 'AI on the Front Lines',
-        body: `The part of this role I've enjoyed most — beyond the team and the mission — has been getting deep into AI-powered development. I got into GitHub Copilot earlier than most of my teammates, which gave me a head start in learning how to work with it effectively. A friend recently told me I was "ahead of the curve" when it comes to AI, and that felt accurate. I use it daily: for writing code, analyzing user stories, reviewing pull requests. Teammates come to me when their Copilot setup breaks or they need advice on prompting strategy.`,
+        heading: 'AI For the Win',
+        body: `The part of this role and environment that has been my favorite, other than having a great team and a chill but efficient, non-prod environment, has been the integration of AI. Getting into GitHub Copilot earlier than my teammates allowed me to learn and augment my skills in coding, and do things faster and better. My friend recently lauded me as ahead of the curve when it comes to AI, saying it was impressive. I use it regularly in my code creation, story analysis, and pull request reviews. And my teammates often come to me for advice if their AI setup is broken, or they're needing advice on AI. It feels good to once again be a SME for a certain subject. I've developed skill in conducting AI-powered software development, and know how to coordinate and query the AI to get it to do what I want, and create clean code that completes the objective. This has become my favorite part of the job, and I love developing my chops in this area.`,
       },
       {
         pullQuote: true,
-        body: `I've developed a genuine skill in AI-powered software development — knowing how to coordinate and query AI to produce clean, purposeful code.`,
+        body: `My friend recently lauded me as ahead of the curve when it comes to AI, saying it was impressive.`,
       },
       {
-        heading: 'What I\u2019ve Built Here',
-        body: `This role has crystallized something for me: I love being the person who figures things out and brings the team along. Whether it's deep expertise in a codebase, or being the go-to for AI tooling, or building features that serve people who genuinely need them — that's the work I want to do. I feel lucky to be doing it on a project for people who deserve this kind of care, with a team I genuinely like.`,
+        heading: 'What Matters',
+        body: `I'm glad I'm working on a project to help people get the healthcare they need, and I feel so lucky to have landed on this project with these great people and a well-built environment.`,
       },
     ],
   },
@@ -116,7 +114,7 @@ export default function Experience() {
           <span className="exp-eyebrow">Software Engineering</span>
           <h1 className="exp-page-title">Experience</h1>
           <p className="exp-page-sub">
-            Two chapters. One trajectory. The full story behind the résumé lines.
+            Two chapters. The full story behind the résumé lines.
           </p>
         </div>
       </div>
@@ -184,7 +182,9 @@ export default function Experience() {
                             {sec.heading}
                           </h3>
                         )}
-                        <p className="exp-section-body">{sec.body}</p>
+                        {sec.body.split('\n\n').map((para, pi) => (
+                          <p key={pi} className="exp-section-body">{para}</p>
+                        ))}
                       </div>
                     )
                 ))}
@@ -209,7 +209,7 @@ export default function Experience() {
               <div className="exp-connector">
                 <div className="exp-connector-line" />
                 <div className="exp-connector-node">
-                  <span className="exp-connector-label">3 months later</span>
+                  <span className="exp-connector-label">1 month later</span>
                 </div>
                 <div className="exp-connector-line" />
               </div>
