@@ -237,7 +237,7 @@ main { padding-top: var(--nav-height); }
 .dropdown-item-desc {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-top: 2px;
   letter-spacing: 0.04em;
   white-space: normal;
@@ -1236,12 +1236,12 @@ main { padding-top: var(--nav-height); }
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .resume-meta-value {
   font-size: 15px;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .resume-meta-link {
@@ -1396,7 +1396,7 @@ main { padding-top: var(--nav-height); }
 
 .resume-job-title {
   font-size: 15px;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin-top: 2px;
 }
 
@@ -1418,7 +1418,7 @@ main { padding-top: var(--nav-height); }
 .resume-job-location {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   letter-spacing: 0.08em;
 }
 
@@ -1434,7 +1434,7 @@ main { padding-top: var(--nav-height); }
   align-items: flex-start;
   gap: 12px;
   font-size: 15.5px;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   line-height: 1.65;
 }
 
@@ -1519,7 +1519,7 @@ main { padding-top: var(--nav-height); }
 .resume-edu-location {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   letter-spacing: 0.08em;
 }
 
