@@ -9,7 +9,7 @@ export default function Footer() {
         </span>
         <div className="footer-links">
           <a
-            href="https://github.com/michaelwegter"
+            href="https://github.com/mwegter95"
             target="_blank"
             rel="noopener noreferrer"
             className="footer-link"
@@ -24,7 +24,7 @@ export default function Footer() {
           >
             LinkedIn
           </a>
-          <a href="mailto:hello@michaelwegter.com" className="footer-link">
+          <a href="mailto:mwegter95@gmail.com" className="footer-link">
             Email
           </a>
         </div>
