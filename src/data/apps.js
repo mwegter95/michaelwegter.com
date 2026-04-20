@@ -5,7 +5,12 @@
 //
 // VITE_GALLERY_URL overrides the gallery wall iframe src — set by `npm run dev:local`
 // to point the iframe at localhost:5173 instead of the deployed GitHub Pages URL.
+// VITE_SEO_URL overrides the SEO analyzer iframe src — set by `npm run dev:local`
+// to point the iframe at localhost:5015 (seo-analyzer-app local dev server).
 const GALLERY_URL = import.meta.env.VITE_GALLERY_URL || "https://mwegter95.github.io/gallery-wall-planner/"
+const SEO_URL =
+  import.meta.env.VITE_SEO_URL ||
+  "https://mwegter95.github.io/free-seo-analyzer-with-js-rendering/";
 
 export const apps = [
   {
@@ -29,7 +34,7 @@ export const apps = [
       "Deep SEO audit tool with JS rendering support. Crawls pages using a headless browser and scores them across 30+ technical and content factors.",
     category: "Utility",
     status: "live",
-    href: "#", // update with deployed URL
+    href: SEO_URL,
     color: "#12b4c8", // cyan
     icon: "📊",
     frameStyle: "walnut",
