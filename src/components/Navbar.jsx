@@ -60,25 +60,41 @@ export default function Navbar() {
             </button>
 
             <div className={`nav-dropdown ${dropdownOpen ? 'open' : ''}`}>
-              {apps.slice(0, 5).map(app => (
-                <a
-                  key={app.id}
-                  href={app.href}
-                  className="dropdown-item"
-                  target={app.href !== '#' ? '_blank' : undefined}
-                  rel="noopener noreferrer"
-                  onClick={() => setDropdownOpen(false)}
-                >
-                  <span
-                    className="dropdown-item-dot"
-                    style={{ background: app.color }}
-                  />
-                  <div className="dropdown-item-info">
-                    <div className="dropdown-item-name">{app.title}</div>
-                    <div className="dropdown-item-desc">{app.description}</div>
-                  </div>
-                </a>
-              ))}
+              {apps.slice(0, 5).map(app => {
+                const inner = (
+                  <>
+                    <span className="dropdown-item-dot" style={{ background: app.color }} />
+                    <div className="dropdown-item-info">
+                      <div className="dropdown-item-name">{app.title}</div>
+                      <div className="dropdown-item-desc">{app.description}</div>
+                    </div>
+                  </>
+                )
+                if (app.slug && app.status !== 'soon' && app.href !== '#') {
+                  return (
+                    <Link
+                      key={app.id}
+                      to={`/apps/${app.slug}`}
+                      className="dropdown-item"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      {inner}
+                    </Link>
+                  )
+                }
+                return (
+                  <a
+                    key={app.id}
+                    href={app.href}
+                    className="dropdown-item"
+                    target={app.href !== '#' ? '_blank' : undefined}
+                    rel="noopener noreferrer"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    {inner}
+                  </a>
+                )
+              })}
               <div className="dropdown-footer">
                 <Link to="/apps" className="dropdown-view-all" onClick={() => setDropdownOpen(false)}>
                   View all apps
