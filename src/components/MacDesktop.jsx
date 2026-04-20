@@ -394,7 +394,8 @@ export default function MacDesktop({ showAll = false }) {
           <span className="mac-menu-time">{time}</span>
         </div>
 
-        {/* Desktop area — icon grid */}
+        {/* Desktop area + status bar wrapped so mouse moving between them doesn't flicker */}
+        <div onMouseLeave={() => setHovered(null)}>
         <div className="mac-desktop">
           {displayApps.map(app => (
             <DesktopIcon
@@ -402,7 +403,7 @@ export default function MacDesktop({ showAll = false }) {
               app={app}
               isSelected={hovered?.id === app.id}
               onEnter={() => setHovered(app)}
-              onLeave={() => setHovered(null)}
+              onLeave={() => {}}
             />
           ))}
         </div>
@@ -422,6 +423,7 @@ export default function MacDesktop({ showAll = false }) {
               {displayApps.length} items · MW Desktop
             </span>
           )}
+        </div>
         </div>
       </div>
     </div>
