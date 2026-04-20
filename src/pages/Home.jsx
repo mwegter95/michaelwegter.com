@@ -187,7 +187,8 @@ export default function Home() {
                 }} />
               </div>
 
-              <Link to="/experience" className="btn btn-outline" style={{ alignSelf: 'flex-start', fontSize: '13px' }}>
+              <Link to="/experience" className="btn btn-outline" style={{ alignSelf: 'flex-start', fontSize: '13px' }}
+                    onClick={() => window.scrollTo(0, 0)}>
                 View Experience
               </Link>
             </div>

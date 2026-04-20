@@ -79,7 +79,6 @@ export default function Resume() {
       {/* ── HEADER BAND ─────────────────────────── */}
       <div className="resume-header-band">
         <div className="resume-header-color-block">
-          <span className="resume-section-eyebrow" style={{ color: 'rgba(0,0,0,0.45)' }}>CV</span>
           <h1 className="resume-name">Michael<br />Wegter<span style={{ color: 'rgba(0,0,0,0.3)' }}>.</span></h1>
           <div className="resume-header-tagline">Software Engineer · Twin Cities, MN</div>
         </div>
@@ -218,7 +217,6 @@ export default function Resume() {
 
       {/* ── PRINT / DOWNLOAD CTA ───────────────── */}
       <div className="resume-print-bar">
-        <span className="resume-section-eyebrow" style={{ color: 'var(--text-muted)' }}>— End of CV —</span>
         <button className="btn btn-ghost resume-print-btn" onClick={() => window.print()}>
           Print / Save PDF
           <svg viewBox="0 0 16 16" width="12" height="12" fill="none">
