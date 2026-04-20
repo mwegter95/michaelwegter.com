@@ -200,7 +200,7 @@ export default function Resume() {
                     <p className="resume-edu-credential" style={{ color: edu.color }}>{edu.credential}</p>
                     {edu.coursework && (
                       <p className="resume-edu-coursework">
-                        <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Coursework: </span>
+                        <span style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Coursework: </span>
                         {edu.coursework}
                       </p>
                     )}

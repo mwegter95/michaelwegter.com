@@ -395,7 +395,7 @@ export default function MacDesktop({ showAll = false }) {
         </div>
 
         {/* Desktop area + status bar wrapped so mouse moving between them doesn't flicker */}
-        <div onMouseLeave={() => setHovered(null)}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }} onMouseLeave={() => setHovered(null)}>
         <div className="mac-desktop">
           {displayApps.map(app => (
             <DesktopIcon

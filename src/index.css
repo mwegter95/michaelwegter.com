@@ -191,8 +191,9 @@ main { padding-top: var(--nav-height); }
 .nav-dropdown {
   position: absolute;
   top: calc(100% + 10px);
-  left: 0;
+  right: 0;
   min-width: 252px;
+  max-width: 300px;
   background: var(--bg-card);
   border: 1px solid var(--border-default);
   border-radius: 2px;
@@ -229,9 +230,8 @@ main { padding-top: var(--nav-height); }
   font-size: 15px;
   font-weight: 500;
   color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .dropdown-item-desc {
@@ -240,9 +240,8 @@ main { padding-top: var(--nav-height); }
   color: var(--text-muted);
   margin-top: 2px;
   letter-spacing: 0.04em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .dropdown-footer {
