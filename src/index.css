@@ -206,7 +206,6 @@ main { padding-top: var(--nav-height); }
   pointer-events: none;
 }
 
-.nav-item:hover .nav-dropdown,
 .nav-dropdown.open {
   opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto;
 }

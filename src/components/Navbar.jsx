@@ -104,9 +104,6 @@ export default function Navbar() {
             className={`nav-link ${isActive('/resume') ? 'active' : ''}`}
           >
             Résumé
-            <svg viewBox="0 0 12 12" width="11" height="11" fill="none" style={{ color: 'var(--text-muted)' }}>
-              <path d="M2.5 9.5l7-7M4 2.5h5.5v5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
           </Link>
 
         </div>
