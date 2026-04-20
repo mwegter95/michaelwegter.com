@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>michaelwegter.com</title>
+    <script>
+      // GitHub Pages SPA trick: store the full path in sessionStorage,
+      // then redirect to the root so index.html loads, which restores it.
+      sessionStorage.setItem('spa-redirect', location.pathname + location.search + location.hash);
+      window.location.replace('/');
+    </script>
+  </head>
+  <body></body>
+</html>

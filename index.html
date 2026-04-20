@@ -3,6 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- GitHub Pages SPA: restore path encoded by 404.html -->
+    <script>
+      (function(){
+        var r = sessionStorage.getItem('spa-redirect');
+        if (r) { sessionStorage.removeItem('spa-redirect'); window.history.replaceState(null,null,r); }
+      })();
+    </script>
     <meta name="description" content="Michael Wegter — Software Engineer &amp; Creative Developer. Building useful tools at the intersection of code and creativity." />
     <meta name="theme-color" content="#080809" />
     <meta property="og:title" content="Michael Wegter" />
