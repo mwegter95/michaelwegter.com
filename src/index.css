@@ -621,7 +621,8 @@ main { padding-top: var(--nav-height); }
   flex-shrink: 0;
 }
 .mac-status-desc {
-  opacity: 0.8;
+  color: #111;
+  font-weight: 400;
   white-space: normal;
   word-break: break-word;
   font-size: 14px;
