@@ -181,7 +181,6 @@ main { padding-top: var(--nav-height); }
   transition: transform 0.2s, color 0.2s;
 }
 
-.nav-item:hover .nav-link-arrow,
 .nav-link.open .nav-link-arrow {
   transform: rotate(180deg);
   color: var(--mustard);
