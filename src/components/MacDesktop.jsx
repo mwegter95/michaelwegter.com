@@ -376,12 +376,8 @@ export default function MacDesktop({ showAll = false }) {
   const time = useClockTime()
   const displayApps = showAll ? apps : apps.slice(0, 4)
 
-  // Compute wrapper height so the whole Mac body (bottom) expands to fit all app rows
-  const numRows = Math.ceil(displayApps.length / 2)
-  const paddingBottom = `${(showAll ? 130 : 115) + numRows * 35}%`
-
   return (
-    <div className={`mac-wrapper${showAll ? ' mac-wrapper--expanded' : ''}`} style={{ paddingBottom }}>
+    <div className={`mac-wrapper${showAll ? ' mac-wrapper--expanded' : ''}`}>
       {/* The SVG Mac body */}
       <MacSVG />
 

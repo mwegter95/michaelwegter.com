@@ -443,11 +443,10 @@ main { padding-top: var(--nav-height); }
 }
 .mac-svg {
   display: block;
-  position: absolute;
-  inset: 0;
   width: 100%;
-  height: 100%;
+  height: auto;
 }
+/* Expanded — same natural ratio as featured on desktop; only mobile forces a taller height (below) */
 
 /* Screen overlay — % matches SVG viewBox (-28 0 680 760)
    Screen glass: x=100, y=90, w=336, h=254
@@ -1038,6 +1037,16 @@ main { padding-top: var(--nav-height); }
   .mac-icon-label { font-size: 11px; max-width: 72px; min-height: 2.6em; }
   /* Hide description bar in featured (non-expanded) Mac on mobile */
   .mac-wrapper:not(.mac-wrapper--expanded) .mac-status-bar { display: none; }
+  /* Expanded Mac on mobile — force taller so all icons fit in screen area */
+  .mac-wrapper--expanded {
+    padding-bottom: 145%;
+  }
+  .mac-wrapper--expanded .mac-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 /* ── AppFrame: full-viewport iframe shell ───────────────────────────────── */
