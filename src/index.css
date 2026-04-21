@@ -493,16 +493,26 @@ main { padding-top: var(--nav-height); }
   font-size: 13px;
 }
 
+/* Desktop area + status bar container */
+.mac-screen-inner {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
 /* Desktop area */
 .mac-desktop {
-  flex: 1;
+  width: 100%;
+  height: 100%;
   background: #1a2830;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: auto;
   align-content: center;
-  padding: 6px;
+  padding: 6px 6px 18% 6px; /* bottom padding reserves space so icons don't hide behind status bar */
   gap: 3px;
+  box-sizing: border-box;
 }
 
 /* Expanded Mac — padding-bottom is set via inline style in MacDesktop based on row count */
@@ -575,9 +585,12 @@ main { padding-top: var(--nav-height); }
   word-break: break-word;
 }
 
-/* Status bar */
+/* Status bar — absolutely positioned so it never causes layout shift */
 .mac-status-bar {
-  flex: 0 0 auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   min-height: 14%;
   max-height: 28%;
   background: #c8c5b8;
@@ -1029,19 +1042,17 @@ main { padding-top: var(--nav-height); }
   .mac-menu-apple { font-size: 12px; margin-right: 0; }
   .mac-menu-item { padding: 0 1px; }
   .mac-menu-time { font-size: 8px; }
-  /* Featured mac desktop on mobile: show only first 2 icons, scaled smaller */
-  .mac-desktop .mac-icon:nth-child(n+3) { display: none; }
-  .mac-wrapper--expanded .mac-desktop .mac-icon { display: flex; }
+  /* Mac: show all 3 icons on mobile (both featured and expanded), scaled smaller */
   .mac-icon-img { width: 44px; height: 44px; }
   .mac-icon-glyph { font-size: 20px; }
   .mac-icon-label { font-size: 11px; max-width: 72px; min-height: 2.6em; }
   /* Hide description bar in featured (non-expanded) Mac on mobile */
   .mac-wrapper:not(.mac-wrapper--expanded) .mac-status-bar { display: none; }
-  /* Expanded Mac on mobile — force taller so all icons fit in screen area */
-  .mac-wrapper--expanded {
+  /* Both featured and expanded Mac on mobile — force taller so 2 rows of icons fit */
+  .mac-wrapper {
     padding-bottom: 180%;
   }
-  .mac-wrapper--expanded .mac-svg {
+  .mac-wrapper .mac-svg {
     position: absolute;
     inset: 0;
     width: 100%;

@@ -404,7 +404,7 @@ export default function MacDesktop({ showAll = false }) {
         </div>
 
         {/* Desktop area + status bar */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+        <div className="mac-screen-inner" onMouseLeave={handleLeave}>
         <div className="mac-desktop">
           {displayApps.map(app => (
             <DesktopIcon
@@ -412,7 +412,7 @@ export default function MacDesktop({ showAll = false }) {
               app={app}
               isSelected={hovered?.id === app.id}
               onEnter={() => handleEnter(app)}
-              onLeave={handleLeave}
+              onLeave={() => {}}
             />
           ))}
         </div>
