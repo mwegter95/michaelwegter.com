@@ -639,12 +639,12 @@ main { padding-top: var(--nav-height); }
   font-size: 16px;
 }
 .mac-status-hint {
-  flex: 1 1 100%;
-  font-size: 12px;
+  display: inline;
+  font-size: 8px;
   font-family: 'Courier New', monospace;
   color: #1a7a3a;
   font-style: italic;
-  margin-top: 1px;
+  white-space: nowrap;
 }
 .mac-status-dot {
   width: 6px;

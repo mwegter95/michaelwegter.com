@@ -456,8 +456,10 @@ export default function MacDesktop({ showAll = false }) {
                   <span className="mac-status-title">{activeApp.title}</span>
                   {activeApp.status === 'live' && <span className="mac-status-dot mac-status-dot--live" />}
                   {activeApp.status === 'beta' && <span className="mac-status-dot mac-status-dot--beta" />}
-                  <span className="mac-status-desc">{activeApp.description}</span>
-                  {tapped && !hovered && <span className="mac-status-hint">Tap again to open →</span>}
+                  <span className="mac-status-desc">
+                    {activeApp.description}
+                    {tapped && !hovered && <span className="mac-status-hint"> · Tap again to open →</span>}
+                  </span>
                 </>
               ) : (
                 <span className="mac-status-idle">
