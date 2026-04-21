@@ -578,8 +578,9 @@ main { padding-top: var(--nav-height); }
 /* Status bar */
 .mac-status-bar {
   flex: 0 0 auto;
+  height: 14%;
   min-height: 14%;
-  max-height: 28%;
+  max-height: 14%;
   background: #c8c5b8;
   border-top: 1px solid #aaa9a0;
   display: flex;

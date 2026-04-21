@@ -16,7 +16,7 @@
  *   width: 336/680 = 49.41%, height: 254/760 = 33.42%
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { apps } from '../data/apps'
 
@@ -373,8 +373,17 @@ function DesktopIcon({ app, isSelected, onEnter, onLeave }) {
 // ── MacDesktop component ──────────────────────────────────────────────
 export default function MacDesktop({ showAll = false }) {
   const [hovered, setHovered] = useState(null)
+  const clearTimer = useRef(null)
   const time = useClockTime()
   const displayApps = showAll ? apps : apps.slice(0, 4)
+
+  const handleEnter = (app) => {
+    if (clearTimer.current) clearTimeout(clearTimer.current)
+    setHovered(app)
+  }
+  const handleLeave = () => {
+    clearTimer.current = setTimeout(() => setHovered(null), 80)
+  }
 
   return (
     <div className={`mac-wrapper${showAll ? ' mac-wrapper--expanded' : ''}`}>
@@ -394,16 +403,16 @@ export default function MacDesktop({ showAll = false }) {
           <span className="mac-menu-time">{time}</span>
         </div>
 
-        {/* Desktop area + status bar wrapped so mouse moving between them doesn't flicker */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }} onMouseLeave={() => setHovered(null)}>
+        {/* Desktop area + status bar */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
         <div className="mac-desktop">
           {displayApps.map(app => (
             <DesktopIcon
               key={app.id}
               app={app}
               isSelected={hovered?.id === app.id}
-              onEnter={() => setHovered(app)}
-              onLeave={() => {}}
+              onEnter={() => handleEnter(app)}
+              onLeave={handleLeave}
             />
           ))}
         </div>
