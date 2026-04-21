@@ -1039,7 +1039,7 @@ main { padding-top: var(--nav-height); }
   .mac-wrapper:not(.mac-wrapper--expanded) .mac-status-bar { display: none; }
   /* Expanded Mac on mobile — force taller so all icons fit in screen area */
   .mac-wrapper--expanded {
-    padding-bottom: 145%;
+    padding-bottom: 180%;
   }
   .mac-wrapper--expanded .mac-svg {
     position: absolute;
