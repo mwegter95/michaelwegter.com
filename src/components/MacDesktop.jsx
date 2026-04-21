@@ -33,14 +33,14 @@ function useClockTime() {
 
 // ── SVG sub-components ────────────────────────────────────────────────
 
-function MacSVG({ expanded = false }) {
+function MacSVG() {
   return (
     <svg
       viewBox="-28 0 680 760"
       xmlns="http://www.w3.org/2000/svg"
       className="mac-svg"
       aria-hidden="true"
-      preserveAspectRatio={expanded ? 'none' : undefined}
+      preserveAspectRatio="none"
     >
       <defs>
         {/* Front face gradient — brightest on left, slightly darker right */}
@@ -376,10 +376,14 @@ export default function MacDesktop({ showAll = false }) {
   const time = useClockTime()
   const displayApps = showAll ? apps : apps.slice(0, 4)
 
+  // Compute wrapper height so the whole Mac body (bottom) expands to fit all app rows
+  const numRows = Math.ceil(displayApps.length / 2)
+  const paddingBottom = `${(showAll ? 130 : 115) + numRows * 25}%`
+
   return (
-    <div className={`mac-wrapper${showAll ? ' mac-wrapper--expanded' : ''}`}>
+    <div className={`mac-wrapper${showAll ? ' mac-wrapper--expanded' : ''}`} style={{ paddingBottom }}>
       {/* The SVG Mac body */}
-      <MacSVG expanded={showAll} />
+      <MacSVG />
 
       {/* HTML screen overlay — positioned over the glass */}
       <div className="mac-screen-overlay">
