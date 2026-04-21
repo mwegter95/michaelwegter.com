@@ -7,10 +7,14 @@
 // to point the iframe at localhost:5173 instead of the deployed GitHub Pages URL.
 // VITE_SEO_URL overrides the SEO analyzer iframe src — set by `npm run dev:local`
 // to point the iframe at localhost:5015 (seo-analyzer-app local dev server).
+// VITE_SPOTIFY_URL overrides the Spotify Super User Tools iframe src for local dev.
 const GALLERY_URL = import.meta.env.VITE_GALLERY_URL || "https://mwegter95.github.io/gallery-wall-planner/"
 const SEO_URL =
   import.meta.env.VITE_SEO_URL ||
   "https://mwegter95.github.io/free-seo-analyzer-with-js-rendering/";
+const SPOTIFY_URL =
+  import.meta.env.VITE_SPOTIFY_URL ||
+  "https://api.michaelwegter.com/spotify/";
 
 export const apps = [
   {
@@ -38,5 +42,18 @@ export const apps = [
     color: "#12b4c8", // cyan
     icon: "📊",
     frameStyle: "walnut",
+  },
+  {
+    id: 3,
+    slug: "spotify-tools",
+    title: "Spotify Super User Tools",
+    description:
+      "Power tools for Spotify: extract playlist track lists, build playlists from a song list, and create clean (non-explicit) versions of any playlist.",
+    category: "Music",
+    status: "live",
+    href: SPOTIFY_URL,
+    color: "#1DB954", // Spotify green
+    icon: "🎵",
+    frameStyle: "baroque",
   },
 ];
