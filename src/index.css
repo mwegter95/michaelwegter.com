@@ -500,7 +500,8 @@ main { padding-top: var(--nav-height); }
   background: #1a2830;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-auto-rows: 1fr;
+  grid-auto-rows: auto;
+  align-content: center;
   padding: 6px;
   gap: 3px;
 }
