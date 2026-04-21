@@ -638,6 +638,14 @@ main { padding-top: var(--nav-height); }
   font-style: italic;
   font-size: 16px;
 }
+.mac-status-hint {
+  flex: 1 1 100%;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  color: #1a7a3a;
+  font-style: italic;
+  margin-top: 1px;
+}
 .mac-status-dot {
   width: 6px;
   height: 6px;
@@ -1046,11 +1054,9 @@ main { padding-top: var(--nav-height); }
   .mac-icon-img { width: 44px; height: 44px; }
   .mac-icon-glyph { font-size: 20px; }
   .mac-icon-label { font-size: 11px; max-width: 72px; min-height: 2.6em; }
-  /* Hide description bar in featured (non-expanded) Mac on mobile */
-  .mac-wrapper:not(.mac-wrapper--expanded) .mac-status-bar { display: none; }
-  /* Both featured and expanded Mac on mobile — force taller so 2 rows of icons fit */
+  /* Both mac wrappers on mobile — force taller so 2 rows + status bar fit */
   .mac-wrapper {
-    padding-bottom: 180%;
+    padding-bottom: 230%;
   }
   .mac-wrapper .mac-svg {
     position: absolute;

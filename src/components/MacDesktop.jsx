@@ -17,7 +17,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { apps } from '../data/apps'
 
 function useClockTime() {
@@ -322,9 +322,15 @@ function MacSVG() {
 }
 
 // ── Desktop icon component ────────────────────────────────────────────
-function DesktopIcon({ app, isSelected, onEnter, onLeave }) {
+function DesktopIcon({ app, isSelected, onEnter, onLeave, onTouchTap }) {
   const isDisabled = app.status === 'soon' || app.href === '#'
   const hasSlug    = Boolean(app.slug) && !isDisabled
+
+  const handleTouchEnd = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    onTouchTap?.()
+  }
 
   const sharedProps = {
     className: `mac-icon ${isSelected ? 'mac-icon--selected' : ''} ${isDisabled ? 'mac-icon--disabled' : ''}`,
@@ -332,6 +338,7 @@ function DesktopIcon({ app, isSelected, onEnter, onLeave }) {
     onMouseLeave: onLeave,
     onFocus: onEnter,
     onBlur: onLeave,
+    onTouchEnd: handleTouchEnd,
     style: { '--icon-color': app.color },
   }
 
@@ -373,9 +380,11 @@ function DesktopIcon({ app, isSelected, onEnter, onLeave }) {
 // ── MacDesktop component ──────────────────────────────────────────────
 export default function MacDesktop({ showAll = false }) {
   const [hovered, setHovered] = useState(null)
+  const [tapped, setTapped]   = useState(null)  // { app, time } — mobile tap state
   const clearTimer = useRef(null)
   const time = useClockTime()
   const displayApps = showAll ? apps : apps.slice(0, 4)
+  const navigate = useNavigate()
 
   const handleEnter = (app) => {
     if (clearTimer.current) clearTimeout(clearTimer.current)
@@ -383,6 +392,24 @@ export default function MacDesktop({ showAll = false }) {
   }
   const handleLeave = () => {
     clearTimer.current = setTimeout(() => setHovered(null), 80)
+  }
+
+  const doOpen = (app) => {
+    if (app.status === 'soon' || app.href === '#') return
+    if (app.slug) navigate(`/apps/${app.slug}`)
+    else window.open(app.href, '_blank', 'noopener,noreferrer')
+  }
+
+  const handleTouchTap = (app) => {
+    const now = Date.now()
+    // Double-tap or second tap on same app → open
+    if (tapped?.app?.id === app.id) {
+      doOpen(app)
+      setTapped(null)
+      return
+    }
+    // First tap → show description
+    setTapped({ app, time: now })
   }
 
   return (
@@ -404,35 +431,42 @@ export default function MacDesktop({ showAll = false }) {
         </div>
 
         {/* Desktop area + status bar */}
-        <div className="mac-screen-inner" onMouseLeave={handleLeave}>
+        <div className="mac-screen-inner" onMouseLeave={handleLeave} onTouchEnd={() => setTapped(null)}>
         <div className="mac-desktop">
           {displayApps.map(app => (
             <DesktopIcon
               key={app.id}
               app={app}
-              isSelected={hovered?.id === app.id}
+              isSelected={hovered?.id === app.id || tapped?.app?.id === app.id}
               onEnter={() => handleEnter(app)}
               onLeave={() => {}}
+              onTouchTap={() => handleTouchTap(app)}
             />
           ))}
         </div>
 
-        {/* Status / info bar — shows description on hover */}
-        <div className={`mac-status-bar ${hovered ? 'mac-status-bar--active' : ''}`}>
-          {hovered ? (
-            <>
-              <span className="mac-status-tag">{hovered.category}</span>
-              <span className="mac-status-title">{hovered.title}</span>
-              {hovered.status === 'live' && <span className="mac-status-dot mac-status-dot--live" />}
-              {hovered.status === 'beta' && <span className="mac-status-dot mac-status-dot--beta" />}
-              <span className="mac-status-desc">{hovered.description}</span>
-            </>
-          ) : (
-            <span className="mac-status-idle">
-              {displayApps.length} items · MW Desktop
-            </span>
-          )}
-        </div>
+        {/* Status / info bar — shows description on hover (desktop) or tap (mobile) */}
+        {(() => {
+          const activeApp = hovered ?? tapped?.app
+          return (
+            <div className={`mac-status-bar ${activeApp ? 'mac-status-bar--active' : ''}`}>
+              {activeApp ? (
+                <>
+                  <span className="mac-status-tag">{activeApp.category}</span>
+                  <span className="mac-status-title">{activeApp.title}</span>
+                  {activeApp.status === 'live' && <span className="mac-status-dot mac-status-dot--live" />}
+                  {activeApp.status === 'beta' && <span className="mac-status-dot mac-status-dot--beta" />}
+                  <span className="mac-status-desc">{activeApp.description}</span>
+                  {tapped && !hovered && <span className="mac-status-hint">Tap again to open →</span>}
+                </>
+              ) : (
+                <span className="mac-status-idle">
+                  {displayApps.length} items · MW Desktop
+                </span>
+              )}
+            </div>
+          )
+        })()}
         </div>
       </div>
     </div>

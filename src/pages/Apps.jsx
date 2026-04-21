@@ -2,8 +2,8 @@ import MacDesktop from '../components/MacDesktop'
 
 export default function Apps() {
   return (
-    <section className="mac-section mac-section-full">
-      <div className="container" style={{ paddingTop: '16px', paddingBottom: '48px' }}>
+    <section className="mac-section mac-section-full" style={{ paddingTop: '0' }}>
+      <div className="container" style={{ paddingTop: '12px', paddingBottom: '48px' }}>
         <div style={{ marginBottom: '40px' }}>
           <span className="label" style={{ display: 'block', marginBottom: '12px' }}>Projects &amp; Tools</span>
           <h1 style={{
