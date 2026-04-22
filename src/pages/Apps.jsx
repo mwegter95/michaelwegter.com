@@ -4,9 +4,9 @@ import AppReadme from '../components/AppReadme'
 export default function Apps() {
   return (
     <>
-      <section className="mac-section mac-section-full" style={{ paddingTop: '0' }}>
-        <div className="container" style={{ paddingTop: '12px', paddingBottom: '48px' }}>
-          <div style={{ marginBottom: '40px' }}>
+      <section className="mac-section mac-section-full" style={{ paddingTop: '72px', paddingBottom: '0' }}>
+        <div className="container" style={{ paddingTop: '0', paddingBottom: '24px' }}>
+          <div style={{ marginBottom: '32px' }}>
             <span className="label" style={{ display: 'block', marginBottom: '12px' }}>Projects &amp; Tools</span>
             <h1 style={{
               fontFamily: 'var(--font-display)',
@@ -23,6 +23,7 @@ export default function Apps() {
               <span className="hint-desktop">Hover over any icon to learn more. Click to open.</span>
               {/* Mobile hint — hidden on non-touch/desktop */}
               <span className="hint-mobile">Tap any icon to learn more. Tap twice to open.</span>
+              {' '}Scroll to the bottom to see app descriptions and screenshots.
             </p>
           </div>
         </div>
@@ -30,7 +31,7 @@ export default function Apps() {
       </section>
 
       {/* ── App deep-dives ───────────────────────── */}
-      <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 'var(--section-pad)' }}>
+      <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '20px' }}>
         <AppReadme />
       </div>
     </>

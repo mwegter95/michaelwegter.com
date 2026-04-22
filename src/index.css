@@ -1993,7 +1993,7 @@ main { padding-top: var(--nav-height); }
 }
 .app-readme-intro {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 48px;
   margin-bottom: 56px;
@@ -2191,34 +2191,47 @@ main { padding-top: var(--nav-height); }
 }
 
 /* Screenshot placeholders */
-.app-screenshot { display: flex; flex-direction: column; gap: 10px; }
+.app-screenshot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+}
 .app-screenshot-frame {
   position: relative;
   width: 100%;
   background: var(--bg-card);
-  border: 1px dashed color-mix(in srgb, var(--shot-color, var(--accent)) 40%, transparent);
+  border: 1px solid color-mix(in srgb, var(--shot-color, var(--accent)) 25%, transparent);
   overflow: hidden;
+  border-radius: 8px;
 }
-.app-screenshot-inner {
+.app-screenshot-media {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 20px;
-  text-align: center;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.25s ease;
 }
-.app-screenshot-icon { font-size: 28px; opacity: 0.5; }
-.app-screenshot-alttext {
-  font-size: 11px;
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-  line-height: 1.6;
-  max-width: 380px;
-  font-style: italic;
+.app-screenshot:hover .app-screenshot-media {
+  transform: scale(1.015);
 }
+.app-screenshot-expand-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  border-radius: 5px;
+  padding: 3px 7px;
+  font-size: 13px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+.app-screenshot:hover .app-screenshot-expand-hint { opacity: 1; }
 .app-screenshot-caption {
   font-size: 12px;
   font-family: var(--font-mono);
@@ -2227,9 +2240,68 @@ main { padding-top: var(--nav-height); }
   padding-left: 2px;
 }
 
+/* ── Lightbox ─────────────────────────────────────────── */
+.lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: lightbox-fade-in 0.18s ease;
+}
+@keyframes lightbox-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.lightbox-close {
+  position: fixed;
+  top: 16px;
+  right: 18px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 18px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  z-index: 10000;
+}
+.lightbox-close:hover { background: rgba(255, 255, 255, 0.22); }
+.lightbox-inner {
+  max-width: min(92vw, 1280px);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.lightbox-media {
+  max-width: 100%;
+  max-height: calc(90vh - 56px);
+  border-radius: 8px;
+  display: block;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
+}
+.lightbox-caption {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+  text-align: center;
+  margin: 0;
+}
+
 /* ── Responsive: App Readme ──────────────────── */
 @media (max-width: 900px) {
-  .app-readme-intro { flex-direction: column; gap: 32px; }
+  .app-readme-intro { flex-direction: column; gap: 16px; }
   .app-readme-toc { flex-direction: row; flex-wrap: wrap; }
   .app-toc-pill { flex: 1 1 200px; }
   .app-detail-prose-col { grid-template-columns: 1fr; }

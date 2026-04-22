@@ -1,128 +1,189 @@
+import { useState, useEffect, useCallback } from 'react'
 import { apps } from '../data/apps'
 
 /* ─────────────────────────────────────────────────────────
-   Deep-dive copy and screenshot specs for each app.
-   Screenshots are placeholders — replace src with real images.
+   Media + copy data for each app.
 ──────────────────────────────────────────────────────────── */
 const details = {
   'gallery-wall': {
-    tagline: 'Plan gallery walls to scale — before driving a single nail.',
+    tagline: 'Plan your gallery wall layout to the inch — before you hang a single piece.',
     paragraphs: [
-      "Planning a gallery wall usually means a lot of eyeballing, tape-measure squinting, and at least one round of nail-hole spackling. Gallery Wall Planner replaces all of that with a to-scale digital canvas that mirrors your exact wall dimensions. You measure your wall and pieces once, enter the numbers, and from there it's pure drag-and-drop.",
-      'Every element is calibrated to real-world inches. Pieces stay in proportion to the wall; rulers mark feet and inches along every edge; a snap-to-grid keeps everything aligned. When you find an arrangement you like, save it as a named layout — compare multiple side-by-side any time. Your piece library travels with you too: add an art piece once and reuse it across every wall.',
-      "The perspective-calibration tool lets you photograph your actual wall and warp the photo into a true-to-life backdrop, so the preview on screen closely matches what you'll see on the wall.",
+      "Gallery Wall Planner is a free online gallery wall planner that replaces guesswork with precision. Planning a gallery wall usually means tape-measure squinting and at least one round of nail-hole spackling. This gallery wall layout tool gives you a scale-accurate digital canvas that mirrors your exact wall dimensions — measure your wall and pieces once, enter the numbers, and arrange your gallery wall before committing to a single hole.",
+      "Every element is calibrated to real-world inches, so you can design a gallery wall that translates directly to the physical wall. A foot-and-inch ruler runs along every edge; snap-to-grid keeps your picture arrangement tight. Save named gallery wall layouts and flip between multiple designs side-by-side. Your piece library persists — add any frame or art piece once and reuse it across every wall you plan.",
+      "The perspective-calibration tool lets you photograph your actual wall and warp the photo into a true-to-life backdrop, giving you a realistic preview of exactly how your gallery wall will look before you pick up a hammer. It's the closest thing to a gallery wall simulator you can run in a browser.",
     ],
     features: [
-      'Drag, resize, and stack art pieces on a scale-accurate wall canvas',
+      'Free online gallery wall planner with a fully scale-accurate canvas',
+      'Drag-and-drop gallery wall layout — arrange frames and art in real-time',
       'Upload a room photo and calibrate its perspective as a live backdrop',
-      'Foot-and-inch rulers with toggleable snap-to-grid for precise placement',
-      'Piece library — save any piece once, reuse it across all your walls',
-      'Named layouts — save and reload multiple arrangements any time',
-      'Undo history, piece locking, and layering controls (bring forward / send back)',
-      'Session restore — your last layout reloads automatically after login or page refresh',
+      'Foot-and-inch rulers with snap-to-grid for precise picture placement',
+      'Piece library — save any frame or art piece once, reuse it across all your walls',
+      'Named layouts — save and compare multiple gallery wall designs any time',
+      'Session restore — your last gallery wall layout reloads automatically',
     ],
     screenshots: [
       {
-        alt: 'Main wall canvas with several framed art pieces arranged across a beige wall surface. Foot-and-inch rulers run along the top and left edges. The Pieces sidebar is open on the right showing a list of each piece with its dimensions.',
+        src: '/screenshots/gallery_wall_planner_drag_and_drop_main_demo.mp4',
+        type: 'video',
+        alt: 'Screen recording of the Gallery Wall Planner canvas — a user drags and repositions framed art pieces across a scale-accurate wall canvas. Foot-and-inch rulers run along the top and left edges, and the Pieces sidebar is visible on the right.',
         caption: 'The main canvas — drag, resize, and layer pieces freely',
         aspect: 16 / 9,
         wide: true,
       },
       {
-        alt: 'Wall calibration tool showing a living room photo with a perspective-correction overlay. Four corner handles let the user align the photo to the real wall shape.',
-        caption: 'Perspective calibration — wrap a real photo around your wall dimensions',
+        src: '/screenshots/gallery_wall_planner_wall_warp_perspective.png',
+        type: 'image',
+        alt: "Gallery Wall Planner perspective calibration screen titled 'Calibrate — Bedroom East Wall 2'. A real photo of a sage-green bedroom wall with a white dresser and lamp is overlaid with a dotted quadrilateral and four colored corner handles. Wall dimensions are set to 128 × 95 inches.",
+        caption: 'Perspective calibration — align four handles to your actual wall corners',
+        aspect: 4 / 3,
+      },
+      {
+        src: '/screenshots/gallery_wall_planner_switch_layouts_compare.mp4',
+        type: 'video',
+        alt: 'Screen recording of the Layouts tab in Gallery Wall Planner — a user saves the current arrangement under a name, then loads a different saved layout, instantly swapping all pieces on the canvas to compare two gallery wall designs.',
+        caption: 'Saved layouts — switch between arrangements in one click',
         aspect: 16 / 9,
       },
       {
-        alt: 'The Layouts tab in the sidebar listing three saved layouts — "Living Room", "Bedroom Wall", "Staircase" — each with a piece count, a Load button, and a delete icon.',
-        caption: 'Saved layouts — switch between arrangements in one click',
-        aspect: 4 / 3,
-      },
-      {
-        alt: 'The Library tab showing a grid of saved piece thumbnails. Each card shows the piece photo, name, and dimensions, with a green "+ Add" button to place it on the current wall.',
+        src: '/screenshots/gallery_wall_planner_piece_library_demo.mp4',
+        type: 'video',
+        alt: 'Screen recording of the Piece Library tab in Gallery Wall Planner — a user browses saved piece thumbnails with names and dimensions, then clicks the green "+ Add" button to place a piece from the library onto the current wall canvas.',
         caption: 'Piece library — your collection persists across every wall',
-        aspect: 4 / 3,
+        aspect: 16 / 9,
       },
     ],
   },
 
   'seo-analyzer': {
-    tagline: 'SEO audits that see what search engines actually see — JavaScript rendered.',
+    tagline: 'Free SEO audit tool that analyzes pages the way search engines actually see them.',
     paragraphs: [
-      'Most SEO tools scrape raw HTML off the wire and call it done. That worked in 2010. Today, a huge share of web content is injected by JavaScript after the initial page load — and those tools miss all of it. The SEO Analyzer runs every URL through a headless browser, so it sees the fully-rendered DOM exactly as Googlebot does after JS executes.',
-      'Once the page is rendered, the analyzer scores it across 30+ factors covering technical infrastructure (HTTPS, canonical tags, hreflang, robots directives), content quality (title and meta description length, heading structure, image alt text), and performance signals. Results are organized by category with numeric scores, severity flags, and plain-English explanations for each issue — so you know exactly what to fix and why.',
+      "Most free SEO checkers scrape raw HTML off the wire and call it done. That worked in 2010. Today, a huge share of web content is injected by JavaScript after the page loads — and those tools miss all of it. This SEO audit tool runs every URL through a headless browser, so it performs a complete on-page SEO analysis on the rendered DOM exactly as Googlebot sees it after JS executes. It's the difference between checking your site's source code and checking what actually loads.",
+      "Once the page is rendered, the website SEO checker scores it across 30+ factors: technical SEO (HTTPS, canonical tags, hreflang, robots directives), on-page SEO (title tag and meta description length, heading structure, keyword usage, image alt text), and core performance signals. Every factor gets a numeric score, a pass/warn/fail flag, and a plain-English explanation of what to fix and why. Run a free SEO analysis on any public URL — no account, no extension, no installation.",
     ],
     features: [
-      'Headless-browser rendering — JS-injected content is fully visible to the analyzer',
-      '30+ scored factors across technical, content, and performance categories',
-      'Clear pass / warn / fail flags with actionable fix-it explanations',
-      'Works on any public URL — no account, no plugin, no installation required',
-      'Scores organized by category so you can triage and prioritize at a glance',
+      'Free SEO audit tool — analyze any public URL instantly, no login required',
+      'Headless-browser rendering catches JS-injected content most SEO checkers miss',
+      '30+ on-page SEO factors scored across technical, content, and performance',
+      'Pass / warn / fail flags with plain-English explanations for every issue',
+      'Free website SEO checker — no account, no plugin, no installation',
+      'Category breakdown so you can triage technical SEO issues at a glance',
     ],
     screenshots: [
       {
-        alt: 'The main input field with a URL typed in and a large "Analyze" button below it. The page background is dark with the tool title at the top.',
-        caption: 'Paste any public URL to kick off the audit',
+        src: '/screenshots/seo_analyzer_app_homepage.png',
+        type: 'image',
+        alt: "SEO Analyzer home screen on a dark background. The title reads 'SEO Analyzer' with the subtitle 'Full-site SEO analysis with JavaScript rendering — crawls all pages'. A URL input field contains 'fortherecordmn.com' with a purple Scan button to the right. Home and Previous Scans tabs are visible.",
+        caption: 'Paste any public URL to kick off a full SEO audit',
         aspect: 16 / 9,
         wide: true,
       },
       {
-        alt: 'Audit results dashboard showing an overall score of 78/100 as a large number. Below it, category cards show sub-scores for Technical, Content, and Performance.',
-        caption: 'Overall score and category breakdown in one view',
+        src: '/screenshots/seo_analyzer_app_view_analysis.mp4',
+        type: 'video',
+        alt: 'Screen recording of the SEO Analyzer scrolling through a complete audit report — individual factor rows expand to reveal numeric scores, pass/warn/fix flags, actionable explanations, and the specific page elements that triggered each check.',
+        caption: 'Every factor scores itself and tells you exactly what to fix',
         aspect: 16 / 9,
       },
       {
-        alt: 'A detailed factor row showing "Missing image alt text" marked as WARN. Below the flag are the specific images that triggered it and a paragraph explaining why alt text matters for both SEO and accessibility.',
-        caption: 'Every factor explains itself and tells you exactly how to fix it',
-        aspect: 16 / 9,
+        src: '/screenshots/seo_analyzer_app_view_issues.png',
+        type: 'image',
+        alt: "SEO Analyzer results panel for fortherecordmn.com/about. A large green circle shows 94% (16 of 17 checks passed, Status 200, 593 words). Title Tag and Meta Description rows show PASS. The Keywords & Content row shows FIX and is expanded to reveal readability scores, primary keyword 'audio' flagged as absent from title, meta, H1, and URL, plus a top-keywords frequency table.",
+        caption: 'Factor detail — drill into any check to see exactly what needs fixing',
+        aspect: 4 / 3,
       },
     ],
   },
 
   'spotify-tools': {
-    tagline: "Power features Spotify should ship but hasn't — for listeners who live in their library.",
+    tagline: 'Export Spotify playlists, build from a track list, and auto-generate clean versions.',
     paragraphs: [
-      "Spotify's apps are beautifully polished but weirdly limited the moment you try to manage your library at scale. You can't export a playlist, you can't bulk-build one from a text list, and there's no native way to create a clean version of your favorite playlist for a car ride or kids' room. This tool fills all three gaps.",
-      'The track extractor pulls every song from any playlist into a clean, copyable list — perfect for backups, sharing outside Spotify, or importing into another tool. The playlist builder does the reverse: paste in "Artist — Song" lines and it finds and queues each track, building playlists from anywhere in seconds. The clean playlist builder scans any playlist for explicit tracks and creates a parallel clean version, automatically swapping each one for its censored equivalent wherever Spotify offers one.',
+      "Spotify is polished but surprisingly limited the moment you try to manage your library at scale. You can't export a Spotify playlist to a text file, you can't bulk-build one from a list of songs, and there's no native way to create a clean version of a playlist for the car or the kids' room. Spotify Super User Tools fills all three gaps in one place.",
+      "The Spotify playlist exporter pulls every track from any playlist into a clean, copyable song list — perfect for backups, sharing with friends outside the app, or importing into another tool. The playlist builder does the reverse: paste in a list of songs as \"Artist — Track\" lines and it finds and queues each one, so you can create a Spotify playlist from a text list in seconds. The clean playlist maker scans any playlist for explicit songs and automatically generates a non-explicit Spotify playlist, swapping each track for its clean version wherever Spotify offers one.",
     ],
     features: [
-      'Extract any playlist as a clean, copyable track list — perfect for backups or sharing',
-      'Build a new Spotify playlist from a typed or pasted list of songs',
-      'Create a clean (non-explicit) version of any playlist automatically',
-      'Works with your own playlists and any public playlist you can link to',
-      "Secure Spotify OAuth login — your credentials never touch this server",
+      'Export any Spotify playlist to a text list — perfect for backups and sharing',
+      'Create a Spotify playlist from a text list of songs — paste and build in seconds',
+      'Auto-generate a clean, non-explicit version of any Spotify playlist',
+      'Works with your own playlists and any public Spotify playlist',
+      'Secure Spotify OAuth login — your credentials never touch this server',
     ],
     screenshots: [
       {
-        alt: 'Main tool interface showing three large option cards side-by-side: "Extract Playlist" with a download icon, "Build Playlist" with a list icon, and "Make It Clean" with a sparkle icon.',
-        caption: 'Three tools in one — each one fills a real gap in Spotify',
+        src: '/screenshots/ssut_main_screenshot_playlist_extractor_to_text.png',
+        type: 'image',
+        alt: "Spotify Super User Tools — Playlist Extractor view. A Spotify playlist URL is entered in the input field. Below, a success banner reads 'Successfully extracted 30 tracks!' and shows the playlist 'Birkie Weekend Vibes' with the full track list as plain text: Vagabond - Caamp, Astrovan - Mt. Joy, Stubborn Love - The Lumineers, and more.",
+        caption: 'Playlist Extractor — pulls any playlist into a plain-text track list',
         aspect: 16 / 9,
         wide: true,
       },
       {
-        alt: 'Playlist extraction result: a numbered list of tracks showing artist name and song title. A "Copy all" button sits at the top right.',
-        caption: 'Extracted track list — ready to copy, save, or paste anywhere',
+        src: '/screenshots/ssut_playlist_builder_from_list.png',
+        type: 'image',
+        alt: "Spotify Super User Tools — Playlist Builder view. A textarea contains a pasted list of songs: Can't Help Falling in Love - Tommy Emmanuel, Thinking Out Loud - The Piano Guys, All of Me - Simply Three, A Thousand Years - 2CELLOS, Perfect - Paul Cardall. A green 'Search Songs' button sits below.",
+        caption: 'Playlist Builder — paste a song list, get a Spotify playlist',
         aspect: 16 / 9,
       },
       {
-        alt: 'The clean playlist builder showing two columns: "Original" on the left with explicit tracks highlighted in red, and "Clean version" on the right showing matched replacements. Tracks with no clean equivalent are flagged.',
-        caption: 'Explicit tracks flagged and swapped automatically where possible',
+        src: '/screenshots/ssut_cleanify_song_clean_playlist.png',
+        type: 'image',
+        alt: "Spotify Super User Tools — Cleanify view. Shows 'Connected to Spotify' in green, a Playlist URL or ID input field, and two output mode radio options: 'Whole playlist with cleaned tracks' (selected, includes already-clean tracks plus swapped clean versions) and 'Only cleaned tracks'. A green Cleanify! button is at the bottom.",
+        caption: 'Cleanify — auto-swaps explicit tracks for clean versions',
         aspect: 16 / 9,
       },
     ],
   },
 }
 
-/* ── Screenshot placeholder ─────────────────────────────── */
-function ScreenshotPlaceholder({ shot, color }) {
+/* ── Lightbox ────────────────────────────────────────────── */
+function Lightbox({ item, onClose }) {
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [onClose])
+
+  return (
+    <div className="lightbox-backdrop" onClick={onClose} role="dialog" aria-modal="true">
+      <button className="lightbox-close" onClick={onClose} aria-label="Close">✕</button>
+      <div className="lightbox-inner" onClick={e => e.stopPropagation()}>
+        {item.type === 'video'
+          ? <video
+              src={item.src}
+              autoPlay loop muted playsInline
+              className="lightbox-media"
+            />
+          : <img src={item.src} alt={item.alt} className="lightbox-media" />
+        }
+        {item.caption && <p className="lightbox-caption">{item.caption}</p>}
+      </div>
+    </div>
+  )
+}
+
+/* ── Media item (image or autoplay video) ────────────────── */
+function MediaItem({ shot, color, onOpen }) {
   const paddingTop = `${(1 / shot.aspect) * 100}%`
   return (
-    <figure className="app-screenshot">
+    <figure className="app-screenshot" onClick={() => onOpen(shot)}>
       <div className="app-screenshot-frame" style={{ paddingTop, '--shot-color': color }}>
-        <div className="app-screenshot-inner">
-          <span className="app-screenshot-icon">📷</span>
-          <p className="app-screenshot-alttext">{shot.alt}</p>
-        </div>
+        {shot.type === 'video'
+          ? <video
+              src={shot.src}
+              autoPlay loop muted playsInline
+              className="app-screenshot-media"
+            />
+          : <img
+              src={shot.src}
+              alt={shot.alt}
+              className="app-screenshot-media"
+              loading="lazy"
+            />
+        }
+        <div className="app-screenshot-expand-hint" aria-hidden="true">⤢</div>
       </div>
       <figcaption className="app-screenshot-caption">{shot.caption}</figcaption>
     </figure>
@@ -144,7 +205,7 @@ function FeatureList({ items, color }) {
 }
 
 /* ── Single app deep-dive section ───────────────────────── */
-function AppSection({ app }) {
+function AppSection({ app, onOpenLightbox }) {
   const d = details[app.slug]
   if (!d) return null
   const { tagline, paragraphs, features, screenshots } = d
@@ -197,9 +258,9 @@ function AppSection({ app }) {
         {/* ── Body ─────────────────────────────────── */}
         <div className="app-detail-body">
 
-          {/* Hero screenshot (full width) */}
+          {/* Hero screenshot / video (full width) */}
           <div className="app-detail-hero-shot">
-            <ScreenshotPlaceholder shot={heroShot} color={app.color} />
+            <MediaItem shot={heroShot} color={app.color} onOpen={onOpenLightbox} />
           </div>
 
           {/* Description + Features */}
@@ -223,7 +284,7 @@ function AppSection({ app }) {
           {restShots.length > 0 && (
             <div className="app-detail-shots-grid">
               {restShots.map((shot, i) => (
-                <ScreenshotPlaceholder key={i} shot={shot} color={app.color} />
+                <MediaItem key={i} shot={shot} color={app.color} onOpen={onOpenLightbox} />
               ))}
             </div>
           )}
@@ -236,9 +297,14 @@ function AppSection({ app }) {
 /* ── Main export ─────────────────────────────────────────── */
 export default function AppReadme() {
   const liveApps = apps.filter(a => a.slug && details[a.slug])
+  const [lightboxItem, setLightboxItem] = useState(null)
+  const closeLightbox = useCallback(() => setLightboxItem(null), [])
 
   return (
     <div className="app-readme">
+
+      {/* Lightbox */}
+      {lightboxItem && <Lightbox item={lightboxItem} onClose={closeLightbox} />}
 
       {/* ── Section intro + TOC ────────────────── */}
       <div className="container">
@@ -275,7 +341,7 @@ export default function AppReadme() {
 
       {/* ── App sections ───────────────────────── */}
       {liveApps.map(app => (
-        <AppSection key={app.id} app={app} />
+        <AppSection key={app.id} app={app} onOpenLightbox={setLightboxItem} />
       ))}
     </div>
   )

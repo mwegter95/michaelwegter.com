@@ -56,7 +56,7 @@ export default function Home() {
       </section>
 
       {/* ── FEATURED APPS — Mac Desktop ─────── */}
-      <section id="featured-apps" className="mac-section">
+      <section id="featured-apps" className="mac-section" style={{ paddingBottom: '0' }}>
         <div className="container mac-section-content">
           <div className="mac-section-header">
             <div>
@@ -77,7 +77,7 @@ export default function Home() {
       {/* ── ABOUT — color-blocked gallery panel ──── */}
       <section style={{ borderTop: '1px solid var(--border-subtle)', padding: '0 0 var(--section-pad)' }}>
         <div className="container">
-          <div className="about-grid" style={{ alignItems: 'stretch', gap: '40px', paddingTop: 'var(--section-pad)' }}>
+          <div className="about-grid" style={{ alignItems: 'stretch', gap: '40px', paddingTop: '20px' }}>
 
             {/* Left — bold color block, like a gallery label card */}
             <div style={{
