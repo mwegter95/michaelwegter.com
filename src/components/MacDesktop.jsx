@@ -463,7 +463,8 @@ export default function MacDesktop({ showAll = false }) {
                 </>
               ) : (
                 <span className="mac-status-idle">
-                  {displayApps.length} items · MW Desktop
+                  <span className="hint-desktop">{displayApps.length} items · Hover any icon to learn more · Click to open</span>
+                  <span className="hint-mobile">{displayApps.length} items · Tap any icon to learn more · Tap twice to open</span>
                 </span>
               )}
             </div>
