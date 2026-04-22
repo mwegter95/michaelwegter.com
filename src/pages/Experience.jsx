@@ -114,7 +114,7 @@ export default function Experience() {
           <span className="exp-eyebrow">Software Engineering</span>
           <h1 className="exp-page-title">Experience</h1>
           <p className="exp-page-sub">
-            Two chapters. The full story behind the résumé lines.
+            The full story behind the résumé lines.
           </p>
         </div>
       </div>

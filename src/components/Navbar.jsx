@@ -19,10 +19,11 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // Close mobile menu on route change
+  // Close mobile menu and scroll to top on route change
   useEffect(() => {
     setMobileOpen(false)
     setDropdownOpen(false)
+    window.scrollTo(0, 0)
   }, [location])
 
   const isActive = (path) => location.pathname === path
