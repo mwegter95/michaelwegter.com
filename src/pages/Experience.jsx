@@ -28,7 +28,7 @@ const chapters = [
       },
       {
         heading: 'What It Did',
-        body: `TDAAS was an internal web app just for employee use, and it will never go to production. This was great for morale because we could deploy any time, create hotfixes super quickly, and just code and develop features without so many hoops to jump through. The point of TDAAS was to provide a place for employees to look up data that they could use for testing in their business scenarios and other applications. TDAAS hooked up to the mainframe of the bank in the lower environments, and syndicated data from it and other systems. Then in a web app, it showed the information in helpful tables with search and other features for conditioning the test data so that users could get real lower environment data — faked data for testing — and they could search for and condition data to be exactly what they needed for their tests. This greatly reduced the rate of one-off emails or requests to make data a certain way, because it was easily findable and editable using TDAAS tools.`,
+        body: `TDAAS was an internal web app just for employee use, and it will never go to production. This was great for morale because we could deploy any time, create hotfixes super quickly, and just code and develop features without so many hoops to jump through. The point of TDAAS was to provide a place for employees to look up data that they could use for testing in their business scenarios and other applications. TDAAS hooked up to the mainframe of the bank in the lower environments, and syndicated data from it and other systems. Then in a web app, it showed the information in helpful tables with search and other features for conditioning the test data so that users could get real lower environment data (essentially faked data for testing), and they could search for and condition data to be exactly what they needed for their tests. This greatly reduced the rate of one-off emails or requests to make data a certain way, because it was easily findable and editable using TDAAS tools.`,
       },
       {
         pullQuote: true,
@@ -48,7 +48,7 @@ const chapters = [
       },
       {
         heading: 'The Migration',
-        body: `And it's good I became a SME for the team — not only because I was managing TDAAS as the sole developer and they needed someone to be able to implement and run the app for its many users, but also because of what came next. In 2023 the bank decided to move all of its apps that it could to Azure Cloud instead of an on-prem cloud. So TDAAS was identified as one of the bunch that would go first, since it was a lower environment app and could navigate the changes before some of the outward facing apps got their chance.
+        body: `And it's good I became a SME for the team, not only because I was managing TDAAS as the sole developer and they needed someone to be able to implement and run the app for its many users, but also because of what came next. In 2023 the bank decided to move all of its apps that it could to Azure Cloud instead of an on-prem cloud. So TDAAS was identified as one of the bunch that would go first, since it was a lower environment app and could navigate the changes before some of the outward facing apps got their chance.
 
 Since we were among the first to migrate to Azure, it was a wild world without a lot of examples of what to do. We ran into a lot of hurdles, and sometimes brick walls, but we rolled up our sleeves and got out our track spikes and wrecking balls. I was appointed to be the main representative from TDAAS for the migration, which meant I was point on everything that had to do with it, from figuring out configuration and errors, to large-scale compatibility efforts we had to work through to get TDAAS migrated to Azure. It was a grueling but rewarding effort, and after 6 months of daily work on the migration, we were able to get everything across the finish line. I learned a lot, and I'm thankful for it even though it was a hard project.`,
       },
@@ -71,14 +71,14 @@ Since we were among the first to migrate to Azure, it was a wild world without a
       { value: '100+', unit: '',     label: 'Consultants on contract' },
       { value: '150+', unit: ' pts', label: 'Story points delivered'  },
       { value: '4th',  unit: '',     label: 'Iteration of RHRP'       },
-      { value: 'WON',  unit: ' ✓',   label: 'Contract — April 2026'   },
+      { value: 'WON',  unit: ' ✓',   label: 'Contract, April 2026'    },
     ],
     stack: ['Angular', '.NET / C#', 'PostgreSQL', 'Kafka', 'Docker', 'Podman',
             'GitHub Copilot', 'Azure OpenAI', 'REST APIs', 'Onion Architecture'],
     sections: [
       {
         heading: 'Landing Here',
-        body: `I've luckily landed in another great project with Optum, working on the RHRP 4 project. At Optum, I work with a team of developers in strict Agile and sprints style. It's a large-scale project, with nearly 100 Turnberry consultants working on the contract. We are making an app for military service members and veterans to easily understand and request the healthcare that they need to be ready for their next steps. This is the 4th iteration of the contract, and Optum did not win the 3rd. We worked for over a year — then finally, the word came that we won the contract April 2026!`,
+        body: `I've luckily landed in another great project with Optum, working on the RHRP 4 project. At Optum, I work with a team of developers in strict Agile and sprints style. It's a large-scale project, with nearly 100 Turnberry consultants working on the contract. We are making an app for military service members and veterans to easily understand and request the healthcare that they need to be ready for their next steps. This is the 4th iteration of the contract, and Optum did not win the 3rd. We worked for over a year. Then, finally, the word came that we won the contract April 2026!`,
       },
       {
         pullQuote: true,
@@ -222,7 +222,7 @@ export default function Experience() {
       {/* ── END MARK ────────────────────────────── */}
       <div className="exp-end-mark">
         <span className="resume-section-eyebrow" style={{ color: 'var(--text-muted)' }}>
-          — Present —
+          · Present ·
         </span>
       </div>
 

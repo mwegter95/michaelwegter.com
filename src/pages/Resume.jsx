@@ -19,7 +19,7 @@ const experience = [
       'Work closely with a scrum team to implement new features in sprints for a large-scale government contract; everyday coding in .NET/C#, JavaScript, and Angular.',
       'Plan features with team and stakeholders weekly to satisfy contract requirements and ensure alignment on vision, fixes, and updates.',
       'Navigate complex technologies: podman containers, frontend portals with auth, Kafka eventing across multiple systems, and technical diagramming.',
-      'Artfully use AI via GitHub Copilot and a company-specific Azure OpenAI instance — embedded deeply in team workflows for code creation, PR reviews, and story analysis.',
+      'Artfully use AI via GitHub Copilot and a company-specific Azure OpenAI instance, embedded deeply in team workflows for code creation, PR reviews, and story analysis.',
     ],
   },
   {
@@ -30,10 +30,10 @@ const experience = [
     period: 'June 2022 – Dec 2024',
     color: 'var(--cyan-vivid)',
     bullets: [
-      'Led cloud migration — one of the first 30 U.S. Bank apps to move from on-prem to Azure; main developer handling code changes, Azure configuration, and testing across 60k lines of code and ~50 system connections.',
+      'Led cloud migration: one of the first 30 U.S. Bank apps to move from on-prem to Azure; main developer handling code changes, Azure configuration, and testing across 60k lines of code and ~50 system connections.',
       'Daily use of Docker, Kubernetes, Jenkins/Cloudbees, GitLab, and Artifactory for continuous feature releases.',
       'Full stack daily: React, Python, Java, SQL, REST APIs.',
-      'Primary contact for 600 monthly internal users — communicating issues, delivering tutorials, and shipping functional, satisfying features.',
+      'Primary contact for 600 monthly internal users, communicating issues, delivering tutorials, and shipping functional, satisfying features.',
       'Advanced Git skills; code review for self and team; Jira and Agile experience.',
     ],
   },
@@ -47,7 +47,7 @@ const experience = [
     bullets: [
       'Analyzed bank account statements; classified transactions and identified errors using bank and accounting software.',
       'Built Excel macros, vlookups, data tables, and power queries that increased process speed and accuracy.',
-      'Led UAT team through a 4-month software migration for private equity accounting — zero breakages, enabling private equity earnings of $1.7B above 2021 plan (390% actual vs plan).',
+      'Led UAT team through a 4-month software migration for private equity accounting with zero breakages, enabling private equity earnings of $1.7B above 2021 plan (390% actual vs plan).',
     ],
   },
 ]
@@ -63,7 +63,7 @@ const education = [
   {
     school: 'St. Olaf College',
     location: 'Northfield, MN',
-    credential: 'B.A. — Double Major in Economics & Music',
+    credential: 'B.A., Double Major in Economics & Music',
     date: 'May 2018',
     coursework: 'CS Principles (Python), Calculus, Statistics for Economics, Econometrics, Money & Banking',
     color: 'var(--sky-blue)',
@@ -107,7 +107,7 @@ export default function Resume() {
             <span className="resume-section-eyebrow" style={{ color: 'var(--mustard)', marginBottom: '14px', display: 'block' }}>Summary</span>
             <p className="resume-summary-text">
               Technical and thoughtful programmer driven by providing value and solving complex problems.
-              Quick learner — I develop deep, holistic understanding and communicate issues or improvements
+              Quick learner: I develop deep, holistic understanding and communicate issues or improvements
               effectively with stakeholders and teammates.
             </p>
           </div>
