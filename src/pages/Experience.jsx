@@ -24,7 +24,7 @@ const chapters = [
     sections: [
       {
         heading: 'The Project',
-        body: `Working for U.S. Bank was a great experience. I landed on a perfect project that matched my history and known technologies at the time. The project was called Test Data as a Service, or TDAAS. The tech stack matched perfectly what I learned from my University of Minnesota full stack coding bootcamp and what I'd learned in college; we had a React frontend, and a Python backend, with a heavily utilized SQL database, wherein the whole setup for the app hinged on tables of configuration which we would edit when making fixes or adding new features, enabling us to make changes without running the CI/CD every time.`,
+        body: `Working for U.S. Bank was a great experience. I landed on a perfect project that matched my history and known technologies at the time. The project was called Test Data as a Service, or TDAAS (pronounced "tee-doss"). The tech stack matched perfectly what I learned from my University of Minnesota full stack coding bootcamp and what I'd learned in college; we had a React frontend, and a Python backend, with a heavily utilized SQL database, wherein the whole setup for the app hinged on tables of configuration which we would edit when making fixes or adding new features, enabling us to make changes without running the CI/CD every time.`,
       },
       {
         heading: 'What It Did',
