@@ -5,7 +5,8 @@
  *
  * MacSVGTop  viewBox: "-28 0 680 366"
  *   Contains: top face, right face (upper), front face (upper), screen bezel,
- *             screen glass, vent slots 0-1, power LED.
+ *             screen glass, power LED. (No vent slots — moved to bottom to avoid
+ *             distortion from the vertical stretch applied on mobile.)
  *
  * MacSVGBottom  viewBox: "-28 366 680 394"
  *   Contains: right face (lower), front face (lower), Apple logo, floppy drive,
@@ -106,20 +107,8 @@ function MacSVGTop() {
       {/* ── Top-right 3D corner cap ── */}
       <path d="M 470,44 A 14,14 0 0 1 484,58 L 572,24 L 558,10 Z" fill="url(#macCornerTR)" />
 
-      {/* Ventilation slots on right face — i=0,1 are clearly above y=366;
-          i=2 straddles (y=362-379); viewBox clips anything ≥ 366 */}
-      {[0,1,2].map(i => {
-        const yBase = 340 + i * 18
-        const x1 = 492, y1 = yBase
-        const x2 = 556, y2 = yBase - 14
-        const x3 = 556, y3 = yBase - 11
-        const x4 = 492, y4 = yBase + 3
-        return (
-          <polygon key={i}
-            points={`${x1},${y1} ${x2},${y2} ${x3},${y3} ${x4},${y4}`}
-            fill="url(#ventSlot)" opacity="0.7" />
-        )
-      })}
+      {/* Ventilation slots — all moved to MacSVGBottom to avoid distortion
+          from the vertical stretch applied to the top SVG on mobile */}
 
       {/* Right face logo text */}
       <text x="532" y="200" textAnchor="middle" fontSize="9" fontFamily="monospace"
@@ -163,7 +152,6 @@ function MacSVGBottom() {
       xmlns="http://www.w3.org/2000/svg"
       className="mac-svg mac-svg-bottom"
       aria-hidden="true"
-      preserveAspectRatio="none"
     >
       <defs>
         {/* appleClip is used only in this SVG, so it's safe to define here */}
@@ -180,8 +168,8 @@ function MacSVGBottom() {
       {/* ── Bottom-right 3D corner cap ── */}
       <path d="M 484,678 A 14,14 0 0 1 470,692 L 558,658 L 572,644 Z" fill="url(#macCornerBR)" />
 
-      {/* Ventilation slots on right face — i=2 straddles split; i=3..15 are fully here */}
-      {[2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(i => {
+      {/* Ventilation slots on right face — all 16 slots live here (none in top SVG) */}
+      {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(i => {
         const yBase = 340 + i * 18
         const x1 = 492, y1 = yBase
         const x2 = 556, y2 = yBase - 14
