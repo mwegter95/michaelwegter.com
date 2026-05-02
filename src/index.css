@@ -434,33 +434,49 @@ main { padding-top: var(--nav-height); }
 }
 .mac-view-all:hover { gap: 14px; }
 
-/* Mac wrapper — relative for overlay */
+/* Mac wrapper — flex column so top and bottom stack cleanly.
+   Drop shadow via CSS so it wraps both halves of the split Mac. */
 .mac-wrapper {
-  position: relative;
   width: 100%;
   padding: 0 10px;
   box-sizing: border-box;
+  filter: drop-shadow(6px 18px 18px rgba(0,0,0,0.50));
 }
+
+/* Top half (.mac-top) is the positioning context for the screen overlay.
+   On desktop it sizes itself naturally from the SVG's intrinsic ratio.
+   On mobile it uses the padding-bottom trick (see breakpoint below). */
+.mac-top {
+  position: relative;
+  width: 100%;
+}
+
+/* Bottom half — always at its natural aspect ratio, never stretched */
+.mac-bottom {
+  width: 100%;
+  /* -1px overlap hides any sub-pixel seam between the two SVGs */
+  margin-top: -1px;
+}
+
 .mac-svg {
   display: block;
   width: 100%;
   height: auto;
 }
-/* Expanded — same natural ratio as featured on desktop; only mobile forces a taller height (below) */
 
-/* Screen overlay — % matches SVG viewBox (-28 0 680 760)
+/* Screen overlay — % relative to .mac-top, viewBox "-28 0 680 366"
    Screen glass: x=100, y=90, w=336, h=254
-   left  = (100-(-28))/680 = 128/680 = 18.82%
-   top   = 90/760  = 11.84%
-   width = 336/680 = 49.41%
-   height= 254/760 = 33.42%
+   left   = (100-(-28))/680 = 128/680 = 18.82%
+   top    = 90/366          = 24.59%
+   width  = 336/680         = 49.41%
+   height = 254/366         = 69.40%
 */
 .mac-screen-overlay {
   position: absolute;
   left: 18.82%;
-  top: 11.84%;
+  top: 24.59%;
   width: 49.41%;
-  height: 33.42%;
+  height: 69.40%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -1050,7 +1066,7 @@ main { padding-top: var(--nav-height); }
   .mac-menu-apple { font-size: 12px; margin-right: 0; }
   .mac-menu-item { padding: 0 1px; }
   .mac-menu-time { font-size: 8px; }
-  /* Mac: show all 3 icons on mobile (both featured and expanded), scaled smaller */
+  /* Mac: show all icons on mobile, scaled smaller */
   .mac-icon-img { width: 44px; height: 44px; }
   .mac-icon-glyph { font-size: 20px; }
   .mac-icon-label { font-size: 11px; max-width: 72px; min-height: 2.6em; }
@@ -1063,16 +1079,21 @@ main { padding-top: var(--nav-height); }
   .mac-status-desc { font-size: 9px; line-height: 1.3; }
   .mac-status-idle { font-size: 8px; }
   .mac-status-hint { font-size: 8px; }
-  /* Both mac wrappers on mobile — force taller so 2 rows + status bar fit */
-  .mac-wrapper {
-    padding-bottom: 260%;
+
+  /* ── Mobile Mac: top half (screen area) expands, bottom half stays natural ──
+     padding-bottom: 125% ≈ (366/760) × 260% — same screen scale as before,
+     but ONLY the top portion is stretched, not the body below the bezel.
+     The .mac-bottom SVG keeps height:auto → fixed natural aspect ratio.    */
+  .mac-top {
+    padding-bottom: 125%;
   }
-  .mac-wrapper .mac-svg {
+  .mac-svg-top {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
   }
+  /* mac-svg-bottom stays display:block; width:100%; height:auto (from base .mac-svg rule) */
 }
 
 /* ── AppFrame: full-viewport iframe shell ───────────────────────────────── */
