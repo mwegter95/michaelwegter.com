@@ -655,12 +655,14 @@ main { padding-top: var(--nav-height); }
   font-size: 16px;
 }
 .mac-status-hint {
-  display: inline;
+  display: block;
+  flex: 0 0 100%;
   font-size: 8px;
   font-family: 'Courier New', monospace;
   color: #1a7a3a;
   font-style: italic;
   white-space: nowrap;
+  margin-top: 1px;
 }
 .mac-status-dot {
   width: 6px;
@@ -1081,11 +1083,11 @@ main { padding-top: var(--nav-height); }
   .mac-status-hint { font-size: 8px; }
 
   /* ── Mobile Mac: top half (screen area) expands, bottom half stays natural ──
-     padding-bottom: 125% ≈ (366/760) × 260% — same screen scale as before,
-     but ONLY the top portion is stretched, not the body below the bezel.
+     padding-bottom controls the screen height. Increase to give more room for
+     icons + status bar without the body/bottom section growing with it.
      The .mac-bottom SVG keeps height:auto → fixed natural aspect ratio.    */
   .mac-top {
-    padding-bottom: 125%;
+    padding-bottom: 148%;
   }
   .mac-svg-top {
     position: absolute;
