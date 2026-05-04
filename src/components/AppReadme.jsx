@@ -6,26 +6,26 @@ import { apps } from '../data/apps'
 ──────────────────────────────────────────────────────────── */
 const details = {
   'gallery-wall': {
-    tagline: 'Plan your gallery wall layout to the inch, before you hang a single piece.',
+    tagline: 'See exactly how your room will look before you move a single thing.',
     paragraphs: [
-      "Gallery Wall Planner is a free online gallery wall planner that replaces guesswork with precision. Planning a gallery wall usually means tape-measure squinting and at least one round of nail-hole spackling. This gallery wall layout tool gives you a scale-accurate digital canvas that mirrors your exact wall dimensions. Measure your wall and pieces once, enter the numbers, and arrange your gallery wall before committing to a single hole.",
-      "Every element is calibrated to real-world inches, so you can design a gallery wall that translates directly to the physical wall. A foot-and-inch ruler runs along every edge; snap-to-grid keeps your picture arrangement tight. Save named gallery wall layouts and flip between multiple designs side-by-side. Your piece library persists: add any frame or art piece once and reuse it across every wall you plan.",
-      "The perspective-calibration tool lets you photograph your actual wall and warp the photo into a true-to-life backdrop, giving you a realistic preview of exactly how your gallery wall will look before you pick up a hammer. It's the closest thing to a gallery wall simulator you can run in a browser.",
+      "Stage is a browser-based room planner and visualizer that lets you design your space at true scale before committing to anything. Upload a photo of your wall, calibrate its perspective using four corner handles, and you have a live backdrop that mirrors your real room. From there you can place and arrange art, frames, mirrors, tiles, paint colors, wallpaper, light fixtures, rugs, and furniture — anything you can measure.",
+      "Every element is sized to real-world dimensions, so what you see on screen maps directly to the physical space. Rulers run along every edge and support both imperial and metric units. Snap-to-grid keeps things aligned, and named layouts let you save and compare multiple arrangements side by side. Your piece library persists across every wall you plan, so you never have to re-enter a measurement.",
+      "The perspective calibration tool warps your room photo into a flat, true-to-scale backdrop — the closest thing to a live room preview you can run in a browser. No app to install, no account required to start.",
     ],
     features: [
-      'Free online gallery wall planner with a fully scale-accurate canvas',
-      'Drag-and-drop gallery wall layout: arrange frames and art in real-time',
-      'Upload a room photo and calibrate its perspective as a live backdrop',
-      'Foot-and-inch rulers with snap-to-grid for precise picture placement',
-      'Piece library: save any frame or art piece once, reuse it across all your walls',
-      'Named layouts: save and compare multiple gallery wall designs any time',
-      'Session restore: your last gallery wall layout reloads automatically',
+      'Scale-accurate canvas sized to your exact room dimensions',
+      'Upload a room photo and calibrate perspective as a live backdrop',
+      'Place and arrange art, furniture, tiles, fixtures, rugs, and more',
+      'Imperial and metric support — switch between inches and centimetres',
+      'Rulers and snap-to-grid for precise, to-the-inch placement',
+      'Piece library: save anything once and reuse it across every wall',
+      'Named layouts: save and compare multiple arrangements any time',
     ],
     screenshots: [
       {
         src: '/screenshots/gallery_wall_planner_drag_and_drop_main_demo.mp4',
         type: 'video',
-        alt: 'Screen recording of the Gallery Wall Planner canvas. A user drags and repositions framed art pieces across a scale-accurate wall canvas. Foot-and-inch rulers run along the top and left edges, and the Pieces sidebar is visible on the right.',
+        alt: 'Screen recording of the Stage room planner canvas. A user drags and repositions framed art pieces across a scale-accurate wall canvas. Rulers run along the top and left edges, and the Pieces sidebar is visible on the right.',
         caption: 'The main canvas: drag, resize, and layer pieces freely',
         aspect: 16 / 9,
         wide: true,
@@ -33,21 +33,21 @@ const details = {
       {
         src: '/screenshots/gallery_wall_planner_wall_warp_perspective.png',
         type: 'image',
-        alt: "Gallery Wall Planner perspective calibration screen titled 'Calibrate — Bedroom East Wall 2'. A real photo of a sage-green bedroom wall with a white dresser and lamp is overlaid with a dotted quadrilateral and four colored corner handles. Wall dimensions are set to 128 × 95 inches.",
+        alt: "Stage perspective calibration screen. A real photo of a sage-green bedroom wall with a white dresser and lamp is overlaid with a dotted quadrilateral and four colored corner handles used to align the wall boundaries.",
         caption: 'Perspective calibration: align four handles to your actual wall corners',
         aspect: 4 / 3,
       },
       {
         src: '/screenshots/gallery_wall_planner_switch_layouts_compare.mp4',
         type: 'video',
-        alt: 'Screen recording of the Layouts tab in Gallery Wall Planner. A user saves the current arrangement under a name, then loads a different saved layout, instantly swapping all pieces on the canvas to compare two gallery wall designs.',
+        alt: 'Screen recording of the Layouts tab in Stage. A user saves the current arrangement under a name, then loads a different saved layout, instantly swapping all pieces on the canvas to compare two room designs.',
         caption: 'Saved layouts: switch between arrangements in one click',
         aspect: 16 / 9,
       },
       {
         src: '/screenshots/gallery_wall_planner_piece_library_demo.mp4',
         type: 'video',
-        alt: 'Screen recording of the Piece Library tab in Gallery Wall Planner. A user browses saved piece thumbnails with names and dimensions, then clicks the green "+ Add" button to place a piece from the library onto the current wall canvas.',
+        alt: 'Screen recording of the Piece Library tab in Stage. A user browses saved piece thumbnails with names and dimensions, then clicks the Add button to place a piece from the library onto the current wall canvas.',
         caption: 'Piece library: your collection persists across every wall',
         aspect: 16 / 9,
       },

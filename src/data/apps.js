@@ -20,13 +20,13 @@ export const apps = [
   {
     id: 1,
     slug: "gallery-wall", // → michaelwegter.com/#/apps/gallery-wall (iframe)
-    title: "Gallery Wall Planner",
+    title: "Stage: Room Planner and Visualizer",
     description:
-      "Drag-and-drop tool for planning gallery wall art layouts at scale. Upload your room photo, calibrate perspective, and arrange pieces to-the-inch before you hang anything.",
+      "Plan and visualize your space before touching a wall. Upload a room photo, calibrate perspective, and arrange art, furniture, tiles, paint, and fixtures to real-world scale.",
     category: "Creative",
     status: "live",
     href: GALLERY_URL,
-    color: "#7c6ff7", // purple
+    color: "#C4875A", // Stage terracotta
     icon: "🖼",
     frameStyle: "baroque",
   },
