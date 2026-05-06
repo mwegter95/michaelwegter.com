@@ -61,7 +61,7 @@ export default function AppFrame({ appId }) {
         className="appframe-iframe"
         style={{ opacity: loaded ? 1 : 0 }}
         onLoad={() => setLoaded(true)}
-        allow="clipboard-read; clipboard-write"
+        allow="clipboard-read; clipboard-write; xr-spatial-tracking; camera"
       />
     </div>
   )
