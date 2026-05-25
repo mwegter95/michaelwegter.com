@@ -8,6 +8,7 @@
 // VITE_SEO_URL overrides the SEO analyzer iframe src — set by `npm run dev:local`
 // to point the iframe at localhost:5015 (seo-analyzer-app local dev server).
 // VITE_SPOTIFY_URL overrides the Spotify Super User Tools iframe src for local dev.
+// VITE_GROWYARD_URL overrides the Growyard iframe src for local dev.
 const GALLERY_URL = import.meta.env.VITE_GALLERY_URL || "https://mwegter95.github.io/gallery-wall-planner/"
 const SEO_URL =
   import.meta.env.VITE_SEO_URL ||
@@ -15,6 +16,9 @@ const SEO_URL =
 const SPOTIFY_URL =
   import.meta.env.VITE_SPOTIFY_URL ||
   "https://api.michaelwegter.com/spotify/";
+const GROWYARD_URL =
+  import.meta.env.VITE_GROWYARD_URL ||
+  "https://mwegter95.github.io/growyard/";
 
 export const apps = [
   {
@@ -55,5 +59,18 @@ export const apps = [
     color: "#1DB954", // Spotify green
     icon: "🎵",
     frameStyle: "baroque",
+  },
+  {
+    id: 4,
+    slug: "growyard",
+    title: "Growyard — Yard Almanac",
+    description:
+      "Per-yard plant database with a month-by-month maintenance calendar. Track what needs pruning, watering, or planting and check it off as you go.",
+    category: "Utility",
+    status: "live",
+    href: GROWYARD_URL,
+    color: "#4F6F44", // sage / leaf green
+    icon: "🌱",
+    frameStyle: "walnut",
   },
 ];

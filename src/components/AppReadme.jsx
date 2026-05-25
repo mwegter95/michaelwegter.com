@@ -132,6 +132,33 @@ const details = {
       },
     ],
   },
+
+  'growyard': {
+    tagline: 'Per-yard plant database and a month-by-month maintenance calendar that tells you what to do, when, and why.',
+    paragraphs: [
+      "Growyard turns the messy business of keeping a yard alive into a calmed-down monthly checklist. Each plant in your yard gets a profile — common and Latin name, sun, water, bloom time, and what makes it weird — and each month has a focused list of the things that actually matter that month. Old-wood shrubs don't get pruned in August, hostas get cut to the ground after the first hard frost, the bare strip by the foundation gets overseeded in the prime September window. Check tasks off as you do them; your progress is saved to your account.",
+      "Behind every task is a why. Lilacs aren't pruned in July because they're setting next year's buds right now. Tulip leaves aren't cut until they yellow because that's how the bulb recharges. Mulch isn't piled against trunks because that rots bark. The app is a place to keep notes you'll thank yourself for in February — what worked, what didn't, what you want to try next year — all attached to the specific task that prompted them.",
+      "Each user has their own yard. New accounts are seeded with a starter set of plants and a year-round task calendar from a real Minnesota yard (zone 4b), so there's something concrete to work from on day one. Edit the plants you actually have, or use it as-is — your completion checkmarks, notes, and month-by-month progress are saved per account, per year.",
+    ],
+    features: [
+      'Month-by-month task calendar that tells you what to do, when, and why',
+      'Plant profiles with sun, water, bloom time, and care notes for every plant in your yard',
+      'Annual completion tracking — check tasks off as you do them, year over year',
+      'Free-form notes per task for what you observed and what to do differently next time',
+      'Seeded with a starter Minnesota yard so the app is useful from the first login',
+      'Multi-user with private accounts: your yard is yours, separate from everyone else',
+    ],
+    screenshots: [
+      {
+        src: '/screenshots/growyard_hero_placeholder.svg',
+        type: 'image',
+        alt: 'Growyard — Yard Almanac branded preview image showing the leaf logo, the month strip with task counts, and a sage-green progress bar.',
+        caption: 'The Yard Almanac: monthly tasks with a why for each one',
+        aspect: 16 / 9,
+        wide: true,
+      },
+    ],
+  },
 }
 
 /* ── Lightbox ────────────────────────────────────────────── */
@@ -316,7 +343,7 @@ export default function AppReadme() {
             <h2 className="app-readme-heading">App Deep Dives</h2>
             <p className="app-readme-sub">
               Full write-ups on what each app does, how to use it, and why it was built.
-              Jump to any section or scroll through all three.
+              Jump to any section or scroll through them all.
             </p>
           </div>
 
