@@ -152,8 +152,8 @@ const details = {
       {
         src: '/screenshots/growyard_hero_placeholder.svg',
         type: 'image',
-        alt: 'Growyard — Yard Almanac branded preview image showing the leaf logo, the month strip with task counts, and a sage-green progress bar.',
-        caption: 'The Yard Almanac: monthly tasks with a why for each one',
+        alt: 'Growyard preview image showing the leaf logo, the month strip with task counts, and a sage-green progress bar.',
+        caption: 'Growyard: monthly tasks with a why for each one',
         aspect: 16 / 9,
         wide: true,
       },

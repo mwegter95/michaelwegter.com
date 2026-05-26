@@ -63,7 +63,7 @@ export const apps = [
   {
     id: 4,
     slug: "growyard",
-    title: "Growyard — Yard Almanac",
+    title: "Growyard",
     description:
       "Per-yard plant database with a month-by-month maintenance calendar. Track what needs pruning, watering, or planting and check it off as you go.",
     category: "Utility",
