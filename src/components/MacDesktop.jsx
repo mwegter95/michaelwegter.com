@@ -275,6 +275,52 @@ function MacSVGBottom() {
   )
 }
 
+// ── Custom app glyphs (used when app.iconKey is set instead of an emoji) ────
+// Speedometer dial with an italic-L acting as the needle. Geometry mirrors the
+// /life-dashboard repo's <LogoMark> so the brand reads consistently.
+function LifeDashboardGlyph() {
+  const cx = 40, cy = 62, r = 30, ri = 24
+  const point = (deg, radius) => {
+    const a = (Math.PI / 180) * deg
+    return [cx + radius * Math.cos(a), cy - radius * Math.sin(a)]
+  }
+  const majors = [0, 30, 60, 90, 120, 150, 180]
+  const minors = [10, 20, 40, 50, 70, 80, 100, 110, 130, 140, 160, 170]
+  return (
+    <svg viewBox="0 0 80 80" width="100%" height="100%" aria-hidden="true">
+      {/* Outer dial arc */}
+      <path d={`M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`}
+            fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" opacity="0.85" />
+      {/* Inner subtle arc */}
+      <path d={`M ${cx - ri} ${cy} A ${ri} ${ri} 0 0 1 ${cx + ri} ${cy}`}
+            fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.35" />
+      {majors.map(d => {
+        const [x1, y1] = point(d, r), [x2, y2] = point(d, r - 5)
+        return <line key={`maj-${d}`} x1={x1} y1={y1} x2={x2} y2={y2}
+          stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" opacity="0.7" />
+      })}
+      {minors.map(d => {
+        const [x1, y1] = point(d, r), [x2, y2] = point(d, r - 2.5)
+        return <line key={`min-${d}`} x1={x1} y1={y1} x2={x2} y2={y2}
+          stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" opacity="0.45" />
+      })}
+      <text x={cx + 21} y={cy - 22}
+        fontFamily='"Geist Mono", monospace' fontSize="6.5" fontWeight="600"
+        fill="currentColor" textAnchor="middle" opacity="0.85">80</text>
+      <g fill="currentColor">
+        <path d="M 40 62 L 62 62 L 62 65 L 43.2 65 Z" />
+        <path d="M 40 62 L 44 62 L 53.2 30 L 52.4 28 L 51.6 28 L 50.8 30 Z" />
+        <circle cx={cx} cy={cy} r="2.6" />
+        <circle cx={cx - 0.6} cy={cy - 0.6} r="0.9" fill="#ffffff" opacity="0.75" />
+      </g>
+    </svg>
+  )
+}
+
+const APP_GLYPHS = {
+  'life-dashboard': LifeDashboardGlyph,
+}
+
 // ── Desktop icon component ────────────────────────────────────────────────────
 function DesktopIcon({ app, isSelected, onEnter, onLeave, onTouchTap }) {
   const isDisabled = app.status === 'soon' || app.href === '#'
@@ -296,11 +342,18 @@ function DesktopIcon({ app, isSelected, onEnter, onLeave, onTouchTap }) {
     style: { '--icon-color': app.color },
   }
 
+  const CustomGlyph = app.iconKey ? APP_GLYPHS[app.iconKey] : null
   const iconContent = (
     <>
       <div className="mac-icon-img">
         <div className="mac-icon-face">
-          <span className="mac-icon-glyph">{app.icon}</span>
+          {CustomGlyph ? (
+            <span className="mac-icon-glyph mac-icon-glyph--svg" aria-hidden="true">
+              <CustomGlyph />
+            </span>
+          ) : (
+            <span className="mac-icon-glyph">{app.icon}</span>
+          )}
         </div>
         <div className="mac-icon-select-overlay" />
       </div>

@@ -19,6 +19,11 @@ const SPOTIFY_URL =
 const GROWYARD_URL =
   import.meta.env.VITE_GROWYARD_URL ||
   "https://mwegter95.github.io/growyard/";
+// VITE_LIFE_DASHBOARD_URL overrides the Life Dashboard iframe src for local dev
+// (set by `npm run dev:local`) — points at the life-dashboard Vite dev server.
+const LIFE_DASHBOARD_URL =
+  import.meta.env.VITE_LIFE_DASHBOARD_URL ||
+  "https://mwegter95.github.io/life-dashboard/";
 
 export const apps = [
   {
@@ -72,5 +77,19 @@ export const apps = [
     color: "#4F6F44", // sage / leaf green
     icon: "🌱",
     frameStyle: "walnut",
+  },
+  {
+    id: 5,
+    slug: "life-dashboard",
+    title: "Life Dashboard",
+    description:
+      "A behavioral-science habit tracker. Build streaks, level up, earn badges, and surface dated reminders — with a chain-link visualisation of daily streaks across the week.",
+    category: "Productivity",
+    status: "live",
+    href: LIFE_DASHBOARD_URL,
+    color: "#c47c4d", // speedometer warm-amber
+    icon: "🚗",         // emoji fallback; MacDesktop renders the SVG glyph when iconKey is set
+    iconKey: "life-dashboard",
+    frameStyle: "baroque",
   },
 ];

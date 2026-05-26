@@ -159,6 +159,24 @@ const details = {
       },
     ],
   },
+
+  'life-dashboard': {
+    tagline: 'A behavioral-science habit tracker. Daily streaks render as a literal chain. Variable rewards keep the loop alive.',
+    paragraphs: [
+      "Life Dashboard is a single-screen habit tracker that takes the science of behavior change seriously. Daily habits show up as a Monday-through-Sunday grid; each consecutive completion grows a gold chain link between the cells. A missed day breaks the chain — visibly. That's the don't-break-the-chain mechanic, made literal.",
+      "Points scale with consistency. The first time you do a habit it's worth its face value; by day ten of a streak it's worth double. Twelve percent of completions also roll a bonus star with a fire-coloured chain link and extra confetti. Together they create a slot-machine feel without the casino — the rewards are real, the streak math is honest, and a missed day still hurts.",
+      "Beyond daily habits, Life Dashboard surfaces date-based reminders 21 days in advance (birthdays, anniversaries, appointments), holds one-off to-dos that don't carry a streak penalty, tracks an end-of-day reflection, and awards badges for milestones (first check, perfect day, 100 points, 1k points, longest streak). Theme it Paper, Slate, or Forest; toggle dark mode; adjust grid density. Use anonymously and your data follows you when you sign in.",
+    ],
+    features: [
+      "Spreadsheet-style week grid with star completions and don't-break-the-chain SVG chain links",
+      'Streak multiplier (1.0× → 2.0× over ten consecutive days) plus 12% bonus rolls',
+      'Dated reminders surfaced 21 days out — birthdays, appointments, anniversaries',
+      'One-off to-dos that live in the reminder strip until done, with no streak penalty',
+      'Levels, badges, and a daily reflection card for end-of-day capture',
+      'Works anonymously; sign in to sync across devices and keep your history safe',
+    ],
+    screenshots: [],
+  },
 }
 
 /* ── Lightbox ────────────────────────────────────────────── */
@@ -285,10 +303,12 @@ function AppSection({ app, onOpenLightbox }) {
         {/* ── Body ─────────────────────────────────── */}
         <div className="app-detail-body">
 
-          {/* Hero screenshot / video (full width) */}
-          <div className="app-detail-hero-shot">
-            <MediaItem shot={heroShot} color={app.color} onOpen={onOpenLightbox} />
-          </div>
+          {/* Hero screenshot / video (full width) — omitted for apps without media yet */}
+          {heroShot && (
+            <div className="app-detail-hero-shot">
+              <MediaItem shot={heroShot} color={app.color} onOpen={onOpenLightbox} />
+            </div>
+          )}
 
           {/* Description + Features */}
           <div className="app-detail-prose-col">
