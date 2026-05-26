@@ -228,18 +228,7 @@ main { padding-top: var(--nav-height); }
   font-size: 15px;
   font-weight: 500;
   color: var(--text-primary);
-  white-space: normal;
-  word-break: break-word;
-}
-
-.dropdown-item-desc {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-top: 2px;
-  letter-spacing: 0.04em;
-  white-space: normal;
-  word-break: break-word;
+  white-space: nowrap;
 }
 
 .dropdown-footer {
@@ -449,6 +438,10 @@ main { padding-top: var(--nav-height); }
 .mac-top {
   position: relative;
   width: 100%;
+  /* At full width (~1920px+) natural Mac proportions (53.82%) already fit all icons.
+     At narrower viewports the fixed 760px term takes over, extending the screen
+     vertically so icons never get cut off — same idea as the mobile trick below. */
+  padding-bottom: max(53.82%, calc(760px + 14%));
 }
 
 /* Bottom half — always at its natural aspect ratio, never stretched */
@@ -462,6 +455,13 @@ main { padding-top: var(--nav-height); }
   display: block;
   width: 100%;
   height: auto;
+}
+/* Top SVG always fills the padding-bottom box; bottom SVG stays natural */
+.mac-svg-top {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* Screen overlay — % relative to .mac-top, viewBox "-28 0 680 366"
@@ -525,8 +525,8 @@ main { padding-top: var(--nav-height); }
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: auto;
-  align-content: center;
-  padding: 6px 6px 18% 6px; /* bottom padding reserves space so icons don't hide behind status bar */
+  align-content: start;
+  padding: 14px 6px 17% 6px; /* top: visual gap above row 1; bottom: reserve for status bar */
   gap: 3px;
   box-sizing: border-box;
 }
@@ -1092,18 +1092,10 @@ main { padding-top: var(--nav-height); }
   .mac-status-idle { font-size: 8px; }
   .mac-status-hint { font-size: 8px; }
 
-  /* ── Mobile Mac: top half (screen area) expands, bottom half stays natural ──
-     padding-bottom controls the screen height. Increase to give more room for
-     icons + status bar without the body/bottom section growing with it.
-     The .mac-bottom SVG keeps height:auto → fixed natural aspect ratio.    */
+  /* ── Mobile Mac: override with a generous fixed % — narrow screens need the
+     most stretch. .mac-svg-top is already absolutely positioned at base level. */
   .mac-top {
     padding-bottom: 148%;
-  }
-  .mac-svg-top {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
   }
   /* mac-svg-bottom stays display:block; width:100%; height:auto (from base .mac-svg rule) */
 }

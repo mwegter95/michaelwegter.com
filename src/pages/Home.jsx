@@ -71,7 +71,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <MacDesktop />
+        <MacDesktop showAll />
       </section>
 
       {/* ── ABOUT — color-blocked gallery panel ──── */}

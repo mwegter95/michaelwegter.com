@@ -385,6 +385,7 @@ export default function MacDesktop({ showAll = false }) {
   const displayApps = showAll ? apps : apps.slice(0, 4)
   const navigate = useNavigate()
 
+
   const handleEnter = (app) => {
     if (clearTimer.current) clearTimeout(clearTimer.current)
     setHovered(app)

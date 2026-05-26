@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "michaelwegter-com",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "/Users/michaelwegter/Desktop/Projects/michaelwegter.com", "run", "dev:local"],
+      "port": 5173
+    }
+  ]
+}

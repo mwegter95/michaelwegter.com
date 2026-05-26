@@ -65,10 +65,7 @@ export default function Navbar() {
                 const inner = (
                   <>
                     <span className="dropdown-item-dot" style={{ background: app.color }} />
-                    <div className="dropdown-item-info">
-                      <div className="dropdown-item-name">{app.title}</div>
-                      <div className="dropdown-item-desc">{app.description}</div>
-                    </div>
+                    <span className="dropdown-item-name">{app.title}</span>
                   </>
                 )
                 if (app.slug && app.status !== 'soon' && app.href !== '#') {
