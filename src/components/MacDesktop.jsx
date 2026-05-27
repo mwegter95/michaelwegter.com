@@ -312,11 +312,7 @@ function LifeDashboardGlyph() {
       fontFamily={FONT_STACK}
       fontSize={fontSize}
       textAnchor={anchor}
-      fill="#ffffff"
-      stroke="currentColor"
-      strokeWidth={fontSize * 0.045}
-      strokeLinejoin="round"
-      paintOrder="stroke fill"
+      fill="white"
       filter="url(#ld-tile-shadow)"
       transform={`translate(${x} ${y}) skewX(${SKEW_DEG}) translate(${-x} ${-y})`}
     >{text}</text>
