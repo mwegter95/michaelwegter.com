@@ -320,8 +320,17 @@ function LifeDashboardGlyph() {
   return (
     <svg viewBox="0 0 80 80" width="100%" height="100%" aria-hidden="true">
       <defs>
-        <filter id="ld-tile-shadow" x="-15%" y="-15%" width="130%" height="130%">
-          <feDropShadow dx="2" dy="0" stdDeviation="0" floodColor="black" />
+        <filter id="ld-tile-shadow" x="-20%" y="-15%" width="150%" height="130%">
+          <feMorphology operator="dilate" radius="1" in="SourceAlpha" result="expanded"/>
+          <feFlood floodColor="black" result="black"/>
+          <feComposite in="black" in2="expanded" operator="in" result="outline"/>
+          <feOffset dx="2.5" dy="0" in="expanded" result="shadowPos"/>
+          <feComposite in="black" in2="shadowPos" operator="in" result="shadow"/>
+          <feMerge>
+            <feMergeNode in="shadow"/>
+            <feMergeNode in="outline"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
         </filter>
       </defs>
       {/* Dial — arc terminates where the italic L's tip lies. */}
