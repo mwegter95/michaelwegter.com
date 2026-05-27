@@ -87,7 +87,7 @@ export const apps = [
     category: "Productivity",
     status: "live",
     href: LIFE_DASHBOARD_URL,
-    color: "#c47c4d", // speedometer warm-amber
+    color: "#f0186e", // hot-pink — matches the website palette token
     icon: "🚗",         // emoji fallback; MacDesktop renders the SVG glyph when iconKey is set
     iconKey: "life-dashboard",
     frameStyle: "baroque",

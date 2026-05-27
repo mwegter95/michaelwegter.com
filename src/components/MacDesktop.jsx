@@ -276,43 +276,61 @@ function MacSVGBottom() {
 }
 
 // ── Custom app glyphs (used when app.iconKey is set instead of an emoji) ────
-// Speedometer dial with an italic-L acting as the needle. Geometry mirrors the
-// /life-dashboard repo's <LogoMark> so the brand reads consistently.
+// Mirrors life-dashboard/src/components/Logo.jsx <LogoMark>: ONE L — the L of
+// "Life Dashboard" — whose tall stem doubles as the speedometer needle. The
+// arc stops at the needle so it never crosses the text. "ife" sits on the L's
+// baseline, "Dashboard" wraps to a second line. Bungee font (loaded via the
+// Google Fonts link in index.html) + a depth-shadow stack for the 3D feel.
 function LifeDashboardGlyph() {
-  const cx = 40, cy = 62, r = 30, ri = 24
+  const cx = 40, cy = 62, r = 30
+  const arcEnd = [cx + 9.7, cy - 28.4] // 71° crossing
+  const majors = [180, 150, 120, 90]
+  const minors = [170, 160, 140, 130, 110, 100, 80]
   const point = (deg, radius) => {
     const a = (Math.PI / 180) * deg
     return [cx + radius * Math.cos(a), cy - radius * Math.sin(a)]
   }
-  const majors = [0, 30, 60, 90, 120, 150, 180]
-  const minors = [10, 20, 40, 50, 70, 80, 100, 110, 130, 140, 160, 170]
+  const blocky = (x, y, fontSize, text, anchor = 'start') => {
+    const common = {
+      fontFamily: '"Bungee", Impact, "Arial Black", sans-serif',
+      fontSize, letterSpacing: '-0.01em', textAnchor: anchor,
+    }
+    return (
+      <g>
+        <text x={x + 3} y={y + 3} fill="rgba(0,0,0,0.55)" opacity="0.55" {...common}>{text}</text>
+        <text x={x + 2} y={y + 2} fill="rgba(0,0,0,0.55)" opacity="0.75" {...common}>{text}</text>
+        <text x={x + 1} y={y + 1} fill="rgba(0,0,0,0.55)" opacity="0.90" {...common}>{text}</text>
+        <text x={x}     y={y}     fill="currentColor"                    {...common}>{text}</text>
+      </g>
+    )
+  }
   return (
     <svg viewBox="0 0 80 80" width="100%" height="100%" aria-hidden="true">
-      {/* Outer dial arc */}
-      <path d={`M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`}
-            fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" opacity="0.85" />
-      {/* Inner subtle arc */}
-      <path d={`M ${cx - ri} ${cy} A ${ri} ${ri} 0 0 1 ${cx + ri} ${cy}`}
-            fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.35" />
-      {majors.map(d => {
-        const [x1, y1] = point(d, r), [x2, y2] = point(d, r - 5)
-        return <line key={`maj-${d}`} x1={x1} y1={y1} x2={x2} y2={y2}
-          stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" opacity="0.7" />
-      })}
-      {minors.map(d => {
-        const [x1, y1] = point(d, r), [x2, y2] = point(d, r - 2.5)
-        return <line key={`min-${d}`} x1={x1} y1={y1} x2={x2} y2={y2}
-          stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" opacity="0.45" />
-      })}
-      <text x={cx + 21} y={cy - 22}
-        fontFamily='"Geist Mono", monospace' fontSize="6.5" fontWeight="600"
-        fill="currentColor" textAnchor="middle" opacity="0.85">80</text>
-      <g fill="currentColor">
-        <path d="M 40 62 L 62 62 L 62 65 L 43.2 65 Z" />
-        <path d="M 40 62 L 44 62 L 53.2 30 L 52.4 28 L 51.6 28 L 50.8 30 Z" />
-        <circle cx={cx} cy={cy} r="2.6" />
-        <circle cx={cx - 0.6} cy={cy - 0.6} r="0.9" fill="#ffffff" opacity="0.75" />
+      {/* Speedometer + L (the L IS the needle), scaled 0.6, shifted up. */}
+      <g transform="translate(0, 9) scale(0.6)">
+        <path d={`M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${arcEnd[0]} ${arcEnd[1]}`}
+              fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" opacity="0.9" />
+        {majors.map(d => {
+          const [x1, y1] = point(d, r), [x2, y2] = point(d, r - 5)
+          return <line key={`maj-${d}`} x1={x1} y1={y1} x2={x2} y2={y2}
+            stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" opacity="0.75" />
+        })}
+        {minors.map(d => {
+          const [x1, y1] = point(d, r), [x2, y2] = point(d, r - 2.5)
+          return <line key={`min-${d}`} x1={x1} y1={y1} x2={x2} y2={y2}
+            stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" opacity="0.5" />
+        })}
+        <g fill="currentColor">
+          <path d="M 40 62 L 62 62 L 62 65 L 43.2 65 Z" />
+          <path d="M 40 62 L 44 62 L 53.2 30 L 52.4 28 L 51.6 28 L 50.8 30 Z" />
+          <circle cx={cx} cy={cy} r="2.6" />
+        </g>
       </g>
+
+      {/* "ife" — right of L's foot, on the same baseline (y ≈ 46.2 after the 0.6 scale + translate 9). */}
+      {blocky(39, 46, 11, 'ife')}
+      {/* "Dashboard" — wraps to a second line, centred. */}
+      {blocky(40, 70, 11, 'Dashboard', 'middle')}
     </svg>
   )
 }

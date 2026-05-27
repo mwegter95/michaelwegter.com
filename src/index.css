@@ -438,10 +438,10 @@ main { padding-top: var(--nav-height); }
 .mac-top {
   position: relative;
   width: 100%;
-  /* At full width (~1920px+) natural Mac proportions (53.82%) already fit all icons.
-     At narrower viewports the fixed 760px term takes over, extending the screen
-     vertically so icons never get cut off — same idea as the mobile trick below. */
-  padding-bottom: max(53.82%, calc(760px + 14%));
+  /* At full width (~2200px+) natural Mac proportions (53.82%) already fit all icons.
+     At narrower viewports the fixed term takes over, extending the screen so icons
+     don't get covered by the hover/tap description bar. */
+  padding-bottom: max(53.82%, calc(960px + 14%));
 }
 
 /* Bottom half — always at its natural aspect ratio, never stretched */
@@ -526,7 +526,7 @@ main { padding-top: var(--nav-height); }
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: auto;
   align-content: start;
-  padding: 14px 6px 17% 6px; /* top: visual gap above row 1; bottom: reserve for status bar */
+  padding: 14px 6px 160px 6px; /* top: visual gap above row 1; bottom: fixed px reserve for the expanded hover/tap description bar */
   gap: 3px;
   box-sizing: border-box;
 }
@@ -581,9 +581,9 @@ main { padding-top: var(--nav-height); }
    against the app's `--icon-color` background. */
 .mac-icon-glyph--svg {
   display: block;
-  width: 84%;
-  height: 84%;
-  color: #1a1410;
+  width: 92%;   /* slightly larger than emoji glyphs so the stacked text reads */
+  height: 92%;
+  color: #1a1018;
 }
 .mac-icon-glyph--svg svg { display: block; width: 100%; height: 100%; }
 .mac-icon-select-overlay {
@@ -611,14 +611,16 @@ main { padding-top: var(--nav-height); }
   word-break: break-word;
 }
 
-/* Status bar — absolutely positioned so it never causes layout shift */
+/* Status bar — absolutely positioned so it never causes layout shift.
+   Fixed-px min/max so its size is predictable regardless of Mac scale,
+   and matches the reserve carved out by .mac-desktop padding-bottom. */
 .mac-status-bar {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  min-height: 14%;
-  max-height: 28%;
+  min-height: 56px;
+  max-height: 150px;
   background: #c8c5b8;
   border-top: 1px solid #aaa9a0;
   display: flex;
@@ -1085,7 +1087,7 @@ main { padding-top: var(--nav-height); }
   /* Increase bottom padding so icons clear the expanded status bar */
   .mac-desktop { padding-bottom: 48%; }
   /* Scale status bar text to fit mobile screen */
-  .mac-status-bar { font-size: 9px; gap: 3px; padding: 4px 6px; max-height: 40%; }
+  .mac-status-bar { font-size: 9px; gap: 3px; padding: 4px 6px; min-height: 36px; max-height: 70px; }
   .mac-status-tag { font-size: 8px; padding: 1px 4px; }
   .mac-status-title { font-size: 9px; }
   .mac-status-desc { font-size: 9px; line-height: 1.3; }
