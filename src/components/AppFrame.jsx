@@ -11,12 +11,32 @@ import { apps } from '../data/apps'
 export default function AppFrame({ appId }) {
   const app = apps.find(a => a.id === appId || a.slug === appId)
   const [loaded, setLoaded] = useState(false)
+  // Auto-resize iframe to match its content height when the embedded app
+  // postMessages it. Currently used by life-dashboard to dodge an iOS Safari
+  // iframe scroll-bubbling bug where the user has to stop-and-scroll-again
+  // to reach content near the bottom. With the iframe sized to its content,
+  // the parent page does all the scrolling and the bug goes away.
+  const [contentHeight, setContentHeight] = useState(null)
 
   // Keep the page title in sync
   useEffect(() => {
     if (app) document.title = `${app.title} — Michael Wegter`
     return () => { document.title = 'Michael Wegter' }
   }, [app])
+
+  // Listen for height messages from embedded apps that opt in.
+  useEffect(() => {
+    function onMessage(e) {
+      const d = e.data
+      if (!d || typeof d !== 'object') return
+      if (d.type === 'life-dashboard:height' && typeof d.height === 'number') {
+        // Cap to a sane maximum so a misbehaving app can't blow up layout.
+        setContentHeight(Math.min(d.height, 12000))
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [])
 
   if (!app || !app.href || app.href === '#') {
     return (
@@ -27,8 +47,11 @@ export default function AppFrame({ appId }) {
     )
   }
 
+  // When the embedded app reports a height, switch to "natural-height" mode
+  // (parent page handles scroll). Otherwise stay in flex-fill mode.
+  const shellClass = `appframe-shell ${contentHeight ? 'appframe-shell--natural' : ''}`
   return (
-    <div className="appframe-shell">
+    <div className={shellClass}>
       {/* Thin top bar — just the back button and app name */}
       <div className="appframe-bar">
         <Link to="/apps" className="appframe-back" aria-label="Back to Apps">
@@ -59,7 +82,10 @@ export default function AppFrame({ appId }) {
         src={app.href}
         title={app.title}
         className="appframe-iframe"
-        style={{ opacity: loaded ? 1 : 0 }}
+        style={{
+          opacity: loaded ? 1 : 0,
+          ...(contentHeight ? { height: `${contentHeight}px`, flex: 'none' } : null),
+        }}
         onLoad={() => setLoaded(true)}
         allow="clipboard-read; clipboard-write; xr-spatial-tracking; camera; gyroscope; accelerometer"
       />

@@ -1123,6 +1123,21 @@ main { padding-top: var(--nav-height); }
   overflow: hidden;
 }
 
+/* When the embedded app reports its content height via postMessage we drop
+   the fixed viewport height and let the iframe grow naturally. The parent
+   page then does the scrolling, which sidesteps iOS Safari's iframe
+   scroll-bubbling bug (where users have to stop and scroll again to reach
+   content near the bottom of the embedded app). */
+.appframe-shell--natural {
+  height: auto;
+  overflow: visible;
+}
+.appframe-shell--natural .appframe-bar {
+  position: sticky;
+  top: var(--nav-height, 60px);
+  z-index: 5;
+}
+
 /* Thin top bar */
 .appframe-bar {
   display: flex;

@@ -276,11 +276,13 @@ function MacSVGBottom() {
 }
 
 // ── Custom app glyphs (used when app.iconKey is set instead of an emoji) ────
-// Mirrors life-dashboard/src/components/Logo.jsx <LogoMark>: the italic L
-// from the Cleptograph 3D font IS the speedometer needle (synthetic italic
-// via skewX(-14)). The dial arc terminates at the L's tip so it never
-// overlaps the wordmark. "ife" sits on the L's baseline, "Dashboard" wraps
-// to a centred second row. Font is registered via @font-face in index.css.
+// Mirrors life-dashboard/src/components/Logo.jsx <LogoMark>:
+//   • Every letter is italicised (skewX = -14°). The L's stem is also the
+//     speedometer needle, and the dial arc ends exactly at its tip.
+//   • Glyphs render as WHITE fill + dark stroke (paint-order so the fill is
+//     on top of the stroke), with a small drop shadow — the look Cleptograph
+//     3D is designed for.
+// Font registered via @font-face in index.css.
 function LifeDashboardGlyph() {
   const FONT_STACK = '"Cleptograph 3D", "Bungee", Impact, "Arial Black", sans-serif'
   const SKEW_DEG = -14
@@ -289,12 +291,12 @@ function LifeDashboardGlyph() {
   const FS1 = 14
   const FS2 = 8
   const capHeight = FS1 * CAP_RATIO
-  const dx = capHeight * Math.abs(Math.tan(SKEW_RAD))   // top-of-L horizontal lean
-  const radius = capHeight / Math.cos(SKEW_RAD)         // dial radius = needle length
+  const dx = capHeight * Math.abs(Math.tan(SKEW_RAD))   // top-of-L lean
+  const radius = capHeight / Math.cos(SKEW_RAD)         // dial radius == needle length
   const PIVOT_X = 14
-  const PIVOT_Y = 30
+  const PIVOT_Y = 26
   const REST_X = PIVOT_X + FS1 * 1.15
-  const ROW2_BASELINE = 66
+  const ROW2_BASELINE = 56
   const arcEndX = PIVOT_X + dx
   const arcEndY = PIVOT_Y - capHeight
   const majors = [180, 150, 120, 90]
@@ -303,43 +305,53 @@ function LifeDashboardGlyph() {
     const a = (Math.PI / 180) * deg
     return [PIVOT_X + r * Math.cos(a), PIVOT_Y - r * Math.sin(a)]
   }
+  // Reusable italic-outlined text. Same params as the dashboard's <Logo>.
+  const italic = (x, y, fontSize, text, anchor = 'start') => (
+    <text
+      x={x} y={y}
+      fontFamily={FONT_STACK}
+      fontSize={fontSize}
+      textAnchor={anchor}
+      fill="#ffffff"
+      stroke="currentColor"
+      strokeWidth={fontSize * 0.045}
+      strokeLinejoin="round"
+      paintOrder="stroke fill"
+      filter="url(#ld-tile-shadow)"
+      transform={`translate(${x} ${y}) skewX(${SKEW_DEG}) translate(${-x} ${-y})`}
+    >{text}</text>
+  )
   return (
     <svg viewBox="0 0 80 80" width="100%" height="100%" aria-hidden="true">
-      {/* Dial — arc terminates exactly where the italic L's tip lies. */}
+      <defs>
+        <filter id="ld-tile-shadow" x="-15%" y="-15%" width="130%" height="130%">
+          <feDropShadow dx="1.2" dy="1.2" stdDeviation="0.4" floodColor="rgba(0,0,0,0.45)" />
+        </filter>
+      </defs>
+      {/* Dial — arc terminates where the italic L's tip lies. */}
       <path
         d={`M ${PIVOT_X - radius} ${PIVOT_Y} A ${radius} ${radius} 0 0 1 ${arcEndX} ${arcEndY}`}
         fill="none" stroke="currentColor" strokeWidth="1.2"
-        strokeLinecap="round" opacity="0.9"
+        strokeLinecap="round" opacity="0.85"
       />
       {majors.map(deg => {
         const [x1, y1] = pt(deg, radius)
         const [x2, y2] = pt(deg, radius - radius * 0.18)
         return <line key={`maj-${deg}`} x1={x1} y1={y1} x2={x2} y2={y2}
-          stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" opacity="0.75" />
+          stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" opacity="0.7" />
       })}
       {minors.map(deg => {
         const [x1, y1] = pt(deg, radius)
         const [x2, y2] = pt(deg, radius - radius * 0.09)
         return <line key={`min-${deg}`} x1={x1} y1={y1} x2={x2} y2={y2}
-          stroke="currentColor" strokeWidth="0.6" strokeLinecap="round" opacity="0.5" />
+          stroke="currentColor" strokeWidth="0.6" strokeLinecap="round" opacity="0.45" />
       })}
       <circle cx={PIVOT_X} cy={PIVOT_Y} r={radius * 0.09} fill="currentColor" />
 
-      {/* Italic L (the needle). */}
-      <text
-        x={PIVOT_X} y={PIVOT_Y}
-        fontFamily={FONT_STACK} fontSize={FS1} fill="currentColor"
-        transform={`translate(${PIVOT_X} ${PIVOT_Y}) skewX(${SKEW_DEG}) translate(${-PIVOT_X} ${-PIVOT_Y})`}
-      >L</text>
-
-      {/* "ife" upright, same baseline. */}
-      <text x={REST_X} y={PIVOT_Y}
-        fontFamily={FONT_STACK} fontSize={FS1} fill="currentColor">ife</text>
-
-      {/* "Dashboard" centred on row 2. */}
-      <text x={40} y={ROW2_BASELINE}
-        fontFamily={FONT_STACK} fontSize={FS2}
-        textAnchor="middle" fill="currentColor">Dashboard</text>
+      {/* Italic L (needle) + "ife" + "Dashboard", all in the same style. */}
+      {italic(PIVOT_X, PIVOT_Y, FS1, 'L')}
+      {italic(REST_X,  PIVOT_Y, FS1, 'ife')}
+      {italic(40,      ROW2_BASELINE, FS2, 'Dashboard', 'middle')}
     </svg>
   )
 }
