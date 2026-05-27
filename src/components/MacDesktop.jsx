@@ -276,61 +276,70 @@ function MacSVGBottom() {
 }
 
 // ── Custom app glyphs (used when app.iconKey is set instead of an emoji) ────
-// Mirrors life-dashboard/src/components/Logo.jsx <LogoMark>: ONE L — the L of
-// "Life Dashboard" — whose tall stem doubles as the speedometer needle. The
-// arc stops at the needle so it never crosses the text. "ife" sits on the L's
-// baseline, "Dashboard" wraps to a second line. Bungee font (loaded via the
-// Google Fonts link in index.html) + a depth-shadow stack for the 3D feel.
+// Mirrors life-dashboard/src/components/Logo.jsx <LogoMark>: the italic L
+// from the Cleptograph 3D font IS the speedometer needle (synthetic italic
+// via skewX(-14)). The dial arc terminates at the L's tip so it never
+// overlaps the wordmark. "ife" sits on the L's baseline, "Dashboard" wraps
+// to a centred second row. Font is registered via @font-face in index.css.
 function LifeDashboardGlyph() {
-  const cx = 40, cy = 62, r = 30
-  const arcEnd = [cx + 9.7, cy - 28.4] // 71° crossing
+  const FONT_STACK = '"Cleptograph 3D", "Bungee", Impact, "Arial Black", sans-serif'
+  const SKEW_DEG = -14
+  const SKEW_RAD = (SKEW_DEG * Math.PI) / 180
+  const CAP_RATIO = 0.7
+  const FS1 = 14
+  const FS2 = 8
+  const capHeight = FS1 * CAP_RATIO
+  const dx = capHeight * Math.abs(Math.tan(SKEW_RAD))   // top-of-L horizontal lean
+  const radius = capHeight / Math.cos(SKEW_RAD)         // dial radius = needle length
+  const PIVOT_X = 14
+  const PIVOT_Y = 30
+  const REST_X = PIVOT_X + FS1 * 1.15
+  const ROW2_BASELINE = 66
+  const arcEndX = PIVOT_X + dx
+  const arcEndY = PIVOT_Y - capHeight
   const majors = [180, 150, 120, 90]
   const minors = [170, 160, 140, 130, 110, 100, 80]
-  const point = (deg, radius) => {
+  const pt = (deg, r) => {
     const a = (Math.PI / 180) * deg
-    return [cx + radius * Math.cos(a), cy - radius * Math.sin(a)]
-  }
-  const blocky = (x, y, fontSize, text, anchor = 'start') => {
-    const common = {
-      fontFamily: '"Bungee", Impact, "Arial Black", sans-serif',
-      fontSize, letterSpacing: '-0.01em', textAnchor: anchor,
-    }
-    return (
-      <g>
-        <text x={x + 3} y={y + 3} fill="rgba(0,0,0,0.55)" opacity="0.55" {...common}>{text}</text>
-        <text x={x + 2} y={y + 2} fill="rgba(0,0,0,0.55)" opacity="0.75" {...common}>{text}</text>
-        <text x={x + 1} y={y + 1} fill="rgba(0,0,0,0.55)" opacity="0.90" {...common}>{text}</text>
-        <text x={x}     y={y}     fill="currentColor"                    {...common}>{text}</text>
-      </g>
-    )
+    return [PIVOT_X + r * Math.cos(a), PIVOT_Y - r * Math.sin(a)]
   }
   return (
     <svg viewBox="0 0 80 80" width="100%" height="100%" aria-hidden="true">
-      {/* Speedometer + L (the L IS the needle), scaled 0.6, shifted up. */}
-      <g transform="translate(0, 9) scale(0.6)">
-        <path d={`M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${arcEnd[0]} ${arcEnd[1]}`}
-              fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" opacity="0.9" />
-        {majors.map(d => {
-          const [x1, y1] = point(d, r), [x2, y2] = point(d, r - 5)
-          return <line key={`maj-${d}`} x1={x1} y1={y1} x2={x2} y2={y2}
-            stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" opacity="0.75" />
-        })}
-        {minors.map(d => {
-          const [x1, y1] = point(d, r), [x2, y2] = point(d, r - 2.5)
-          return <line key={`min-${d}`} x1={x1} y1={y1} x2={x2} y2={y2}
-            stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" opacity="0.5" />
-        })}
-        <g fill="currentColor">
-          <path d="M 40 62 L 62 62 L 62 65 L 43.2 65 Z" />
-          <path d="M 40 62 L 44 62 L 53.2 30 L 52.4 28 L 51.6 28 L 50.8 30 Z" />
-          <circle cx={cx} cy={cy} r="2.6" />
-        </g>
-      </g>
+      {/* Dial — arc terminates exactly where the italic L's tip lies. */}
+      <path
+        d={`M ${PIVOT_X - radius} ${PIVOT_Y} A ${radius} ${radius} 0 0 1 ${arcEndX} ${arcEndY}`}
+        fill="none" stroke="currentColor" strokeWidth="1.2"
+        strokeLinecap="round" opacity="0.9"
+      />
+      {majors.map(deg => {
+        const [x1, y1] = pt(deg, radius)
+        const [x2, y2] = pt(deg, radius - radius * 0.18)
+        return <line key={`maj-${deg}`} x1={x1} y1={y1} x2={x2} y2={y2}
+          stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" opacity="0.75" />
+      })}
+      {minors.map(deg => {
+        const [x1, y1] = pt(deg, radius)
+        const [x2, y2] = pt(deg, radius - radius * 0.09)
+        return <line key={`min-${deg}`} x1={x1} y1={y1} x2={x2} y2={y2}
+          stroke="currentColor" strokeWidth="0.6" strokeLinecap="round" opacity="0.5" />
+      })}
+      <circle cx={PIVOT_X} cy={PIVOT_Y} r={radius * 0.09} fill="currentColor" />
 
-      {/* "ife" — right of L's foot, on the same baseline (y ≈ 46.2 after the 0.6 scale + translate 9). */}
-      {blocky(39, 46, 11, 'ife')}
-      {/* "Dashboard" — wraps to a second line, centred. */}
-      {blocky(40, 70, 11, 'Dashboard', 'middle')}
+      {/* Italic L (the needle). */}
+      <text
+        x={PIVOT_X} y={PIVOT_Y}
+        fontFamily={FONT_STACK} fontSize={FS1} fill="currentColor"
+        transform={`translate(${PIVOT_X} ${PIVOT_Y}) skewX(${SKEW_DEG}) translate(${-PIVOT_X} ${-PIVOT_Y})`}
+      >L</text>
+
+      {/* "ife" upright, same baseline. */}
+      <text x={REST_X} y={PIVOT_Y}
+        fontFamily={FONT_STACK} fontSize={FS1} fill="currentColor">ife</text>
+
+      {/* "Dashboard" centred on row 2. */}
+      <text x={40} y={ROW2_BASELINE}
+        fontFamily={FONT_STACK} fontSize={FS2}
+        textAnchor="middle" fill="currentColor">Dashboard</text>
     </svg>
   )
 }
