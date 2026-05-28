@@ -7,7 +7,9 @@
     "dev": "vite",
     "dev:local": "VITE_GALLERY_URL=http://localhost:5173 VITE_SEO_URL=http://localhost:5015 VITE_GROWYARD_URL=http://localhost:5174 VITE_LIFE_DASHBOARD_URL=http://localhost:5180 vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -15,7 +17,13 @@
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.0.5"
+    "jsdom": "^29.1.1",
+    "vite": "^6.0.5",
+    "vitest": "^2.1.9"
   }
 }

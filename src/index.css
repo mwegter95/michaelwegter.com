@@ -520,24 +520,33 @@ main { padding-top: var(--nav-height); }
   font-size: 13px;
 }
 
-/* Desktop area + status bar container */
+/* Desktop area + status bar container.
+   Flex column so the desktop (icons) and the status bar are in normal flow:
+   the status bar always reserves its own height and can never overlap icons.
+   If the icons don't fit the remaining space they scroll inside the desktop
+   rather than being covered. This replaces the old absolute-positioned status
+   bar + guessed percentage padding reserve, which broke at narrow widths. */
 .mac-screen-inner {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   position: relative;
   overflow: hidden;
   min-height: 0;
 }
 
-/* Desktop area */
+/* Desktop area — takes the space left above the status bar; scrolls if needed */
 .mac-desktop {
   width: 100%;
-  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
   background: #1a2830;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: auto;
   align-content: start;
-  padding: 14px 6px 160px 6px; /* top: visual gap above row 1; bottom: fixed px reserve for the expanded hover/tap description bar */
+  padding: 14px 6px 10px 6px; /* status bar reserves its own space in-flow now */
   gap: 3px;
   box-sizing: border-box;
 }
@@ -622,14 +631,11 @@ main { padding-top: var(--nav-height); }
   word-break: break-word;
 }
 
-/* Status bar — absolutely positioned so it never causes layout shift.
-   Fixed-px min/max so its size is predictable regardless of Mac scale,
-   and matches the reserve carved out by .mac-desktop padding-bottom. */
+/* Status bar — an in-flow flex child of .mac-screen-inner (not absolute), so it
+   always reserves its own height beneath the icons and can never cover them.
+   It grows with its content from min-height up to max-height, then scrolls. */
 .mac-status-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  flex: 0 0 auto;
   min-height: 56px;
   max-height: 150px;
   background: #c8c5b8;
@@ -639,7 +645,7 @@ main { padding-top: var(--nav-height); }
   flex-wrap: wrap;
   gap: 5px;
   padding: 5px 8px;
-  overflow: hidden;
+  overflow: auto;
   font-family: 'Courier New', monospace;
   font-size: 16px;
   color: #111;
@@ -1095,8 +1101,8 @@ main { padding-top: var(--nav-height); }
   .mac-icon-img { width: 44px; height: 44px; }
   .mac-icon-glyph { font-size: 20px; }
   .mac-icon-label { font-size: 11px; max-width: 72px; min-height: 2.6em; }
-  /* Increase bottom padding so icons clear the expanded status bar */
-  .mac-desktop { padding-bottom: 48%; }
+  /* Status bar is in normal flow (reserves its own space); no padding reserve needed */
+  .mac-desktop { padding-bottom: 8px; }
   /* Scale status bar text to fit mobile screen */
   .mac-status-bar { font-size: 9px; gap: 3px; padding: 4px 6px; min-height: 36px; max-height: 70px; }
   .mac-status-tag { font-size: 8px; padding: 1px 4px; }
