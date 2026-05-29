@@ -29,9 +29,9 @@ export const apps = [
   {
     id: 1,
     slug: "gallery-wall", // → michaelwegter.com/#/apps/gallery-wall (iframe)
-    title: "Stage: Room Planner and Visualizer",
+    title: "Stage: Room & Art Planner",
     description:
-      "Plan and visualize your space before touching a wall. Upload a room photo, calibrate perspective, and arrange art, furniture, tiles, paint, and fixtures to real-world scale.",
+      "Calibrate a room photo & arrange art on the wall to real scale.",
     category: "Creative",
     status: "live",
     href: GALLERY_URL,
@@ -83,7 +83,7 @@ export const apps = [
     slug: "life-dashboard",
     title: "Life Dashboard",
     description:
-      "A behavioral-science habit tracker. Build streaks, level up, earn badges, and surface dated reminders — with a chain-link visualisation of daily streaks across the week.",
+      "A behavioral-science habit tracker. Build streaks, level up, earn badges, & surface dated reminders.",
     category: "Productivity",
     status: "live",
     href: LIFE_DASHBOARD_URL,
