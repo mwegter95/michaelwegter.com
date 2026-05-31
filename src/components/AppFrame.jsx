@@ -12,10 +12,11 @@ export default function AppFrame({ appId }) {
   const app = apps.find(a => a.id === appId || a.slug === appId)
   const [loaded, setLoaded] = useState(false)
   // Auto-resize iframe to match its content height when the embedded app
-  // postMessages it. Currently used by life-dashboard to dodge an iOS Safari
-  // iframe scroll-bubbling bug where the user has to stop-and-scroll-again
-  // to reach content near the bottom. With the iframe sized to its content,
-  // the parent page does all the scrolling and the bug goes away.
+  // postMessages it. Used by apps that opt in (life-dashboard, growyard) to
+  // dodge an iOS Safari iframe scroll-bubbling bug where the user has to
+  // stop-and-scroll-again to reach content near the bottom. With the iframe
+  // sized to its content, the parent page does all the scrolling and the bug
+  // goes away.
   const [contentHeight, setContentHeight] = useState(null)
 
   // Keep the page title in sync
@@ -24,12 +25,18 @@ export default function AppFrame({ appId }) {
     return () => { document.title = 'Michael Wegter' }
   }, [app])
 
-  // Listen for height messages from embedded apps that opt in.
+  // Switching apps resets to flex-fill mode; the next app re-reports its own
+  // height if it opts in, so one app's height never leaks onto another.
+  useEffect(() => { setContentHeight(null) }, [appId])
+
+  // Listen for height messages from embedded apps that opt in. Any app can
+  // participate by posting { type: '<app>:height', height: <px> } to its
+  // parent (see e.g. life-dashboard / growyard src/main.jsx).
   useEffect(() => {
     function onMessage(e) {
       const d = e.data
       if (!d || typeof d !== 'object') return
-      if (d.type === 'life-dashboard:height' && typeof d.height === 'number') {
+      if (typeof d.type === 'string' && d.type.endsWith(':height') && typeof d.height === 'number') {
         // Cap to a sane maximum so a misbehaving app can't blow up layout.
         setContentHeight(Math.min(d.height, 12000))
       }
