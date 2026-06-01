@@ -16,6 +16,10 @@ const SEO_URL =
 const SPOTIFY_URL =
   import.meta.env.VITE_SPOTIFY_URL ||
   "https://api.michaelwegter.com/spotify/";
+// VITE_APPLE_MUSIC_URL overrides the Apple Music Tools iframe src for local dev.
+const APPLE_MUSIC_URL =
+  import.meta.env.VITE_APPLE_MUSIC_URL ||
+  "https://api.michaelwegter.com/apple/";
 const GROWYARD_URL =
   import.meta.env.VITE_GROWYARD_URL ||
   "https://mwegter95.github.io/growyard/";
@@ -91,5 +95,18 @@ export const apps = [
     icon: "🚗",         // emoji fallback; MacDesktop renders the SVG glyph when iconKey is set
     iconKey: "life-dashboard",
     frameStyle: "baroque",
+  },
+  {
+    id: 6,
+    slug: "apple-music-tools",
+    title: "Apple Music Tools",
+    description:
+      "Power tools for Apple Music: extract the track list from any public playlist (including shared links — no sign-in needed).",
+    category: "Music",
+    status: "live",
+    href: APPLE_MUSIC_URL,
+    color: "#FA243C", // Apple Music red
+    icon: "🎧",
+    frameStyle: "walnut",
   },
 ];
