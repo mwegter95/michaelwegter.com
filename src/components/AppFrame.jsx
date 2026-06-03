@@ -4,13 +4,14 @@
  * Used by the /apps/:appId route. Shows the app's navbar label + a back button,
  * then fills the remaining viewport with the app in an iframe.
  */
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { apps } from '../data/apps'
 
 export default function AppFrame({ appId }) {
   const app = apps.find(a => a.id === appId || a.slug === appId)
   const [loaded, setLoaded] = useState(false)
+  const iframeRef = useRef(null)
   // Auto-resize iframe to match its content height when the embedded app
   // postMessages it. Used by apps that opt in (life-dashboard, growyard) to
   // dodge an iOS Safari iframe scroll-bubbling bug where the user has to
@@ -44,6 +45,48 @@ export default function AppFrame({ appId }) {
     window.addEventListener('message', onMessage)
     return () => window.removeEventListener('message', onMessage)
   }, [])
+
+  // Tell embedded apps which part of their naturally-sized iframe is visible
+  // in the parent viewport, so in-app fixed UI (modals) can center there.
+  useEffect(() => {
+    if (!loaded) return
+    let raf = 0
+    const postViewport = () => {
+      raf = 0
+      const frame = iframeRef.current
+      if (!frame?.contentWindow) return
+      const rect = frame.getBoundingClientRect()
+      const vv = window.visualViewport
+      const viewportTop = vv?.offsetTop ?? 0
+      const viewportHeight = vv?.height ?? window.innerHeight
+      const barBottom = document.querySelector('.appframe-bar')?.getBoundingClientRect().bottom ?? viewportTop
+      const visibleTop = Math.max(viewportTop, barBottom)
+      const visibleBottom = viewportTop + viewportHeight
+      const top = Math.max(0, visibleTop - rect.top)
+      const bottom = Math.min(rect.height, visibleBottom - rect.top)
+      frame.contentWindow.postMessage({
+        type: 'appframe:viewport',
+        top,
+        height: Math.max(0, bottom - top),
+      }, '*')
+    }
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(postViewport)
+    }
+
+    schedule()
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    window.visualViewport?.addEventListener('scroll', schedule, { passive: true })
+    window.visualViewport?.addEventListener('resize', schedule)
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+      window.visualViewport?.removeEventListener('scroll', schedule)
+      window.visualViewport?.removeEventListener('resize', schedule)
+    }
+  }, [loaded, contentHeight])
 
   if (!app || !app.href || app.href === '#') {
     return (
@@ -86,6 +129,7 @@ export default function AppFrame({ appId }) {
         </div>
       )}
       <iframe
+        ref={iframeRef}
         src={app.href}
         title={app.title}
         className="appframe-iframe"
