@@ -46,6 +46,42 @@ export default function AppFrame({ appId }) {
     return () => window.removeEventListener('message', onMessage)
   }, [])
 
+  // ── Embedded-app auth bridge ───────────────────────────────────────────────
+  // Embedded apps are served from a different origin (e.g. mwegter95.github.io),
+  // so Safari treats their iframe localStorage as third-party and evicts it
+  // within a day or two — logging the user out long before their 7-day token
+  // expires. We keep each app's token in THIS page's first-party localStorage
+  // (durable) and hand it back when the app boots. The app mirrors its token up
+  // here on login/logout. See e.g. life-dashboard/src/lib/embedAuth.js.
+  useEffect(() => {
+    if (!app?.href) return
+    let appOrigin
+    try { appOrigin = new URL(app.href, window.location.href).origin } catch { return }
+    const tokenKey = `mw-embed-auth:${app.slug || app.id}`
+
+    const postToken = () => {
+      const frame = iframeRef.current
+      if (!frame?.contentWindow) return
+      let token = null
+      try { token = localStorage.getItem(tokenKey) } catch {}
+      frame.contentWindow.postMessage({ type: 'mw-embed-auth', action: 'token', token }, appOrigin)
+    }
+    function onMessage(e) {
+      if (e.origin !== appOrigin || e.source !== iframeRef.current?.contentWindow) return
+      const d = e.data
+      if (!d || d.type !== 'mw-embed-auth') return
+      if (d.action === 'request') postToken()
+      else if (d.action === 'set' && typeof d.token === 'string') {
+        try { localStorage.setItem(tokenKey, d.token) } catch {}
+      } else if (d.action === 'clear') {
+        try { localStorage.removeItem(tokenKey) } catch {}
+      }
+    }
+    window.addEventListener('message', onMessage)
+    if (loaded) postToken()   // covers an app whose boot request raced this listener
+    return () => window.removeEventListener('message', onMessage)
+  }, [app, loaded])
+
   // Tell embedded apps which part of their naturally-sized iframe is visible
   // in the parent viewport, so in-app fixed UI (modals) can center there.
   useEffect(() => {
