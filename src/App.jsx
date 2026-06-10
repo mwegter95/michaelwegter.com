@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import Apps from './pages/Apps'
 import Experience from './pages/Experience'
 import Resume from './pages/Resume'
+import WorkSamples from './pages/WorkSamples'
 import AppFrame from './components/AppFrame'
 
 // Reads :slug from the URL and passes it to AppFrame
@@ -24,6 +25,9 @@ export default function App() {
             <Route path="/apps" element={<Apps />} />
             {/* /apps/gallery-wall → full-viewport iframe of the app */}
             <Route path="/apps/:slug" element={<AppFramePage />} />
+            <Route path="/work-samples" element={<WorkSamples />} />
+            {/* /work-samples/<slug> → full-viewport iframe of the client demo */}
+            <Route path="/work-samples/:slug" element={<AppFramePage />} />
             <Route path="/experience" element={<Experience />} />
             <Route path="/resume" element={<Resume />} />
           </Routes>

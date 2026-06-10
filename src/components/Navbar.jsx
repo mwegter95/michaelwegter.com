@@ -120,6 +120,14 @@ export default function Navbar() {
             Résumé
           </Link>
 
+          {/* Work Samples */}
+          <Link
+            to="/work-samples"
+            className={`nav-link ${isActive('/work-samples') ? 'active' : ''}`}
+          >
+            Work Samples
+          </Link>
+
         </div>
 
         {/* Mobile toggle */}
@@ -152,6 +160,9 @@ export default function Navbar() {
           </Link>
           <Link to="/resume" className="nav-link" style={{ display: 'block', padding: '12px 0' }}>
             Résumé
+          </Link>
+          <Link to="/work-samples" className="nav-link" style={{ display: 'block', padding: '12px 0' }}>
+            Work Samples
           </Link>
         </div>
       )}
