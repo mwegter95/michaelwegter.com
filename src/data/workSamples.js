@@ -24,22 +24,24 @@
 //   date          ISO date the demo was built
 
 export const workSamples = [
-  // ── Template (copy, fill in, remove this comment) ────────────────────────
-  // {
-  //   id: 1,
-  //   slug: "dog-grooming-booking",
-  //   title: "Mobile Grooming Booking Widget",
-  //   description:
-  //     "Embeddable booking widget that prices services and blocks slots by appointment length.",
-  //   category: "Utility",
-  //   status: "live",
-  //   href: import.meta.env.BASE_URL + "demos/dog-grooming-booking/",
-  //   color: "#12b4c8",
-  //   icon: "🐕",
-  //   frameStyle: "walnut",
-  //   client: "Mobile dog-grooming business",
-  //   postingSummary: "Simple booking + availability widget for a Squarespace site.",
-  //   builtFor: "Booking widget (fixed-price, 2 to 3 weeks)",
-  //   date: "2026-06-10",
-  // },
+  {
+    id: 1,
+    slug: "aba-services-website",
+    title: "Bright Path ABA",
+    description:
+      "A warm, light-mode marketing site for a fictional ABA clinic, with an interactive services explorer, BCBA team strip, FAQ accordion, and a HIPAA-aware intake form.",
+    category: "Creative",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/aba-services-website/",
+    color: "#e8b820",
+    icon: "🌿",
+    frameStyle: "walnut",
+    client: "Demo for Upwork posting",
+    postingSummary:
+      "ABA clinic needs a visually appealing, user-friendly website that communicates services and values, with design and development handled as one package.",
+    builtFor: "ABA Services Website Design and Development (Upwork)",
+    date: "2026-06-10",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
