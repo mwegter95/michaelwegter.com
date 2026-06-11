@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rental Cash Flow and Cap Rate Calculator</title>
+  <meta name="description" content="A live rental property analyzer that computes NOI, cap rate, cash-on-cash return, and monthly cash flow on every keystroke, with a color-coded deal verdict." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Space+Grotesk:wght@500;600;700&display=swap" />
+  <link rel="stylesheet" href="./assets/styles.css" />
+</head>
+<body>
+  <main class="app" id="main">
+
+    <header class="masthead">
+      <p class="eyebrow">Investor Tools / Rental Analyzer</p>
+      <h1>Rental Cash Flow &amp; Cap Rate Calculator</h1>
+      <p class="lede">Enter a property and the numbers update on every keystroke. NOI, cap rate, cash-on-cash, and monthly cash flow recompute live, with a plain-language verdict so you can tell a strong deal from a thin one at a glance.</p>
+    </header>
+
+    <div class="layout">
+
+      <!-- INPUTS -->
+      <section class="panel inputs" aria-label="Property inputs">
+        <h2 class="panel-title">Property &amp; Financing</h2>
+
+        <div class="field-grid">
+          <label class="field">
+            <span class="field-label">Purchase price</span>
+            <span class="input-wrap"><span class="prefix">$</span><input type="number" id="purchasePrice" value="350000" min="0" step="1000" inputmode="numeric" /></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Down payment</span>
+            <span class="input-wrap"><input type="number" id="downPct" value="20" min="0" max="100" step="1" inputmode="decimal" /><span class="suffix">%</span></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Interest rate</span>
+            <span class="input-wrap"><input type="number" id="interestRate" value="7.0" min="0" max="25" step="0.125" inputmode="decimal" /><span class="suffix">%</span></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Loan term</span>
+            <span class="input-wrap"><input type="number" id="loanTerm" value="30" min="1" max="40" step="1" inputmode="numeric" /><span class="suffix">yrs</span></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Monthly rent</span>
+            <span class="input-wrap"><span class="prefix">$</span><input type="number" id="monthlyRent" value="2200" min="0" step="25" inputmode="numeric" /></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Units / doors</span>
+            <span class="input-wrap"><input type="number" id="numUnits" value="1" min="1" max="50" step="1" inputmode="numeric" /></span>
+          </label>
+        </div>
+
+        <h2 class="panel-title sub">Operating Inputs</h2>
+        <div class="field-grid">
+          <label class="field">
+            <span class="field-label">Annual taxes</span>
+            <span class="input-wrap"><span class="prefix">$</span><input type="number" id="taxes" value="4375" min="0" step="25" inputmode="numeric" /></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Annual insurance</span>
+            <span class="input-wrap"><span class="prefix">$</span><input type="number" id="insurance" value="1750" min="0" step="25" inputmode="numeric" /></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Vacancy rate</span>
+            <span class="input-wrap"><input type="number" id="vacancy" value="8" min="0" max="50" step="0.5" inputmode="decimal" /><span class="suffix">%</span></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Management</span>
+            <span class="input-wrap"><input type="number" id="mgmt" value="9" min="0" max="30" step="0.5" inputmode="decimal" /><span class="suffix">%</span></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Repairs</span>
+            <span class="input-wrap"><input type="number" id="repairs" value="5" min="0" max="30" step="0.5" inputmode="decimal" /><span class="suffix">%</span></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">CapEx reserve</span>
+            <span class="input-wrap"><input type="number" id="capex" value="5" min="0" max="30" step="0.5" inputmode="decimal" /><span class="suffix">%</span></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">HOA / other (annual)</span>
+            <span class="input-wrap"><span class="prefix">$</span><input type="number" id="hoa" value="0" min="0" step="25" inputmode="numeric" /></span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Closing costs</span>
+            <span class="input-wrap"><input type="number" id="closing" value="2" min="0" max="10" step="0.25" inputmode="decimal" /><span class="suffix">%</span></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- RESULTS -->
+      <section class="panel results" aria-label="Results" aria-live="polite">
+
+        <div class="verdict" id="verdict">
+          <p class="eyebrow">Deal verdict</p>
+          <div class="verdict-chip" id="verdictChip">
+            <span class="dot" id="verdictDot"></span>
+            <span id="verdictLabel">Calculating</span>
+          </div>
+          <p class="verdict-note" id="verdictNote"></p>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric" id="m-cashflow">
+            <p class="metric-label">Monthly cash flow</p>
+            <p class="metric-value" id="cashflowMonthly">$0</p>
+            <p class="metric-sub" id="cashflowAnnual">$0 / yr</p>
+          </div>
+          <div class="metric" id="m-cap">
+            <p class="metric-label">Cap rate</p>
+            <p class="metric-value" id="capRate">0%</p>
+            <p class="metric-sub" id="capRateNote"></p>
+          </div>
+          <div class="metric" id="m-coc">
+            <p class="metric-label">Cash-on-cash</p>
+            <p class="metric-value" id="cocReturn">0%</p>
+            <p class="metric-sub" id="cocNote"></p>
+          </div>
+          <div class="metric" id="m-noi">
+            <p class="metric-label">NOI (annual)</p>
+            <p class="metric-value" id="noi">$0</p>
+            <p class="metric-sub">Before debt service</p>
+          </div>
+        </div>
+
+        <!-- Revenue vs expense visual -->
+        <div class="breakdown">
+          <p class="eyebrow">Where the income goes (annual)</p>
+          <div class="bars" id="bars" role="img" aria-label="Revenue versus expenses breakdown">
+            <div class="bar-track">
+              <div class="bar-seg seg-opex" id="segOpex" title="Operating expenses"></div>
+              <div class="bar-seg seg-debt" id="segDebt" title="Debt service"></div>
+              <div class="bar-seg seg-cash seg-cash-pos" id="segCash" title="Cash flow"></div>
+            </div>
+          </div>
+          <ul class="legend">
+            <li><span class="swatch sw-opex"></span>Operating exp. <b id="legOpex">$0</b></li>
+            <li><span class="swatch sw-debt"></span>Debt service <b id="legDebt">$0</b></li>
+            <li><span class="swatch sw-cash"></span>Cash flow <b id="legCash">$0</b></li>
+            <li class="leg-total">Gross income <b id="legGross">$0</b></li>
+          </ul>
+        </div>
+
+        <!-- Sensitivity slider -->
+        <div class="sensitivity">
+          <div class="sens-head">
+            <p class="eyebrow">Sensitivity: monthly rent</p>
+            <p class="sens-readout"><span id="sliderRent">$2,200</span> &rarr; cash flow <b id="sliderCash">$0</b>/mo</p>
+          </div>
+          <input type="range" id="rentSlider" min="800" max="5000" step="25" value="2200" aria-label="Adjust monthly rent" />
+          <p class="sens-hint" id="breakevenHint"></p>
+        </div>
+
+        <!-- Educational hints -->
+        <div class="hints">
+          <div class="hint" id="rule1">
+            <p class="hint-head"><span class="hint-chip" id="rule1Chip">1% rule</span></p>
+            <p class="hint-body" id="rule1Body"></p>
+          </div>
+          <div class="hint" id="rule50">
+            <p class="hint-head"><span class="hint-chip" id="rule50Chip">50% rule</span></p>
+            <p class="hint-body" id="rule50Body"></p>
+          </div>
+        </div>
+
+        <p class="cash-needed" id="cashNeeded"></p>
+
+        <p class="disclaimer">Educational tool only. Not investment advice. Heuristics like the 1% and 50% rules are quick screens, not decisions.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="./assets/app.js"></script>
+</body>
+</html>

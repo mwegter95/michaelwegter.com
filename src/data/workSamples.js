@@ -44,4 +44,24 @@ export const workSamples = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 2,
+    slug: "grocapitus-investor-tools",
+    title: "Rental Deal Analyzer",
+    description:
+      "A live real estate investor calculator that recomputes NOI, cap rate, cash-on-cash return, and monthly cash flow on every keystroke, with a color-coded deal verdict and a rent sensitivity slider.",
+    category: "Data",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/grocapitus-investor-tools/",
+    color: "#12b4c8",
+    icon: "🏠",
+    frameStyle: "baroque",
+    client: "Grocapitus Investments",
+    postingSummary:
+      "Data-driven multifamily firm wants a vibe-coder to turn concepts into lightweight, AI-built educational investor tools, fast and under CEO direction.",
+    builtFor: "AI-Powered Real Estate Investor Tools (Upwork)",
+    date: "2026-06-11",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
