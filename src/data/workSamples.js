@@ -64,4 +64,24 @@ export const workSamples = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 3,
+    slug: "repsetta-fitness",
+    title: "Repsetta",
+    description:
+      "A real React Native strength-training app, exported to web. Pick exercises from a catalog, log sets with reps and weight, run a live rest timer between sets, and save the session to a Flask backend. Includes a guided Today program and a Progress view with an SVG volume chart.",
+    category: "Productivity",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/repsetta-fitness/",
+    color: "#12b4c8",
+    icon: "🏋️",
+    frameStyle: "walnut",
+    client: "Repsetta (Upwork)",
+    postingSummary:
+      "Early-stage fitness startup seeks a hybrid mobile developer to build high-quality, user-friendly iOS and Android apps in React Native, for a long-term engagement.",
+    builtFor: "Hybrid Mobile App Developer for Fitness Startup (Upwork)",
+    date: "2026-06-12",
+    proposalDeckUrl: "demos/repsetta-fitness/proposal/deck.pdf",
+    proposalPageUrl: "demos/repsetta-fitness/proposal/one-pager.pdf",
+  },
 ];
