@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Print Detail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <!-- ─── Header ───────────────────────────────────────────────────────── -->
+  <header class="site-header">
+    <a href="index.html" class="site-logo">Aperture<span>.</span></a>
+    <nav class="header-actions">
+      <a href="index.html" class="header-link">Gallery</a>
+      <button class="cart-btn" id="cart-btn" aria-label="Open cart" aria-haspopup="dialog">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             aria-hidden="true">
+          <circle cx="9" cy="21" r="1"/>
+          <circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        Cart
+        <span class="cart-badge" aria-live="polite"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ─── Product page ─────────────────────────────────────────────────── -->
+  <main class="product-page">
+
+    <!-- Left: editorial image -->
+    <div class="product-image-col">
+      <img class="product-editorial-img" id="product-img"
+           src="https://picsum.photos/seed/art1/800/1000"
+           alt="Print" loading="eager">
+    </div>
+
+    <!-- Right: info -->
+    <div class="product-info-col">
+      <a href="index.html" class="back-link">&#8592; Back to Gallery</a>
+
+      <p class="product-category">Fine Art Photography</p>
+      <h1 class="product-title" id="product-title">Loading...</h1>
+      <p class="product-artist" id="product-artist"></p>
+
+      <div class="product-edition" id="product-edition"></div>
+
+      <!-- Print metadata -->
+      <div class="product-meta">
+        <div class="product-meta-item">
+          <span class="product-meta-label">Medium</span>
+          <span class="product-meta-value" id="meta-medium"></span>
+        </div>
+        <div class="product-meta-item">
+          <span class="product-meta-label">Substrate</span>
+          <span class="product-meta-value" id="meta-substrate"></span>
+        </div>
+        <div class="product-meta-item">
+          <span class="product-meta-label">Edition Type</span>
+          <span class="product-meta-value" id="meta-edition-type"></span>
+        </div>
+        <div class="product-meta-item">
+          <span class="product-meta-label">Edition Number</span>
+          <span class="product-meta-value" id="meta-edition-num"></span>
+        </div>
+      </div>
+
+      <!-- Size selector -->
+      <p class="size-section-label">Select Size (inches)</p>
+      <div class="size-grid">
+        <button class="size-btn" aria-pressed="false">8 x 10</button>
+        <button class="size-btn" aria-pressed="false">12 x 16</button>
+        <button class="size-btn" aria-pressed="false">16 x 20</button>
+        <button class="size-btn" aria-pressed="false">24 x 30</button>
+      </div>
+
+      <!-- Price -->
+      <div class="price-display">
+        <p class="price-label">Price</p>
+        <p class="price-value" id="price-display">$--</p>
+      </div>
+
+      <!-- Add to cart -->
+      <button class="add-to-cart-btn" id="add-to-cart-btn">Add to Cart</button>
+    </div>
+  </main>
+
+  <!-- ─── Toast ────────────────────────────────────────────────────────── -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ─── Cart modal ────────────────────────────────────────────────────── -->
+  <div class="modal-overlay" id="cart-modal-overlay" role="dialog"
+       aria-modal="true" aria-labelledby="cart-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="cart-modal-title">Your Cart</h2>
+        <button class="modal-close" id="cart-modal-close" aria-label="Close cart">&#x2715;</button>
+      </div>
+      <div class="modal-body" id="cart-modal-body">
+        <p class="cart-empty">Your cart is empty.</p>
+      </div>
+      <div class="modal-footer" id="cart-modal-footer" style="display:none">
+        <div class="cart-total">
+          <span class="cart-total-label">Total</span>
+          <span class="cart-total-value" id="cart-total-value">$0</span>
+        </div>
+        <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Login modal ───────────────────────────────────────────────────── -->
+  <div class="modal-overlay" id="login-modal-overlay" role="dialog"
+       aria-modal="true" aria-labelledby="login-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="login-modal-title">Sign In to Checkout</h2>
+        <button class="modal-close modal-close-login" aria-label="Close">&#x2715;</button>
+      </div>
+      <div class="modal-body">
+        <form class="login-form" novalidate>
+          <div class="login-error" role="alert"></div>
+          <div class="form-group">
+            <label class="form-label" for="login-email">Email</label>
+            <input class="form-input" type="email" id="login-email"
+                   name="email" placeholder="you@example.com" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-password">Password</label>
+            <input class="form-input" type="password" id="login-password"
+                   name="password" placeholder="Any password works" autocomplete="current-password">
+          </div>
+          <button class="login-btn" type="submit">Sign In</button>
+          <p class="login-hint">Demo: any email and password will work.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Order confirmation modal ──────────────────────────────────────── -->
+  <div class="modal-overlay" id="confirm-modal-overlay" role="dialog"
+       aria-modal="true" aria-labelledby="confirm-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="confirm-modal-title">Order Confirmed</h2>
+        <button class="modal-close modal-close-confirm" aria-label="Close">&#x2715;</button>
+      </div>
+      <div class="modal-body">
+        <div class="order-confirm">
+          <div class="order-icon">&#10003;</div>
+          <p class="order-id">Order ID</p>
+          <h3 class="order-title">Thank you for your order!</h3>
+          <p class="order-detail">Confirmation sent to: <strong class="order-email"></strong></p>
+          <p class="order-detail">Estimated delivery: <span class="order-ship"></span></p>
+          <button class="order-close-btn">Continue Shopping</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Coaching trigger ──────────────────────────────────────────────── -->
+  <button class="coaching-trigger" id="coaching-trigger" aria-expanded="false"
+          aria-controls="coaching-panel">
+    &#128218; Shopify Code Panel
+  </button>
+
+  <!-- ─── Coaching panel (product page) ────────────────────────────────── -->
+  <aside id="coaching-panel" class="coaching-panel" aria-label="Shopify code coaching panel">
+    <div class="coaching-panel-header">
+      <span class="coaching-panel-title">Shopify Code Panel -- Product Page</span>
+      <button class="coaching-close" id="coaching-close" aria-label="Close panel">&#x2715;</button>
+    </div>
+
+    <div class="coaching-tabs" role="tablist">
+      <button class="coaching-tab active" role="tab" aria-selected="true"
+              data-pane="tab-prompt">The Prompt</button>
+      <button class="coaching-tab" role="tab" aria-selected="false"
+              data-pane="tab-review">What to Review</button>
+      <button class="coaching-tab" role="tab" aria-selected="false"
+              data-pane="tab-errors">Common Errors</button>
+    </div>
+
+    <div class="coaching-content">
+
+      <!-- Tab 1: The Prompt -->
+      <div id="tab-prompt" class="tab-pane active" role="tabpanel">
+        <pre class="coaching-pre">Write a Shopify OS 2.0 Liquid section for a fine-art print
+product page.
+Requirements:
+- Section name: "Print Product Detail"
+- Editorial image using product.featured_image
+- Print size variant selector (iterate product.variants)
+- Edition metafields: namespace "print_details", keys
+    edition_type, edition_size, edition_number
+- Add to cart form targeting the selected variant
+- Output the complete product.liquid file, no dependencies</pre>
+      </div>
+
+      <!-- Tab 2: What to Review -->
+      <div id="tab-review" class="tab-pane" role="tabpanel">
+        <ol class="coaching-list">
+          <li>
+            <span class="num">1</span>
+            <span>Metafield access: use <code>product.metafields.print_details.edition_type.value</code> (OS 2.0 dot notation)</span>
+          </li>
+          <li>
+            <span class="num">2</span>
+            <span>Variant loop: iterate <code>product.variants</code> to build size buttons, not <code>product.options</code></span>
+          </li>
+          <li>
+            <span class="num">3</span>
+            <span>Add to cart: form needs <code>action="/cart/add"</code>, hidden <code>name="id"</code> input set to <code>{{ variant.id }}</code></span>
+          </li>
+          <li>
+            <span class="num">4</span>
+            <span>Image loading: <code>product.featured_image | image_url: width: 1200 | image_tag: loading: "lazy"</code></span>
+          </li>
+          <li>
+            <span class="num">5</span>
+            <span>JSON-LD: include product schema markup for SEO -- Claude often forgets this step</span>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Tab 3: Common Errors -->
+      <div id="tab-errors" class="tab-pane" role="tabpanel">
+        <ol class="coaching-list">
+          <li>
+            <span class="num">1</span>
+            <span>Using bracket syntax <code>product.metafields["print_details"]["edition_type"]</code> -- Liquid requires dot notation only</span>
+          </li>
+          <li>
+            <span class="num">2</span>
+            <span>Forgetting the <code>{% form 'product', product %}</code> wrapper -- the Add to Cart button will silently fail without it</span>
+          </li>
+          <li>
+            <span class="num">3</span>
+            <span>Reading <code>variant.price</code> in JavaScript without dividing by 100 -- Shopify returns prices in cents (e.g., 18000 = $180)</span>
+          </li>
+        </ol>
+      </div>
+
+    </div><!-- /coaching-content -->
+  </aside>
+
+  <script type="module" src="assets/product.js"></script>
+</body>
+</html>

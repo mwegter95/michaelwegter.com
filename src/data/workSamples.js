@@ -84,4 +84,24 @@ export const workSamples = [
     proposalDeckUrl: "demos/repsetta-fitness/proposal/deck.pdf",
     proposalPageUrl: "demos/repsetta-fitness/proposal/one-pager.pdf",
   },
+  {
+    id: 4,
+    slug: "art-print-storefront",
+    title: "Art Print Storefront",
+    description:
+      "A Shopify OS 2.0-style fine-art print store with a horizontal scroll gallery, editorial product pages, JWT login, and mock checkout. Built to demo the tutoring workflow the client will learn.",
+    category: "Shopify",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/art-print-storefront/",
+    color: "#e8b820",
+    icon: "🖼️",
+    frameStyle: "walnut",
+    client: "Upwork / Vibe Claude Coding Tutor",
+    postingSummary:
+      "Build and teach a custom editorial Shopify storefront for fine-art print selling, using Claude as a core part of the workflow.",
+    builtFor: "Shopify Liquid Tutoring Proposal (Upwork)",
+    date: "2026-06-13",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];

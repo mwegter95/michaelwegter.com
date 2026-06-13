@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fine Art Prints Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <!-- ─── Header ───────────────────────────────────────────────────────── -->
+  <header class="site-header">
+    <a href="index.html" class="site-logo">Aperture<span>.</span></a>
+    <nav class="header-actions">
+      <a href="index.html" class="header-link" aria-current="page">Gallery</a>
+      <a href="product.html?id=1" class="cart-btn" aria-label="View cart">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             aria-hidden="true">
+          <circle cx="9" cy="21" r="1"/>
+          <circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        Cart
+        <span class="cart-badge" aria-live="polite"></span>
+      </a>
+    </nav>
+  </header>
+
+  <!-- ─── Gallery ──────────────────────────────────────────────────────── -->
+  <main class="gallery-page">
+    <p class="gallery-eyebrow">Fine Art Photography Prints</p>
+    <h1 class="gallery-title">The Collection</h1>
+
+    <div class="gallery-controls">
+      <span class="gallery-count" id="gallery-count">12 works</span>
+      <div class="arrow-group">
+        <button class="arrow-btn" id="btn-prev" aria-label="Scroll left">&#8592;</button>
+        <button class="arrow-btn" id="btn-next" aria-label="Scroll right">&#8594;</button>
+      </div>
+    </div>
+
+    <!-- Cards injected by gallery.js -->
+    <div class="gallery-track" id="gallery-track" role="list" aria-label="Print gallery"></div>
+  </main>
+
+  <!-- ─── Toast ────────────────────────────────────────────────────────── -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ─── Coaching trigger ──────────────────────────────────────────────── -->
+  <button class="coaching-trigger" id="coaching-trigger" aria-expanded="false"
+          aria-controls="coaching-panel">
+    &#128218; Shopify Code Panel
+  </button>
+
+  <!-- ─── Coaching panel ────────────────────────────────────────────────── -->
+  <aside id="coaching-panel" class="coaching-panel" aria-label="Shopify code coaching panel">
+    <div class="coaching-panel-header">
+      <span class="coaching-panel-title">Shopify Code Panel</span>
+      <button class="coaching-close" id="coaching-close" aria-label="Close panel">&#x2715;</button>
+    </div>
+
+    <div class="coaching-tabs" role="tablist">
+      <button class="coaching-tab active" role="tab" aria-selected="true"
+              data-pane="tab-prompt">The Prompt</button>
+      <button class="coaching-tab" role="tab" aria-selected="false"
+              data-pane="tab-review">What to Review</button>
+      <button class="coaching-tab" role="tab" aria-selected="false"
+              data-pane="tab-errors">Common Errors</button>
+    </div>
+
+    <div class="coaching-content">
+
+      <!-- Tab 1: The Prompt -->
+      <div id="tab-prompt" class="tab-pane active" role="tabpanel">
+        <pre class="coaching-pre">Write a Shopify OS 2.0 Liquid section for a horizontal-scrolling print gallery.
+Requirements:
+- Section name: "Horizontal Gallery"
+- Each gallery item is a block of type "print" with settings:
+    image_picker, text (title), text (base_price)
+- CSS: display:grid, grid-auto-flow:column, overflow-x:auto,
+    scroll-snap-type:x mandatory
+- JS: drag-to-scroll with mousedown/mousemove tracking,
+    prev/next arrow buttons
+- Add {% schema %} with max_blocks: 20 and a preset
+    named "Horizontal Gallery"
+- Output the complete .liquid file, no external dependencies</pre>
+      </div>
+
+      <!-- Tab 2: What to Review -->
+      <div id="tab-review" class="tab-pane" role="tabpanel">
+        <ol class="coaching-list">
+          <li>
+            <span class="num">1</span>
+            <span>Schema: confirm <code>"type": "image_picker"</code> -- NOT <code>"type": "image"</code> (common LLM error)</span>
+          </li>
+          <li>
+            <span class="num">2</span>
+            <span>Block attributes: every block div needs <code>{{ block.shopify_attributes }}</code> for theme editor targeting</span>
+          </li>
+          <li>
+            <span class="num">3</span>
+            <span>Image filter: use <code>| image_url: width: 800 | image_tag</code> (OS 2.0 syntax), not the deprecated <code>| img_url</code></span>
+          </li>
+          <li>
+            <span class="num">4</span>
+            <span>Preset: the <code>presets</code> array must exist for the section to appear in the "Add section" panel</span>
+          </li>
+          <li>
+            <span class="num">5</span>
+            <span>Mobile: test <code>overflow-x: auto</code> on Safari iOS -- may need <code>-webkit-overflow-scrolling: touch</code></span>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Tab 3: Common Errors -->
+      <div id="tab-errors" class="tab-pane" role="tabpanel">
+        <ol class="coaching-list">
+          <li>
+            <span class="num">1</span>
+            <span>Using <code>| img_url</code> instead of <code>| image_url: width: N | image_tag</code> -- deprecated in OS 2.0, breaks image rendering</span>
+          </li>
+          <li>
+            <span class="num">2</span>
+            <span>Missing <code>{{ block.shopify_attributes }}</code> on block wrapper divs -- makes blocks un-selectable in the theme editor</span>
+          </li>
+          <li>
+            <span class="num">3</span>
+            <span>Placing <code>{% schema %}</code> inside an <code>{% if %}</code> block -- schema must be top-level and appear exactly once per section file</span>
+          </li>
+        </ol>
+      </div>
+
+    </div><!-- /coaching-content -->
+  </aside>
+
+  <script type="module" src="assets/gallery.js"></script>
+</body>
+</html>
