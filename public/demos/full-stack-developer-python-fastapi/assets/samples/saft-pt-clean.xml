@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuditFile xmlns="urn:OECD:StandardAuditFile-Tax:PT_1.04_01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Header>
+    <AuditFileVersion>1.04_01</AuditFileVersion>
+    <CompanyID>PT123456789</CompanyID>
+    <TaxRegistrationNumber>123456789</TaxRegistrationNumber>
+    <TaxAccountingBasis>F</TaxAccountingBasis>
+    <CompanyName>Empresa Exemplo, Lda</CompanyName>
+    <BusinessName>Empresa Exemplo</BusinessName>
+    <FiscalYear>2023</FiscalYear>
+    <StartDate>2023-01-01</StartDate>
+    <EndDate>2023-12-31</EndDate>
+    <CurrencyCode>EUR</CurrencyCode>
+    <DateCreated>2023-12-31</DateCreated>
+    <TaxEntity>Global</TaxEntity>
+    <ProductID>ReconConsole/1.0</ProductID>
+    <ProductVersion>1.0</ProductVersion>
+  </Header>
+  <MasterFiles>
+    <GeneralLedgerAccounts>
+      <Account><AccountID>11</AccountID><AccountDescription>Conta 11</AccountDescription><OpeningDebitBalance>0.00</OpeningDebitBalance><OpeningCreditBalance>0.00</OpeningCreditBalance><ClosingDebitBalance>0.00</ClosingDebitBalance><ClosingCreditBalance>0.00</ClosingCreditBalance><GroupingCategory>GM</GroupingCategory></Account>
+      <Account><AccountID>21100001</AccountID><AccountDescription>Conta 21100001</AccountDescription><OpeningDebitBalance>0.00</OpeningDebitBalance><OpeningCreditBalance>0.00</OpeningCreditBalance><ClosingDebitBalance>0.00</ClosingDebitBalance><ClosingCreditBalance>0.00</ClosingCreditBalance><GroupingCategory>GM</GroupingCategory></Account>
+      <Account><AccountID>22100001</AccountID><AccountDescription>Conta 22100001</AccountDescription><OpeningDebitBalance>0.00</OpeningDebitBalance><OpeningCreditBalance>0.00</OpeningCreditBalance><ClosingDebitBalance>0.00</ClosingDebitBalance><ClosingCreditBalance>0.00</ClosingCreditBalance><GroupingCategory>GM</GroupingCategory></Account>
+      <Account><AccountID>24320000</AccountID><AccountDescription>Conta 24320000</AccountDescription><OpeningDebitBalance>0.00</OpeningDebitBalance><OpeningCreditBalance>0.00</OpeningCreditBalance><ClosingDebitBalance>0.00</ClosingDebitBalance><ClosingCreditBalance>0.00</ClosingCreditBalance><GroupingCategory>GM</GroupingCategory></Account>
+      <Account><AccountID>71100000</AccountID><AccountDescription>Conta 71100000</AccountDescription><OpeningDebitBalance>0.00</OpeningDebitBalance><OpeningCreditBalance>0.00</OpeningCreditBalance><ClosingDebitBalance>0.00</ClosingDebitBalance><ClosingCreditBalance>0.00</ClosingCreditBalance><GroupingCategory>GM</GroupingCategory></Account>
+    </GeneralLedgerAccounts>
+    <Customers>
+      <Customer><CustomerID>C001</CustomerID><AccountID>21100001</AccountID><CustomerTaxID>987654301</CustomerTaxID><CompanyName>Cliente C001, SA</CompanyName><BillingAddress><AddressDetail>Rua C001</AddressDetail><City>Lisboa</City><PostalCode>1000-001</PostalCode><Country>PT</Country></BillingAddress></Customer>
+      <Customer><CustomerID>C002</CustomerID><AccountID>21100001</AccountID><CustomerTaxID>987654302</CustomerTaxID><CompanyName>Cliente C002, SA</CompanyName><BillingAddress><AddressDetail>Rua C002</AddressDetail><City>Lisboa</City><PostalCode>1000-001</PostalCode><Country>PT</Country></BillingAddress></Customer>
+      <Customer><CustomerID>C003</CustomerID><AccountID>21100001</AccountID><CustomerTaxID>987654303</CustomerTaxID><CompanyName>Cliente C003, SA</CompanyName><BillingAddress><AddressDetail>Rua C003</AddressDetail><City>Lisboa</City><PostalCode>1000-001</PostalCode><Country>PT</Country></BillingAddress></Customer>
+      <Customer><CustomerID>C004</CustomerID><AccountID>21100001</AccountID><CustomerTaxID>987654304</CustomerTaxID><CompanyName>Cliente C004, SA</CompanyName><BillingAddress><AddressDetail>Rua C004</AddressDetail><City>Lisboa</City><PostalCode>1000-001</PostalCode><Country>PT</Country></BillingAddress></Customer>
+      <Customer><CustomerID>C005</CustomerID><AccountID>21100001</AccountID><CustomerTaxID>987654305</CustomerTaxID><CompanyName>Cliente C005, SA</CompanyName><BillingAddress><AddressDetail>Rua C005</AddressDetail><City>Lisboa</City><PostalCode>1000-001</PostalCode><Country>PT</Country></BillingAddress></Customer>
+      <Customer><CustomerID>C006</CustomerID><AccountID>21100001</AccountID><CustomerTaxID>987654306</CustomerTaxID><CompanyName>Cliente C006, SA</CompanyName><BillingAddress><AddressDetail>Rua C006</AddressDetail><City>Lisboa</City><PostalCode>1000-001</PostalCode><Country>PT</Country></BillingAddress></Customer>
+    </Customers>
+    <TaxTable>
+      <TaxTableEntry><TaxType>IVA</TaxType><TaxCountryRegion>PT</TaxCountryRegion><TaxCode>NOR</TaxCode><Description>Taxa Normal</Description><TaxPercentage>23.00</TaxPercentage></TaxTableEntry>
+    </TaxTable>
+  </MasterFiles>
+  <GeneralLedgerEntries>
+    <NumberOfEntries>10</NumberOfEntries>
+    <TotalDebit>12853.50</TotalDebit>
+    <TotalCredit>12853.50</TotalCredit>
+    <Journal>
+      <JournalID>VD</JournalID>
+      <Description>Vendas</Description>
+      <Transaction>
+        <TransactionID>2023-0001</TransactionID>
+        <Period>1</Period>
+        <TransactionDate>2023-01-01</TransactionDate>
+        <SourceID>User01</SourceID>
+        <Description>Factura 2023/1</Description>
+        <TransactionType>N</TransactionType>
+        <GLPostingDate>2023-01-01</GLPostingDate>
+        <CustomerID>C001</CustomerID>
+        <Line><RecordID>1</RecordID><AccountID>21100001</AccountID><Description>Faturacao cliente</Description><DebitAmount>1230.00</DebitAmount></Line>
+        <Line><RecordID>2</RecordID><AccountID>71100000</AccountID><Description>Rendimento</Description><CreditAmount>1000.00</CreditAmount></Line>
+        <Line><RecordID>3</RecordID><AccountID>24320000</AccountID><Description>IVA liquidado</Description><CreditAmount>230.00</CreditAmount></Line>
+      </Transaction>
+      <Transaction>
+        <TransactionID>2023-0002</TransactionID>
+        <Period>2</Period>
+        <TransactionDate>2023-02-02</TransactionDate>
+        <SourceID>User01</SourceID>
+        <Description>Factura 2023/2</Description>
+        <TransactionType>N</TransactionType>
+        <GLPostingDate>2023-02-02</GLPostingDate>
+        <CustomerID>C002</CustomerID>
+        <Line><RecordID>1</RecordID><AccountID>21100001</AccountID><Description>Faturacao cliente</Description><DebitAmount>1242.30</DebitAmount></Line>
+        <Line><RecordID>2</RecordID><AccountID>71100000</AccountID><Description>Rendimento</Description><CreditAmount>1010.00</CreditAmount></Line>
+        <Line><RecordID>3</RecordID><AccountID>24320000</AccountID><Description>IVA liquidado</Description><CreditAmount>232.30</CreditAmount></Line>
+      </Transaction>
+      <Transaction>
+        <TransactionID>2023-0003</TransactionID>
+        <Period>3</Period>
+        <TransactionDate>2023-03-03</TransactionDate>
+        <SourceID>User01</SourceID>
+        <Description>Factura 2023/3</Description>
+        <TransactionType>N</TransactionType>
+        <GLPostingDate>2023-03-03</GLPostingDate>
+        <CustomerID>C003</CustomerID>
+        <Line><RecordID>1</RecordID><AccountID>21100001</AccountID><Description>Faturacao cliente</Description><DebitAmount>1254.60</DebitAmount></Line>
+        <Line><RecordID>2</RecordID><AccountID>71100000</AccountID><Description>Rendimento</Description><CreditAmount>1020.00</CreditAmount></Line>
+        <Line><RecordID>3</RecordID><AccountID>24320000</AccountID><Description>IVA liquidado</Description><CreditAmount>234.60</CreditAmount></Line>
+      </Transaction>
+      <Transaction>
+        <TransactionID>2023-0004</TransactionID>
+        <Period>4</Period>
+        <TransactionDate>2023-04-04</TransactionDate>
+        <SourceID>User01</SourceID>
+        <Description>Factura 2023/4</Description>
+        <TransactionType>N</TransactionType>
+        <GLPostingDate>2023-04-04</GLPostingDate>
+        <CustomerID>C004</CustomerID>
+        <Line><RecordID>1</RecordID><AccountID>21100001</AccountID><Description>Faturacao cliente</Description><DebitAmount>1266.90</DebitAmount></Line>
+        <Line><RecordID>2</RecordID><AccountID>71100000</AccountID><Description>Rendimento</Description><CreditAmount>1030.00</CreditAmount></Line>
+        <Line><RecordID>3</RecordID><AccountID>24320000</AccountID><Description>IVA liquidado</Description><CreditAmount>236.90</CreditAmount></Line>
+      </Transaction>
+      <Transaction>
+        <TransactionID>2023-0005</TransactionID>
+        <Period>5</Period>
+        <TransactionDate>2023-05-05</TransactionDate>
+        <SourceID>User01</SourceID>
+        <Description>Factura 2023/5</Description>
+        <TransactionType>N</TransactionType>
+        <GLPostingDate>2023-05-05</GLPostingDate>
+        <CustomerID>C005</CustomerID>
+        <Line><RecordID>1</RecordID><AccountID>21100001</AccountID><Description>Faturacao cliente</Description><DebitAmount>1279.20</DebitAmount></Line>
+        <Line><RecordID>2</RecordID><AccountID>71100000</AccountID><Description>Rendimento</Description><CreditAmount>1040.00</CreditAmount></Line>
+        <Line><RecordID>3</RecordID><AccountID>24320000</AccountID><Description>IVA liquidado</Description><CreditAmount>239.20</CreditAmount></Line>
+      </Transaction>
+      <Transaction>
+        <TransactionID>2023-0006</TransactionID>
+        <Period>6</Period>
+        <TransactionDate>2023-06-06</TransactionDate>
+        <SourceID>User01</SourceID>
+        <Description>Factura 2023/6</Description>
+        <TransactionType>N</TransactionType>
+        <GLPostingDate>2023-06-06</GLPostingDate>
+        <CustomerID>C006</CustomerID>
+        <Line><RecordID>1</RecordID><AccountID>21100001</AccountID><Description>Faturacao cliente</Description><DebitAmount>1291.50</DebitAmount></Line>
+        <Line><RecordID>2</RecordID><AccountID>71100000</AccountID><Description>Rendimento</Description><CreditAmount>1050.00</CreditAmount></Line>
+        <Line><RecordID>3</RecordID><AccountID>24320000</AccountID><Description>IVA liquidado</Description><CreditAmount>241.50</CreditAmount></Line>
+      </Transaction>
+      <Transaction>
+        <TransactionID>2023-0007</TransactionID>
+        <Period>7</Period>
+        <TransactionDate>2023-07-07</TransactionDate>
+        <SourceID>User01</SourceID>
+        <Description>Factura 2023/7</Description>
+        <TransactionType>N</TransactionType>
+        <GLPostingDate>2023-07-07</GLPostingDate>
+        <CustomerID>C001</CustomerID>
+        <Line><RecordID>1</RecordID><AccountID>21100001</AccountID><Description>Faturacao cliente</Description><DebitAmount>1303.80</DebitAmount></Line>
+        <Line><RecordID>2</RecordID><AccountID>71100000</AccountID><Description>Rendimento</Description><CreditAmount>1060.00</CreditAmount></Line>
+        <Line><RecordID>3</RecordID><AccountID>24320000</AccountID><Description>IVA liquidado</Description><CreditAmount>243.80</CreditAmount></Line>
+      </Transaction>
+      <Transaction>
+        <TransactionID>2023-0008</TransactionID>
+        <Period>8</Period>
+        <TransactionDate>2023-08-08</TransactionDate>
+        <SourceID>User01</SourceID>
+        <Description>Factura 2023/8</Description>
+        <TransactionType>N</TransactionType>
+        <GLPostingDate>2023-08-08</GLPostingDate>
+        <CustomerID>C002</CustomerID>
+        <Line><RecordID>1</RecordID><AccountID>21100001</AccountID><Description>Faturacao cliente</Description><DebitAmount>1316.10</DebitAmount></Line>
+        <Line><RecordID>2</RecordID><AccountID>71100000</AccountID><Description>Rendimento</Description><CreditAmount>1070.00</CreditAmount></Line>
+        <Line><RecordID>3</RecordID><AccountID>24320000</AccountID><Description>IVA liquidado</Description><CreditAmount>246.10</CreditAmount></Line>
+      </Transaction>
+      <Transaction>
+        <TransactionID>2023-0009</TransactionID>
+        <Period>9</Period>
+        <TransactionDate>2023-09-09</TransactionDate>
+        <SourceID>User01</SourceID>
+        <Description>Factura 2023/9</Description>
+        <TransactionType>N</TransactionType>
+        <GLPostingDate>2023-09-09</GLPostingDate>
+        <CustomerID>C003</CustomerID>
+        <Line><RecordID>1</RecordID><AccountID>21100001</AccountID><Description>Faturacao cliente</Description><DebitAmount>1328.40</DebitAmount></Line>
+        <Line><RecordID>2</RecordID><AccountID>71100000</AccountID><Description>Rendimento</Description><CreditAmount>1080.00</CreditAmount></Line>
+        <Line><RecordID>3</RecordID><AccountID>24320000</AccountID><Description>IVA liquidado</Description><CreditAmount>248.40</CreditAmount></Line>
+      </Transaction>
+      <Transaction>
+        <TransactionID>2023-0010</TransactionID>
+        <Period>10</Period>
+        <TransactionDate>2023-10-10</TransactionDate>
+        <SourceID>User01</SourceID>
+        <Description>Factura 2023/10</Description>
+        <TransactionType>N</TransactionType>
+        <GLPostingDate>2023-10-10</GLPostingDate>
+        <CustomerID>C004</CustomerID>
+        <Line><RecordID>1</RecordID><AccountID>21100001</AccountID><Description>Faturacao cliente</Description><DebitAmount>1340.70</DebitAmount></Line>
+        <Line><RecordID>2</RecordID><AccountID>71100000</AccountID><Description>Rendimento</Description><CreditAmount>1090.00</CreditAmount></Line>
+        <Line><RecordID>3</RecordID><AccountID>24320000</AccountID><Description>IVA liquidado</Description><CreditAmount>250.70</CreditAmount></Line>
+      </Transaction>
+    </Journal>
+  </GeneralLedgerEntries>
+  <SourceDocuments>
+    <SalesInvoices>
+      <NumberOfEntries>10</NumberOfEntries>
+      <TotalDebit>0.00</TotalDebit>
+      <TotalCredit>12853.50</TotalCredit>
+      <Invoice>
+        <InvoiceNo>FT 2023/1</InvoiceNo>
+        <ATCUD>0</ATCUD>
+        <DocumentStatus><InvoiceStatus>N</InvoiceStatus><InvoiceStatusDate>2023-01-01T09:30:00</InvoiceStatusDate><SourceID>User01</SourceID><SourceBilling>P</SourceBilling></DocumentStatus>
+        <Hash>HASH1</Hash>
+        <Period>1</Period>
+        <InvoiceDate>2023-01-01</InvoiceDate>
+        <InvoiceType>FT</InvoiceType>
+        <SourceID>User01</SourceID>
+        <SystemEntryDate>2023-01-01T09:30:00</SystemEntryDate>
+        <CustomerID>C001</CustomerID>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <ProductCode>SVC001</ProductCode>
+          <ProductDescription>Consultoria</ProductDescription>
+          <Quantity>1.00</Quantity>
+          <UnitPrice>1000.00</UnitPrice>
+          <Description>Servicos de consultoria</Description>
+          <CreditAmount>1000.00</CreditAmount>
+          <Tax><TaxType>IVA</TaxType><TaxCountryRegion>PT</TaxCountryRegion><TaxCode>NOR</TaxCode><TaxPercentage>23.00</TaxPercentage></Tax>
+        </Line>
+        <DocumentTotals><TaxPayable>230.00</TaxPayable><NetTotal>1000.00</NetTotal><GrossTotal>1230.00</GrossTotal></DocumentTotals>
+      </Invoice>
+      <Invoice>
+        <InvoiceNo>FT 2023/2</InvoiceNo>
+        <ATCUD>0</ATCUD>
+        <DocumentStatus><InvoiceStatus>N</InvoiceStatus><InvoiceStatusDate>2023-02-02T09:30:00</InvoiceStatusDate><SourceID>User01</SourceID><SourceBilling>P</SourceBilling></DocumentStatus>
+        <Hash>HASH2</Hash>
+        <Period>2</Period>
+        <InvoiceDate>2023-02-02</InvoiceDate>
+        <InvoiceType>FT</InvoiceType>
+        <SourceID>User01</SourceID>
+        <SystemEntryDate>2023-02-02T09:30:00</SystemEntryDate>
+        <CustomerID>C002</CustomerID>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <ProductCode>SVC001</ProductCode>
+          <ProductDescription>Consultoria</ProductDescription>
+          <Quantity>1.00</Quantity>
+          <UnitPrice>1010.00</UnitPrice>
+          <Description>Servicos de consultoria</Description>
+          <CreditAmount>1010.00</CreditAmount>
+          <Tax><TaxType>IVA</TaxType><TaxCountryRegion>PT</TaxCountryRegion><TaxCode>NOR</TaxCode><TaxPercentage>23.00</TaxPercentage></Tax>
+        </Line>
+        <DocumentTotals><TaxPayable>232.30</TaxPayable><NetTotal>1010.00</NetTotal><GrossTotal>1242.30</GrossTotal></DocumentTotals>
+      </Invoice>
+      <Invoice>
+        <InvoiceNo>FT 2023/3</InvoiceNo>
+        <ATCUD>0</ATCUD>
+        <DocumentStatus><InvoiceStatus>N</InvoiceStatus><InvoiceStatusDate>2023-03-03T09:30:00</InvoiceStatusDate><SourceID>User01</SourceID><SourceBilling>P</SourceBilling></DocumentStatus>
+        <Hash>HASH3</Hash>
+        <Period>3</Period>
+        <InvoiceDate>2023-03-03</InvoiceDate>
+        <InvoiceType>FT</InvoiceType>
+        <SourceID>User01</SourceID>
+        <SystemEntryDate>2023-03-03T09:30:00</SystemEntryDate>
+        <CustomerID>C003</CustomerID>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <ProductCode>SVC001</ProductCode>
+          <ProductDescription>Consultoria</ProductDescription>
+          <Quantity>1.00</Quantity>
+          <UnitPrice>1020.00</UnitPrice>
+          <Description>Servicos de consultoria</Description>
+          <CreditAmount>1020.00</CreditAmount>
+          <Tax><TaxType>IVA</TaxType><TaxCountryRegion>PT</TaxCountryRegion><TaxCode>NOR</TaxCode><TaxPercentage>23.00</TaxPercentage></Tax>
+        </Line>
+        <DocumentTotals><TaxPayable>234.60</TaxPayable><NetTotal>1020.00</NetTotal><GrossTotal>1254.60</GrossTotal></DocumentTotals>
+      </Invoice>
+      <Invoice>
+        <InvoiceNo>FT 2023/4</InvoiceNo>
+        <ATCUD>0</ATCUD>
+        <DocumentStatus><InvoiceStatus>N</InvoiceStatus><InvoiceStatusDate>2023-04-04T09:30:00</InvoiceStatusDate><SourceID>User01</SourceID><SourceBilling>P</SourceBilling></DocumentStatus>
+        <Hash>HASH4</Hash>
+        <Period>4</Period>
+        <InvoiceDate>2023-04-04</InvoiceDate>
+        <InvoiceType>FT</InvoiceType>
+        <SourceID>User01</SourceID>
+        <SystemEntryDate>2023-04-04T09:30:00</SystemEntryDate>
+        <CustomerID>C004</CustomerID>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <ProductCode>SVC001</ProductCode>
+          <ProductDescription>Consultoria</ProductDescription>
+          <Quantity>1.00</Quantity>
+          <UnitPrice>1030.00</UnitPrice>
+          <Description>Servicos de consultoria</Description>
+          <CreditAmount>1030.00</CreditAmount>
+          <Tax><TaxType>IVA</TaxType><TaxCountryRegion>PT</TaxCountryRegion><TaxCode>NOR</TaxCode><TaxPercentage>23.00</TaxPercentage></Tax>
+        </Line>
+        <DocumentTotals><TaxPayable>236.90</TaxPayable><NetTotal>1030.00</NetTotal><GrossTotal>1266.90</GrossTotal></DocumentTotals>
+      </Invoice>
+      <Invoice>
+        <InvoiceNo>FT 2023/5</InvoiceNo>
+        <ATCUD>0</ATCUD>
+        <DocumentStatus><InvoiceStatus>N</InvoiceStatus><InvoiceStatusDate>2023-05-05T09:30:00</InvoiceStatusDate><SourceID>User01</SourceID><SourceBilling>P</SourceBilling></DocumentStatus>
+        <Hash>HASH5</Hash>
+        <Period>5</Period>
+        <InvoiceDate>2023-05-05</InvoiceDate>
+        <InvoiceType>FT</InvoiceType>
+        <SourceID>User01</SourceID>
+        <SystemEntryDate>2023-05-05T09:30:00</SystemEntryDate>
+        <CustomerID>C005</CustomerID>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <ProductCode>SVC001</ProductCode>
+          <ProductDescription>Consultoria</ProductDescription>
+          <Quantity>1.00</Quantity>
+          <UnitPrice>1040.00</UnitPrice>
+          <Description>Servicos de consultoria</Description>
+          <CreditAmount>1040.00</CreditAmount>
+          <Tax><TaxType>IVA</TaxType><TaxCountryRegion>PT</TaxCountryRegion><TaxCode>NOR</TaxCode><TaxPercentage>23.00</TaxPercentage></Tax>
+        </Line>
+        <DocumentTotals><TaxPayable>239.20</TaxPayable><NetTotal>1040.00</NetTotal><GrossTotal>1279.20</GrossTotal></DocumentTotals>
+      </Invoice>
+      <Invoice>
+        <InvoiceNo>FT 2023/6</InvoiceNo>
+        <ATCUD>0</ATCUD>
+        <DocumentStatus><InvoiceStatus>N</InvoiceStatus><InvoiceStatusDate>2023-06-06T09:30:00</InvoiceStatusDate><SourceID>User01</SourceID><SourceBilling>P</SourceBilling></DocumentStatus>
+        <Hash>HASH6</Hash>
+        <Period>6</Period>
+        <InvoiceDate>2023-06-06</InvoiceDate>
+        <InvoiceType>FT</InvoiceType>
+        <SourceID>User01</SourceID>
+        <SystemEntryDate>2023-06-06T09:30:00</SystemEntryDate>
+        <CustomerID>C006</CustomerID>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <ProductCode>SVC001</ProductCode>
+          <ProductDescription>Consultoria</ProductDescription>
+          <Quantity>1.00</Quantity>
+          <UnitPrice>1050.00</UnitPrice>
+          <Description>Servicos de consultoria</Description>
+          <CreditAmount>1050.00</CreditAmount>
+          <Tax><TaxType>IVA</TaxType><TaxCountryRegion>PT</TaxCountryRegion><TaxCode>NOR</TaxCode><TaxPercentage>23.00</TaxPercentage></Tax>
+        </Line>
+        <DocumentTotals><TaxPayable>241.50</TaxPayable><NetTotal>1050.00</NetTotal><GrossTotal>1291.50</GrossTotal></DocumentTotals>
+      </Invoice>
+      <Invoice>
+        <InvoiceNo>FT 2023/7</InvoiceNo>
+        <ATCUD>0</ATCUD>
+        <DocumentStatus><InvoiceStatus>N</InvoiceStatus><InvoiceStatusDate>2023-07-07T09:30:00</InvoiceStatusDate><SourceID>User01</SourceID><SourceBilling>P</SourceBilling></DocumentStatus>
+        <Hash>HASH7</Hash>
+        <Period>7</Period>
+        <InvoiceDate>2023-07-07</InvoiceDate>
+        <InvoiceType>FT</InvoiceType>
+        <SourceID>User01</SourceID>
+        <SystemEntryDate>2023-07-07T09:30:00</SystemEntryDate>
+        <CustomerID>C001</CustomerID>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <ProductCode>SVC001</ProductCode>
+          <ProductDescription>Consultoria</ProductDescription>
+          <Quantity>1.00</Quantity>
+          <UnitPrice>1060.00</UnitPrice>
+          <Description>Servicos de consultoria</Description>
+          <CreditAmount>1060.00</CreditAmount>
+          <Tax><TaxType>IVA</TaxType><TaxCountryRegion>PT</TaxCountryRegion><TaxCode>NOR</TaxCode><TaxPercentage>23.00</TaxPercentage></Tax>
+        </Line>
+        <DocumentTotals><TaxPayable>243.80</TaxPayable><NetTotal>1060.00</NetTotal><GrossTotal>1303.80</GrossTotal></DocumentTotals>
+      </Invoice>
+      <Invoice>
+        <InvoiceNo>FT 2023/8</InvoiceNo>
+        <ATCUD>0</ATCUD>
+        <DocumentStatus><InvoiceStatus>N</InvoiceStatus><InvoiceStatusDate>2023-08-08T09:30:00</InvoiceStatusDate><SourceID>User01</SourceID><SourceBilling>P</SourceBilling></DocumentStatus>
+        <Hash>HASH8</Hash>
+        <Period>8</Period>
+        <InvoiceDate>2023-08-08</InvoiceDate>
+        <InvoiceType>FT</InvoiceType>
+        <SourceID>User01</SourceID>
+        <SystemEntryDate>2023-08-08T09:30:00</SystemEntryDate>
+        <CustomerID>C002</CustomerID>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <ProductCode>SVC001</ProductCode>
+          <ProductDescription>Consultoria</ProductDescription>
+          <Quantity>1.00</Quantity>
+          <UnitPrice>1070.00</UnitPrice>
+          <Description>Servicos de consultoria</Description>
+          <CreditAmount>1070.00</CreditAmount>
+          <Tax><TaxType>IVA</TaxType><TaxCountryRegion>PT</TaxCountryRegion><TaxCode>NOR</TaxCode><TaxPercentage>23.00</TaxPercentage></Tax>
+        </Line>
+        <DocumentTotals><TaxPayable>246.10</TaxPayable><NetTotal>1070.00</NetTotal><GrossTotal>1316.10</GrossTotal></DocumentTotals>
+      </Invoice>
+      <Invoice>
+        <InvoiceNo>FT 2023/9</InvoiceNo>
+        <ATCUD>0</ATCUD>
+        <DocumentStatus><InvoiceStatus>N</InvoiceStatus><InvoiceStatusDate>2023-09-09T09:30:00</InvoiceStatusDate><SourceID>User01</SourceID><SourceBilling>P</SourceBilling></DocumentStatus>
+        <Hash>HASH9</Hash>
+        <Period>9</Period>
+        <InvoiceDate>2023-09-09</InvoiceDate>
+        <InvoiceType>FT</InvoiceType>
+        <SourceID>User01</SourceID>
+        <SystemEntryDate>2023-09-09T09:30:00</SystemEntryDate>
+        <CustomerID>C003</CustomerID>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <ProductCode>SVC001</ProductCode>
+          <ProductDescription>Consultoria</ProductDescription>
+          <Quantity>1.00</Quantity>
+          <UnitPrice>1080.00</UnitPrice>
+          <Description>Servicos de consultoria</Description>
+          <CreditAmount>1080.00</CreditAmount>
+          <Tax><TaxType>IVA</TaxType><TaxCountryRegion>PT</TaxCountryRegion><TaxCode>NOR</TaxCode><TaxPercentage>23.00</TaxPercentage></Tax>
+        </Line>
+        <DocumentTotals><TaxPayable>248.40</TaxPayable><NetTotal>1080.00</NetTotal><GrossTotal>1328.40</GrossTotal></DocumentTotals>
+      </Invoice>
+      <Invoice>
+        <InvoiceNo>FT 2023/10</InvoiceNo>
+        <ATCUD>0</ATCUD>
+        <DocumentStatus><InvoiceStatus>N</InvoiceStatus><InvoiceStatusDate>2023-10-10T09:30:00</InvoiceStatusDate><SourceID>User01</SourceID><SourceBilling>P</SourceBilling></DocumentStatus>
+        <Hash>HASH10</Hash>
+        <Period>10</Period>
+        <InvoiceDate>2023-10-10</InvoiceDate>
+        <InvoiceType>FT</InvoiceType>
+        <SourceID>User01</SourceID>
+        <SystemEntryDate>2023-10-10T09:30:00</SystemEntryDate>
+        <CustomerID>C004</CustomerID>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <ProductCode>SVC001</ProductCode>
+          <ProductDescription>Consultoria</ProductDescription>
+          <Quantity>1.00</Quantity>
+          <UnitPrice>1090.00</UnitPrice>
+          <Description>Servicos de consultoria</Description>
+          <CreditAmount>1090.00</CreditAmount>
+          <Tax><TaxType>IVA</TaxType><TaxCountryRegion>PT</TaxCountryRegion><TaxCode>NOR</TaxCode><TaxPercentage>23.00</TaxPercentage></Tax>
+        </Line>
+        <DocumentTotals><TaxPayable>250.70</TaxPayable><NetTotal>1090.00</NetTotal><GrossTotal>1340.70</GrossTotal></DocumentTotals>
+      </Invoice>
+    </SalesInvoices>
+  </SourceDocuments>
+</AuditFile>

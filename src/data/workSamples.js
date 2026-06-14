@@ -104,4 +104,24 @@ export const workSamples = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 5,
+    slug: "full-stack-developer-python-fastapi",
+    title: "Compliance Reconciliation Console",
+    description:
+      "A fiscal XML reconciliation console: it detects a SAF-T file's schema, runs a memory-stable streaming parse, evaluates 10 named reconciliation rules with adjustable thresholds and drill-down to the offending records, and paginates a 100,000-row ledger the way a real API would.",
+    category: "Data",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/full-stack-developer-python-fastapi/",
+    color: "#12b4c8",
+    icon: "🧾",
+    frameStyle: "baroque",
+    client: "Upwork / Fiscal Compliance SaaS",
+    postingSummary:
+      "Build a B2B compliance SaaS that ingests 500+ MB XML files, applies 170+ reconciliation rules, and delivers multi-tenant analytical dashboards.",
+    builtFor: "Full-Stack Developer (Python/FastAPI + React) Compliance SaaS (Upwork)",
+    date: "2026-06-14",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
