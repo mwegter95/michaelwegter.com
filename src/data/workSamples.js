@@ -144,4 +144,24 @@ export const workSamples = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 7,
+    slug: "edtech-school-connect-web-portal",
+    title: "SchoolConnect Portal",
+    description:
+      "A two-role school-parent communication portal with real-time messaging, a live student performance dashboard with a Chart.js radar chart, and an announcements feed backed by a Flask API.",
+    category: "EdTech",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/edtech-school-connect-web-portal/",
+    color: "#1A56DB",
+    icon: "🎓",
+    frameStyle: "walnut",
+    client: "Upwork EdTech Prospect",
+    postingSummary:
+      "Build an EdTech School Connect Web Portal for school-parent communication with real-time student performance and activity updates.",
+    builtFor: "EdTech School Connect Web Portal (Upwork)",
+    date: "2026-06-15",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
