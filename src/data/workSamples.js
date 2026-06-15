@@ -124,4 +124,24 @@ export const workSamples = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 6,
+    slug: "healthstack-patient-portal",
+    title: "HealthStack Patient Portal",
+    description:
+      "A Sesame-style healthcare booking portal demonstrating Next.js/Supabase architecture patterns: role-based JWT auth (patient vs admin), provider browsing, slot booking, mock Stripe checkout, and HIPAA-aware PHI minimization with an audit log.",
+    category: "Productivity",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/healthstack-patient-portal/",
+    color: "#12b4c8",
+    icon: "🏥",
+    frameStyle: "baroque",
+    client: "US Healthcare Startup (Upwork)",
+    postingSummary:
+      "Full-stack developer needed to build a healthcare web app with Next.js, Supabase, Stripe, and Vercel for US healthcare clients requiring HIPAA-aware design.",
+    builtFor: "Full-Stack Developer (Next.js + Supabase + Stripe) Healthcare Startup (Upwork)",
+    date: "2026-06-14",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
