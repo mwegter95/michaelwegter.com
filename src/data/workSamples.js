@@ -164,4 +164,24 @@ export const workSamples = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 8,
+    slug: "construction-company-website",
+    title: "Cornerstone Construction Co.",
+    description:
+      "Full marketing site for a regional construction company: video hero homepage, services and pricing page, filterable projects gallery with lightbox, and a validated contact form. Built with a bespoke industrial design system (charcoal + safety amber, Oswald + DM Sans).",
+    category: "Creative",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/construction-company-website/",
+    color: "#E8991A",
+    icon: "🏗️",
+    frameStyle: "walnut",
+    client: "Upwork, Construction Company Owner",
+    postingSummary:
+      "Professional website for a residential and commercial construction company. Needed video hero homepage, services with pricing, projects gallery, and contact page. Extra emphasis on premium, clean UI.",
+    builtFor: "Construction Company Website (Upwork)",
+    date: "2026-06-15",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];

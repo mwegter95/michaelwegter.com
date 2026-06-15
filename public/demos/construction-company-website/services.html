@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services &amp; Pricing | Cornerstone Construction Co.</title>
+  <meta name="description" content="Home building, excavation, and commercial construction services with transparent pricing. Cornerstone Construction Co.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Archivo:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ─── NAV ──────────────────────────────────────────────────────── -->
+  <nav class="site-nav solid" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Cornerstone Construction Co. Home">
+        <span class="logo-primary">CORNERSTONE</span>
+        <span class="logo-secondary">Construction Co.</span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html" class="active">Services</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+  <nav class="nav-drawer" id="nav-drawer" aria-label="Mobile navigation">
+    <a href="index.html">Home</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <!-- ─── PAGE HEADER ─────────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep" aria-hidden="true">/</span>
+        <span aria-current="page">Services</span>
+      </nav>
+      <span class="label">What We Offer</span>
+      <h1>Services &amp; Pricing</h1>
+      <p>No hidden costs, no vague estimates. Here is what we do and what we charge.</p>
+    </div>
+  </header>
+
+  <!-- ─── HOME BUILDING ────────────────────────────────────────────── -->
+  <section class="services-section" id="home-building" aria-labelledby="hb-heading">
+    <div class="container">
+      <div class="service-full">
+        <div>
+          <svg class="service-full-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 28L32 8L56 28V56H40V40H24V56H8V28Z" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+            <rect x="28" y="44" width="8" height="12" stroke="currentColor" stroke-width="2" rx="0"/>
+            <path d="M20 28h8v8h-8z" stroke="currentColor" stroke-width="2"/>
+            <path d="M36 28h8v8h-8z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <h2 id="hb-heading">Home Building</h2>
+          <p>We build custom homes from the ground up. Every project starts with a detailed plan, a fixed-price contract, and a project manager assigned to your build. We coordinate design, permitting, all trades, and final finishes.</p>
+          <ul class="service-features">
+            <li>Site evaluation and preparation</li>
+            <li>Foundation design and pour</li>
+            <li>Framing, roofing, and exterior</li>
+            <li>MEP rough-in and coordination</li>
+            <li>Interior finishes and custom millwork</li>
+            <li>Landscaping and hardscape</li>
+            <li>Permit acquisition and inspection coordination</li>
+          </ul>
+          <a href="contact.html" class="btn btn-primary">Start Your Home Project</a>
+        </div>
+
+        <div class="pricing-card fade-in">
+          <p class="pricing-card-header">Pricing</p>
+
+          <div class="pricing-tier">
+            <div>
+              <p class="pricing-tier-name">Entry Custom</p>
+              <p class="pricing-tier-desc">Standard finishes, builder-grade fixtures, single level</p>
+            </div>
+            <span class="pricing-tier-price">From $180/sq ft</span>
+          </div>
+
+          <div class="pricing-tier">
+            <div>
+              <p class="pricing-tier-name">Premium Custom</p>
+              <p class="pricing-tier-desc">Upgraded finishes, custom cabinetry, multi-level</p>
+            </div>
+            <span class="pricing-tier-price">From $260/sq ft</span>
+          </div>
+
+          <div class="pricing-tier">
+            <div>
+              <p class="pricing-tier-name">Estate / Luxury</p>
+              <p class="pricing-tier-desc">Full design-build, high-end materials, complex architecture</p>
+            </div>
+            <span class="pricing-tier-price">Contact for Quote</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── EXCAVATION ───────────────────────────────────────────────── -->
+  <section class="services-section" id="excavation" aria-labelledby="exc-heading">
+    <div class="container">
+      <div class="service-full reverse">
+        <div>
+          <svg class="service-full-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="46" width="56" height="8" stroke="currentColor" stroke-width="3"/>
+            <path d="M12 46V30L22 22H40L48 30V46" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M48 36L58 26V42H48" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+            <circle cx="16" cy="54" r="4" stroke="currentColor" stroke-width="2.5"/>
+            <circle cx="48" cy="54" r="4" stroke="currentColor" stroke-width="2.5"/>
+            <path d="M12 30h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h2 id="exc-heading">Excavation</h2>
+          <p>From foundation digs to large-scale earthworks, our excavation team operates a full fleet of equipment. We handle site clearing, grading, trenching, pond excavation, and haul-away. Operator, fuel, and site restoration are included.</p>
+          <ul class="service-features">
+            <li>Site clearing and demolition</li>
+            <li>Foundation and basement excavation</li>
+            <li>Grading and soil compaction</li>
+            <li>Utility trench installation</li>
+            <li>Pond and retention basin excavation</li>
+            <li>Rock breaking and boulder removal</li>
+            <li>Spoil haul-away and disposal</li>
+          </ul>
+          <a href="contact.html" class="btn btn-primary">Get an Excavation Quote</a>
+        </div>
+
+        <div class="pricing-card fade-in">
+          <p class="pricing-card-header">Pricing</p>
+
+          <div class="pricing-tier">
+            <div>
+              <p class="pricing-tier-name">Standard Equipment</p>
+              <p class="pricing-tier-desc">Mini-excavator, compact loader, skid steer</p>
+            </div>
+            <span class="pricing-tier-price">$125/hr</span>
+          </div>
+
+          <div class="pricing-tier">
+            <div>
+              <p class="pricing-tier-name">Heavy Equipment</p>
+              <p class="pricing-tier-desc">Full-size excavator, dozer, articulated dump truck</p>
+            </div>
+            <span class="pricing-tier-price">$175/hr</span>
+          </div>
+
+          <div class="pricing-tier">
+            <div>
+              <p class="pricing-tier-name">Day Rate / Large Project</p>
+              <p class="pricing-tier-desc">Multi-machine projects, 5+ day engagements</p>
+            </div>
+            <span class="pricing-tier-price">Contact for Quote</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── COMMERCIAL ───────────────────────────────────────────────── -->
+  <section class="services-section" id="commercial" aria-labelledby="comm-heading">
+    <div class="container">
+      <div class="service-full">
+        <div>
+          <svg class="service-full-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="8" y="24" width="32" height="32" stroke="currentColor" stroke-width="3"/>
+            <rect x="40" y="36" width="18" height="20" stroke="currentColor" stroke-width="3"/>
+            <line x1="8" y1="24" x2="40" y2="24" stroke="currentColor" stroke-width="3"/>
+            <rect x="12" y="30" width="8" height="9" stroke="currentColor" stroke-width="2"/>
+            <rect x="26" y="30" width="8" height="9" stroke="currentColor" stroke-width="2"/>
+            <rect x="12" y="44" width="8" height="12" stroke="currentColor" stroke-width="2"/>
+            <rect x="26" y="44" width="8" height="12" stroke="currentColor" stroke-width="2"/>
+            <rect x="44" y="42" width="9" height="14" stroke="currentColor" stroke-width="2"/>
+            <line x1="8" y1="12" x2="8" y2="24" stroke="currentColor" stroke-width="2" stroke-dasharray="3 2"/>
+            <line x1="40" y1="12" x2="40" y2="24" stroke="currentColor" stroke-width="2" stroke-dasharray="3 2"/>
+          </svg>
+          <h2 id="comm-heading">Commercial Construction</h2>
+          <p>We serve as general contractor for light commercial, multi-family, mixed-use, and tilt-up projects. Our team handles pre-construction planning, subcontractor management, and project closeout. Every project gets a dedicated superintendent on site.</p>
+          <ul class="service-features">
+            <li>Pre-construction planning and budgeting</li>
+            <li>General contracting and subcontractor oversight</li>
+            <li>Tilt-up concrete construction</li>
+            <li>Multi-family and mixed-use</li>
+            <li>Retail, office, and light industrial</li>
+            <li>LEED and green building coordination</li>
+            <li>Project closeout and punch list</li>
+          </ul>
+          <a href="contact.html" class="btn btn-primary">Request a Consultation</a>
+        </div>
+
+        <div class="pricing-card fade-in">
+          <p class="pricing-card-header">Pricing</p>
+
+          <div class="pricing-tier">
+            <div>
+              <p class="pricing-tier-name">Light Commercial</p>
+              <p class="pricing-tier-desc">Offices, retail, clinics under 10,000 sq ft</p>
+            </div>
+            <span class="pricing-tier-price">From $145/sq ft</span>
+          </div>
+
+          <div class="pricing-tier">
+            <div>
+              <p class="pricing-tier-name">Mid-Scale Commercial</p>
+              <p class="pricing-tier-desc">Multi-tenant, multi-family, 10K to 50K sq ft</p>
+            </div>
+            <span class="pricing-tier-price">From $115/sq ft</span>
+          </div>
+
+          <div class="pricing-tier">
+            <div>
+              <p class="pricing-tier-name">Large or Complex</p>
+              <p class="pricing-tier-desc">Tilt-up, 50K+ sq ft, custom scope</p>
+            </div>
+            <span class="pricing-tier-price">Custom Quote</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ──────────────────────────────────────────────────────── -->
+  <section class="faq-section" aria-labelledby="faq-heading">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="label">Common Questions</span>
+        <h2 id="faq-heading">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq-list fade-in">
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            How long does a custom home build take?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" aria-hidden="true">
+            <p>Most custom homes in the 2,000 to 4,000 sq ft range take 10 to 14 months from permit approval to walkthrough. Larger or more complex builds, including those with basement excavation, custom millwork, or unconventional lots, typically run 14 to 18 months. We give you a realistic timeline before you sign anything and update it monthly throughout the build.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Do you handle permits and inspections?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" aria-hidden="true">
+            <p>Yes, completely. We submit all permit applications, coordinate with the local building department, and schedule every required inspection. For commercial projects we also manage third-party special inspections, geotechnical sign-offs, and fire authority coordination. Permit fees are billed at cost, not marked up.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Can you work on my existing home or building?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" aria-hidden="true">
+            <p>We focus on new construction and site-up builds. For additions that involve new foundation work or significant framing, we can typically help. Pure interior remodels are not our specialty and we will tell you that upfront rather than bid a job we are not set up to do well. If we cannot take your project, we will point you toward firms that can.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            What areas do you serve?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" aria-hidden="true">
+            <p>Our primary service area is central Illinois, including Springfield, Decatur, Bloomington-Normal, and surrounding counties. For larger commercial projects we have worked across 12 states. Contact us with your location and project type, and we will let you know whether we can take it on.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA BANNER ───────────────────────────────────────────────── -->
+  <section class="cta-banner" aria-label="Call to action">
+    <div class="cta-banner-inner">
+      <div>
+        <h2>HAVE A PROJECT IN MIND?</h2>
+        <p>Tell us the basics and we will follow up with a preliminary estimate within one business day.</p>
+      </div>
+      <a href="contact.html" class="btn btn-dark">Start the Conversation</a>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ───────────────────────────────────────────────────── -->
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-primary">CORNERSTONE</span>
+        <span class="logo-secondary">Construction Co.</span>
+        <p>Building homes, businesses, and lasting relationships across the region since 2003.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="services.html#home-building">Home Building</a></li>
+          <li><a href="services.html#excavation">Excavation</a></li>
+          <li><a href="services.html#commercial">Commercial</a></li>
+        </ul>
+      </div>
+      <div class="footer-col footer-contact">
+        <h4>Contact</h4>
+        <p>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 3h12v10H2V3zm0 0l6 5 6-5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <a href="mailto:info@cornerstoneconstruction.co">info@cornerstone.co</a>
+        </p>
+        <p>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 2h3l1.5 3-2 1.5C6.5 9 7 9.5 9.5 10.5L11 8.5l3 1.5v3C14 13.5 13 14 12 14 6.5 14 2 9.5 2 4c0-1 .5-2 1-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <a href="tel:5554892300">(555) 489-2300</a>
+        </p>
+        <p>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+          4820 Industrial Blvd, Suite 200, Springfield, IL
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Cornerstone Construction Co. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5 7.5V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="5" cy="5" r="1" fill="currentColor"/>
+            <path d="M8.5 13V10.5C8.5 9.1 9.5 8 10.75 8C12 8 13 9.1 13 10.5V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <a href="#" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M11.5 6H10C9.45 6 9 6.45 9 7V8.5H11.5L11 11H9V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

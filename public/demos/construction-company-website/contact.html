@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Cornerstone Construction Co.</title>
+  <meta name="description" content="Contact Cornerstone Construction Co. for a free estimate on your home building, excavation, or commercial construction project.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Archivo:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ─── NAV ──────────────────────────────────────────────────────── -->
+  <nav class="site-nav solid" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Cornerstone Construction Co. Home">
+        <span class="logo-primary">CORNERSTONE</span>
+        <span class="logo-secondary">Construction Co.</span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+      <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+  <nav class="nav-drawer" id="nav-drawer" aria-label="Mobile navigation">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html" class="active">Contact</a>
+  </nav>
+
+  <!-- ─── PAGE HEADER ─────────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep" aria-hidden="true">/</span>
+        <span aria-current="page">Contact</span>
+      </nav>
+      <span class="label">Get in Touch</span>
+      <h1>Let's Talk About Your Project</h1>
+      <p>Tell us about your project and we will get back to you within one business day.</p>
+    </div>
+  </header>
+
+  <!-- ─── CONTACT SECTION ──────────────────────────────────────────── -->
+  <section class="contact-section" aria-labelledby="contact-heading">
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- ── Left: Contact Info ── -->
+        <div class="contact-info fade-in">
+          <h2 id="contact-heading">Contact Information</h2>
+          <p>We are based in Springfield, IL and serve projects throughout central Illinois and beyond. Reach out by phone, email, or the form below.</p>
+
+          <div class="contact-details">
+            <div class="contact-detail">
+              <div class="contact-detail-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3.5 3h3.5l2 4-2.5 1.5C7.5 11.5 8.5 12.5 11.5 14L13 11.5l4 2v3.5C17 17.5 16 18 15 18 8 18 2 12 2 5c0-1 .5-2 1.5-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="contact-detail-text">
+                <strong>Phone</strong>
+                <a href="tel:5554892300">(555) 489-2300</a>
+                <span style="font-size:0.8125rem;color:var(--text-muted);display:block;margin-top:2px;">Mon-Fri 7am-5pm, Sat 8am-12pm</span>
+              </div>
+            </div>
+
+            <div class="contact-detail">
+              <div class="contact-detail-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="2" y="4" width="16" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M2 4l8 7 8-7" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="contact-detail-text">
+                <strong>Email</strong>
+                <a href="mailto:info@cornerstoneconstruction.co">info@cornerstoneconstruction.co</a>
+              </div>
+            </div>
+
+            <div class="contact-detail">
+              <div class="contact-detail-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 2C7 2 4.5 4.5 4.5 7.5c0 4.5 5.5 10.5 5.5 10.5s5.5-6 5.5-10.5C15.5 4.5 13 2 10 2z" stroke="currentColor" stroke-width="1.5"/>
+                  <circle cx="10" cy="7.5" r="2" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div class="contact-detail-text">
+                <strong>Address</strong>
+                4820 Industrial Blvd, Suite 200<br>
+                Springfield, IL 62701
+              </div>
+            </div>
+
+            <div class="contact-detail">
+              <div class="contact-detail-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M10 5v5.5l3.5 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="contact-detail-text">
+                <strong>Business Hours</strong>
+                Mon-Fri: 7:00 AM to 5:00 PM<br>
+                Sat: 8:00 AM to 12:00 PM<br>
+                Sun: Closed
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-social">
+            <a href="#" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M5 7.5V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="5" cy="5" r="1" fill="currentColor"/>
+                <path d="M8.5 13V10.5C8.5 9.1 9.5 8 10.75 8C12 8 13 9.1 13 10.5V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </a>
+            <a href="#" aria-label="Facebook">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M11.5 6H10C9.45 6 9 6.45 9 7V8.5H11.5L11 11H9V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- ── Right: Contact Form ── -->
+        <div class="contact-form-wrap fade-in delay-2">
+          <h3>Request a Free Estimate</h3>
+
+          <form id="contact-form" novalidate autocomplete="on">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="full-name">Full Name <span class="req" aria-hidden="true">*</span></label>
+                <input
+                  type="text"
+                  id="full-name"
+                  name="full-name"
+                  autocomplete="name"
+                  placeholder="Jane Smith"
+                  required
+                  aria-required="true"
+                  aria-describedby="full-name-error"
+                >
+                <span class="field-error" id="full-name-error" data-error-for="full-name" role="alert"></span>
+                <span class="field-success" data-success-for="full-name">Looks good!</span>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email Address <span class="req" aria-hidden="true">*</span></label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  autocomplete="email"
+                  placeholder="jane@example.com"
+                  required
+                  aria-required="true"
+                  aria-describedby="email-error"
+                >
+                <span class="field-error" id="email-error" data-error-for="email" role="alert"></span>
+                <span class="field-success" data-success-for="email">Looks good!</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  autocomplete="tel"
+                  placeholder="(555) 000-0000"
+                  aria-describedby="phone-error"
+                >
+                <span class="field-error" id="phone-error" data-error-for="phone" role="alert"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="service">Service Interest <span class="req" aria-hidden="true">*</span></label>
+                <select
+                  id="service"
+                  name="service"
+                  required
+                  aria-required="true"
+                  aria-describedby="service-error"
+                >
+                  <option value="">Select a service...</option>
+                  <option value="home-building">Home Building</option>
+                  <option value="excavation">Excavation</option>
+                  <option value="commercial">Commercial Construction</option>
+                  <option value="other">Other / Not Sure Yet</option>
+                </select>
+                <span class="field-error" id="service-error" data-error-for="service" role="alert"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Project Description <span class="req" aria-hidden="true">*</span></label>
+              <textarea
+                id="description"
+                name="description"
+                rows="5"
+                placeholder="Tell us about your project: location, approximate size, timeline, and any specific requirements you have in mind."
+                required
+                aria-required="true"
+                aria-describedby="description-error"
+              ></textarea>
+              <span class="field-error" id="description-error" data-error-for="description" role="alert"></span>
+            </div>
+
+            <div class="form-group">
+              <label>Preferred Contact Method</label>
+              <div class="radio-group" role="radiogroup" aria-label="Preferred contact method">
+                <label class="radio-label">
+                  <input type="radio" name="contact-method" value="email" checked>
+                  Email
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="contact-method" value="phone">
+                  Phone
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary form-submit-btn">Send My Request</button>
+          </form>
+
+          <!-- Success State (hidden until form submits) -->
+          <div class="contact-success" role="status" aria-live="polite">
+            <div class="success-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 16l7 8L26 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Thank you, <span class="success-name">there!</span></h3>
+            <p>We have received your request and will be in touch within one business day. If you need immediate assistance, call us at (555) 489-2300.</p>
+            <a href="index.html" class="btn btn-outline" style="margin-top:8px;">Back to Home</a>
+          </div>
+        </div>
+
+      </div><!-- /.contact-layout -->
+    </div><!-- /.container -->
+  </section>
+
+  <!-- ─── FOOTER ───────────────────────────────────────────────────── -->
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-primary">CORNERSTONE</span>
+        <span class="logo-secondary">Construction Co.</span>
+        <p>Building homes, businesses, and lasting relationships across the region since 2003.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="services.html#home-building">Home Building</a></li>
+          <li><a href="services.html#excavation">Excavation</a></li>
+          <li><a href="services.html#commercial">Commercial</a></li>
+        </ul>
+      </div>
+      <div class="footer-col footer-contact">
+        <h4>Contact</h4>
+        <p>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 3h12v10H2V3zm0 0l6 5 6-5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <a href="mailto:info@cornerstoneconstruction.co">info@cornerstone.co</a>
+        </p>
+        <p>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 2h3l1.5 3-2 1.5C6.5 9 7 9.5 9.5 10.5L11 8.5l3 1.5v3C14 13.5 13 14 12 14 6.5 14 2 9.5 2 4c0-1 .5-2 1-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <a href="tel:5554892300">(555) 489-2300</a>
+        </p>
+        <p>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+          4820 Industrial Blvd, Suite 200, Springfield, IL
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Cornerstone Construction Co. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5 7.5V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="5" cy="5" r="1" fill="currentColor"/>
+            <path d="M8.5 13V10.5C8.5 9.1 9.5 8 10.75 8C12 8 13 9.1 13 10.5V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <a href="#" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M11.5 6H10C9.45 6 9 6.45 9 7V8.5H11.5L11 11H9V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script src="contact.js"></script>
+</body>
+</html>
