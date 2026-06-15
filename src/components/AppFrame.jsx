@@ -7,10 +7,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { apps } from '../data/apps'
-import { workSamples } from '../data/workSamples'
+import { allWorkSamples } from '../data/workSamples'
 
 export default function AppFrame({ appId }) {
-  const app = [...apps, ...workSamples].find(a => a.id === appId || a.slug === appId)
+  const app = [...apps, ...allWorkSamples].find(a => a.id === appId || a.slug === appId)
   const [loaded, setLoaded] = useState(false)
   const iframeRef = useRef(null)
   // Auto-resize iframe to match its content height when the embedded app

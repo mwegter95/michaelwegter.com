@@ -13,8 +13,8 @@
       category: 'residential',
       title: 'Hartwell Estate',
       year: '2024',
-      image: 'https://images.unsplash.com/photo-X1P1_EDNnok?w=1200&q=85',
-      fallbackImage: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=85',
+      image: 'https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?w=1200&q=85',
+      fallbackImage: 'https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?w=1200&q=85',
       description: 'A 4,800 sq ft custom estate home featuring a chef kitchen, three-car garage, and wraparound porch. Completed in 11 months with all custom millwork handled in-house.',
       services: ['Custom Home Build', 'Site Excavation', 'Landscaping', 'Full Project Management'],
     },
@@ -23,8 +23,8 @@
       category: 'residential',
       title: 'The Langford Residence',
       year: '2023',
-      image: 'https://images.unsplash.com/photo-ymf4_9Y9S_A?w=1200&q=85',
-      fallbackImage: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=85',
+      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=85',
+      fallbackImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=85',
       description: 'A modern craftsman home on a sloped lot in Springfield. Required complex foundation work and custom framing. Delivered two weeks ahead of schedule.',
       services: ['Custom Home Build', 'Foundation Engineering', 'Framing', 'Finish Carpentry'],
     },
@@ -33,8 +33,8 @@
       category: 'residential',
       title: 'Cedar Ridge Custom Home',
       year: '2022',
-      image: 'https://images.unsplash.com/photo-hfI0pr6g4yw?w=1200&q=85',
-      fallbackImage: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=85',
+      image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&q=85',
+      fallbackImage: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&q=85',
       description: 'Three-bedroom custom build with a full basement and attached studio. Included geothermal HVAC coordination and stamped concrete driveway.',
       services: ['Design-Build', 'Basement Excavation', 'MEP Coordination', 'Exterior Hardscape'],
     },
@@ -53,8 +53,8 @@
       category: 'commercial',
       title: 'Summit Storage Complex',
       year: '2023',
-      image: 'https://images.unsplash.com/photo-PlBsJ5MybGc?w=1200&q=85',
-      fallbackImage: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=85',
+      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=85',
+      fallbackImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=85',
       description: 'An 80-unit climate-controlled self-storage facility. Completed on a compressed 9-month schedule. On-site offices and gated entry included.',
       services: ['Commercial Build', 'Site Prep', 'Electrical Coordination', 'Security Systems'],
     },
@@ -63,8 +63,8 @@
       category: 'commercial',
       title: 'Northgate Retail Plaza',
       year: '2022',
-      image: 'https://images.unsplash.com/photo-8Gg2Ne_uTcM?w=1200&q=85',
-      fallbackImage: 'https://images.unsplash.com/photo-1535732759880-bbd5c7265e3f?w=1200&q=85',
+      image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=85',
+      fallbackImage: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=85',
       description: 'A 14-tenant strip center with shared parking for 280 vehicles. Ground-up build including utility infrastructure. Fully leased at ribbon cutting.',
       services: ['GC Services', 'Utility Infrastructure', 'Parking Lot Construction', 'Tenant Coordination'],
     },
@@ -83,8 +83,8 @@
       category: 'excavation',
       title: 'Highway 7 Utility Trenching',
       year: '2023',
-      image: 'https://images.unsplash.com/photo-nkxB5Ab-ONY?w=1200&q=85',
-      fallbackImage: 'https://images.unsplash.com/photo-1622082679766-c5912d9416eb?w=1200&q=85',
+      image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1200&q=85',
+      fallbackImage: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1200&q=85',
       description: 'Utility trench installation for a 2.4-mile fiber and electric corridor along Highway 7. Coordinated with IDOT for lane closures and traffic management.',
       services: ['Trench Excavation', 'Utility Corridor', 'IDOT Coordination', 'Backfill and Compaction'],
     },
@@ -93,8 +93,8 @@
       category: 'excavation',
       title: 'Willowbrook Pond Excavation',
       year: '2022',
-      image: 'https://images.unsplash.com/photo-pX66y31DOIQ?w=1200&q=85',
-      fallbackImage: 'https://images.unsplash.com/photo-1622082679766-c5912d9416eb?w=1200&q=85',
+      image: 'https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=1200&q=85',
+      fallbackImage: 'https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=1200&q=85',
       description: 'Excavation and shaping of a 3-acre decorative pond and wetland feature for a private estate. Included clay liner installation and inlet/outlet structures.',
       services: ['Pond Excavation', 'Clay Liner Install', 'Inlet/Outlet Structures', 'Riparian Restoration'],
     },
@@ -203,6 +203,14 @@
     setTimeout(function () { lbClose.focus(); }, 50);
   }
 
+  function openLinkedProject() {
+    const params = new URLSearchParams(window.location.search);
+    const linkedProject = parseInt(params.get('project'), 10);
+    if (!Number.isNaN(linkedProject) && projects.some(function (p) { return p.id === linkedProject; })) {
+      openLightbox(linkedProject);
+    }
+  }
+
   function closeLightbox() {
     lightbox.classList.remove('open');
     document.body.style.overflow = '';
@@ -287,5 +295,7 @@
       }
     });
   });
+
+  openLinkedProject();
 
 })();
