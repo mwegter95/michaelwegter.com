@@ -187,6 +187,26 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 9,
+    slug: "civicq",
+    title: "CivicQ Landing Page",
+    description:
+      "A full 10-section, build-to-spec landing page plus a methodology page for a nonpartisan civic-data platform: sticky scroll-spy nav, an interactive six-dimension scoring chart, a $75K funds breakdown, an Organization Hub mockup, and a working email-capture form backed by a real database with CSV export.",
+    category: "Data",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/civicq/",
+    color: "#3DBFA8",
+    icon: "🏛️",
+    frameStyle: "walnut",
+    client: "Upwork / CivicQ",
+    postingSummary:
+      "Build the public-facing home page at civicq.org: a 10-section dark-mode landing page matched precisely to an existing staging design system, with three coded data visualizations, an email-capture form with CSV backup, and a /methodology page, fully responsive and WCAG 2.1 AA accessible.",
+    builtFor: "Front-End Developer, Civic Tech Landing Page (React/Next.js, Dark Mode, Data Viz) (Upwork)",
+    date: "2026-06-15",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 export const allWorkSamples = workSampleRegistry;

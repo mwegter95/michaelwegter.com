@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scoring Methodology: CivicQ</title>
+<meta name="description" content="How CivicQ scores voting records, bills, and public statements: six weighted dimensions, published in full.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">CQ</span>
+      CivicQ
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <nav aria-label="Section navigation">
+      <ul class="nav-links">
+        <li><a href="index.html#why-it-matters">Why It Matters</a></li>
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="index.html#scoring">Scoring</a></li>
+        <li><a href="index.html#status">Status</a></li>
+        <li><a href="index.html#org-hub">Org Hub</a></li>
+        <li><a href="index.html#funding">Funding</a></li>
+        <li><a href="index.html#partners">Partners</a></li>
+        <li><a href="methodology.html" class="is-active">Methodology</a></li>
+      </ul>
+    </nav>
+    <div class="nav-utility">
+      <button class="icon-btn" aria-label="Search the record (coming soon)" title="Search">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="btn-auth" type="button" aria-label="Sign in (uses the existing CivicQ account system)">Sign In</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="methodology-hero section section--first">
+    <div class="wrap">
+      <a class="back-link" href="index.html">← Back to CivicQ</a>
+      <span class="eyebrow">Scoring Methodology</span>
+      <h1>How CivicQ scores the record</h1>
+      <p>Every score on CivicQ, for a representative, a bill, or a public statement, is built from the same six weighted dimensions. This page is the full, published explanation. Nothing here is hidden or adjusted case by case.</p>
+    </div>
+  </section>
+
+  <section class="section methodology-body">
+    <div class="wrap">
+      <div class="reveal" data-mount-charts>
+        <div class="chart-card">
+          <div id="scoring-chart"></div>
+          <div class="chart-tooltip" data-chart-tooltip role="status" aria-live="polite">Select a dimension above to see its full description.</div>
+          <div class="data-table-fallback sr-only" data-chart-fallback></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section methodology-body">
+    <div class="wrap">
+      <h2>The six dimensions, in detail</h2>
+      <p>Weights sum to 100% and are applied identically across every representative, bill, and statement CivicQ scores. Changing a weight requires a published revision note, dated and archived.</p>
+
+      <div class="dimension-detail">
+        <h3>Source Verification <span class="tabular">25%</span></h3>
+        <p>The highest-weighted dimension. A record cannot be published until it traces to a primary government or official source document, a roll call, a bill text, a session transcript. Secondhand summaries are never treated as a source.</p>
+      </div>
+      <div class="dimension-detail">
+        <h3>Vote Record Accuracy <span class="tabular">20%</span></h3>
+        <p>Roll-call votes are cross-checked directly against the official legislative record. A discrepancy of even one vote triggers a manual review before publication.</p>
+      </div>
+      <div class="dimension-detail">
+        <h3>Bill Activity Completeness <span class="tabular">18%</span></h3>
+        <p>A bill's record must reflect every stage, introduction, committee referral, amendments, floor votes, and final outcome. Partial tracking lowers this score until the gap is filled.</p>
+      </div>
+      <div class="dimension-detail">
+        <h3>Statement Sourcing <span class="tabular">15%</span></h3>
+        <p>Public statements are only published with a dated, original recording, transcript, or official press release attached. Paraphrased or unattributed quotes are excluded.</p>
+      </div>
+      <div class="dimension-detail">
+        <h3>Update Timeliness <span class="tabular">12%</span></h3>
+        <p>Measures the lag between a real-world change, a new vote, a bill status update, and that change appearing in CivicQ's record. Faster, verified updates score higher.</p>
+      </div>
+      <div class="dimension-detail">
+        <h3>Methodology Transparency <span class="tabular">10%</span></h3>
+        <p>This page is itself part of the score: the weighting above is published in full, with no undisclosed criteria, and any revision is dated and archived for comparison.</p>
+      </div>
+
+      <p>Have a question about a specific score, or think we got something wrong? <a href="mailto:corrections@civicq.org">Tell us</a>, every correction is reviewed and logged.</p>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <span class="brand-mark" aria-hidden="true">CQ</span>
+          CivicQ
+        </a>
+        <nav aria-label="Footer navigation">
+          <ul class="footer-links">
+            <li><a href="index.html#features">Features</a></li>
+            <li><a href="index.html#scoring">Scoring</a></li>
+            <li><a href="index.html#org-hub">Organization Hub</a></li>
+            <li><a href="index.html#funding">Funding</a></li>
+            <li><a href="mailto:hello@civicq.org">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-disclaimer">
+        <p>© 2026 CivicQ. CivicQ is a nonpartisan civic information platform. Not affiliated with any political party, campaign, or candidate.</p>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script src="charts.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
