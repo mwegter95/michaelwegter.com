@@ -207,6 +207,26 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 10,
+    slug: "trucking-freight-factoring-and-banking",
+    title: "Freight Factoring & Banking Console",
+    description:
+      "Full-stack freight factoring and banking operations platform: invoice submission, advance calculation, underwriter approval queue, double-entry FIDC ledger, and role-based access control. Built with NestJS + Drizzle + Postgres, integer-cents money discipline throughout.",
+    category: "Data",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/trucking-freight-factoring-and-banking/",
+    color: "#10B981",
+    icon: "🚛",
+    frameStyle: "walnut",
+    client: "Upwork / Freight Fintech",
+    postingSummary:
+      "Migrate a mature freight factoring + banking platform (PHP/Laravel + Flutter) to a TypeScript NestJS + Drizzle monorepo; build factoring/FIDC, banking/BaaS, payments, identity & RBAC domains with real-DB integration tests and a Next.js 15 admin console.",
+    builtFor: "JS Senior Expert for Claude Code Refactor (Upwork)",
+    date: "2026-06-16",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 export const allWorkSamples = workSampleRegistry;
