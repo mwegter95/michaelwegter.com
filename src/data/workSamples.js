@@ -227,6 +227,26 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 11,
+    slug: "ai-chatbot-for-customer-support",
+    title: "AI Customer Support Chatbot",
+    description:
+      "In-browser AI chatbot with RAG knowledge base, real-time order lookup, Zendesk-style escalation routing, and an admin dashboard. Runs entirely on-device via Transformers.js, zero token cost.",
+    category: "Utility",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/ai-chatbot-for-customer-support/",
+    color: "#1D6AE5",
+    icon: "💬",
+    frameStyle: "walnut",
+    client: "US Online Retailer",
+    postingSummary:
+      "AI-powered chatbot for customer support with FAQ knowledge base, order status lookup, human escalation with ET business-hours detection, and Zendesk ticket creation. In-browser AI, zero token cost.",
+    builtFor: "AI Chatbot for Customer Support (Website + Help Desk Integration) (Upwork)",
+    date: "2026-06-17",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 export const allWorkSamples = workSampleRegistry;

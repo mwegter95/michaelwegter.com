@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SupportAI Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="admin-frame">
+  <header class="admin-header">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#1D6AE5">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    <span class="admin-header-title">SupportAI Admin</span>
+    <span style="margin-left:auto"><a href="./index.html">Back to Chat Demo</a></span>
+  </header>
+
+  <div class="admin-main">
+
+    <!-- Login -->
+    <div id="admin-login-section">
+      <div class="admin-login-card">
+        <h2>Admin Login</h2>
+        <p>Knowledge base editor, analytics, and session viewer</p>
+        <form id="admin-login-form">
+          <input type="password" id="admin-pass" class="login-input" placeholder="Enter admin password" autocomplete="current-password" />
+          <p class="admin-empty" style="font-style:normal;font-size:12px;margin-bottom:12px">Demo password: <code>admin123</code></p>
+          <button type="submit" class="login-submit">Sign In</button>
+        </form>
+        <p id="admin-login-error" class="admin-login-error"></p>
+      </div>
+    </div>
+
+    <!-- Dashboard (hidden until login) -->
+    <div id="admin-dashboard" style="display:none">
+      <!-- Tabs -->
+      <div class="admin-tabs" role="tablist">
+        <button class="admin-tab-btn active" data-tab="tab-analytics" role="tab">Analytics</button>
+        <button class="admin-tab-btn" data-tab="tab-kb" role="tab">Knowledge Base</button>
+        <button class="admin-tab-btn" data-tab="tab-sessions" role="tab">Session Log</button>
+      </div>
+
+      <!-- Tab: Analytics -->
+      <div id="tab-analytics" class="admin-tab-panel" style="display:block" role="tabpanel">
+        <p class="admin-empty" style="text-align:center;padding:40px 0">
+          Loading analytics...
+          <br><small>Interact with the chatbot on the <a href="./index.html">demo page</a> to generate data.</small>
+        </p>
+      </div>
+
+      <!-- Tab: Knowledge Base -->
+      <div id="tab-kb" class="admin-tab-panel" role="tabpanel">
+        <p class="admin-empty">Loading knowledge base...</p>
+      </div>
+
+      <!-- Tab: Sessions -->
+      <div id="tab-sessions" class="admin-tab-panel" role="tabpanel">
+        <p class="admin-empty">Loading session data...</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+  import { loadCorpus } from "./rag.js";
+  import { initAdmin } from "./admin.js";
+
+  // Load corpus before initializing admin (KB editor needs it)
+  await loadCorpus();
+  initAdmin();
+</script>
+</body>
+</html>

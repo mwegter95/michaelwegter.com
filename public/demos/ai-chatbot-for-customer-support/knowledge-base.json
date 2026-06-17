@@ -1,0 +1,22 @@
+[
+  { "q": "Where is my order?", "a": "You can track your order using the tracking link sent to your email. Orders typically ship within 1-2 business days.", "category": "Orders" },
+  { "q": "How do I track my shipment?", "a": "Check your confirmation email for a tracking number. Click the link or enter it at our carrier's site.", "category": "Shipping" },
+  { "q": "When will my order arrive?", "a": "Standard shipping is 5-7 business days. Expedited options are available at checkout.", "category": "Shipping" },
+  { "q": "How do I return an item?", "a": "We accept returns within 30 days of delivery. Items must be unused and in original packaging. Start a return from your order history.", "category": "Returns" },
+  { "q": "How do I get a refund?", "a": "Refunds are issued to your original payment method within 5-7 business days of receiving your return.", "category": "Returns" },
+  { "q": "Can I exchange an item?", "a": "Yes, exchanges are processed like a return plus a new order. Contact support to expedite the process.", "category": "Returns" },
+  { "q": "My item arrived damaged. What do I do?", "a": "Sorry about that! Email us a photo and your order number at support@store.com. We will send a replacement right away.", "category": "Issues" },
+  { "q": "I received the wrong item.", "a": "We apologize for the mix-up. Please email a photo of what you received and we will ship the correct item immediately.", "category": "Issues" },
+  { "q": "Can I cancel my order?", "a": "Orders can be cancelled within 1 hour of placement. After that, the order enters fulfillment and cannot be cancelled.", "category": "Orders" },
+  { "q": "Can I change my shipping address?", "a": "Address changes are possible within 1 hour of ordering. Contact us immediately and we will try to update before shipment.", "category": "Orders" },
+  { "q": "Do you ship internationally?", "a": "We currently ship to the US, Canada, and UK. International orders may incur customs fees, which are the buyer's responsibility.", "category": "Shipping" },
+  { "q": "How much does shipping cost?", "a": "Standard shipping is free on orders over $50. Orders under $50 have a flat $5.99 shipping fee.", "category": "Shipping" },
+  { "q": "What payment methods do you accept?", "a": "We accept Visa, Mastercard, Amex, Discover, PayPal, Apple Pay, and Google Pay.", "category": "Payments" },
+  { "q": "Is my payment information secure?", "a": "Yes. All transactions are encrypted using SSL/TLS. We never store your full card number.", "category": "Payments" },
+  { "q": "I was charged twice. What happened?", "a": "This is usually a temporary authorization hold. If both charges appear on your statement after 24 hours, contact us immediately.", "category": "Payments" },
+  { "q": "Do you offer promo codes?", "a": "Yes! Sign up for our newsletter to receive exclusive discount codes. You can apply them at checkout.", "category": "Promotions" },
+  { "q": "How do I apply a discount code?", "a": "Enter your promo code in the Discount Code field at checkout, then click Apply.", "category": "Promotions" },
+  { "q": "Why was my promo code rejected?", "a": "Codes may be expired, single-use already redeemed, or have minimum order requirements. Check the terms of your offer.", "category": "Promotions" },
+  { "q": "How do I contact a human agent?", "a": "Type agent or human at any time and I will connect you with our support team. Available 9am-6pm ET, Monday-Friday.", "category": "Support" },
+  { "q": "What are your support hours?", "a": "Our team is available Monday-Friday, 9am-6pm Eastern Time. Outside those hours, I can still help or take your message.", "category": "Support" }
+]

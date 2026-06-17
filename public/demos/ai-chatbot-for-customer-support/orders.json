@@ -1,0 +1,12 @@
+[
+  { "id": "ORD-10042", "email": "jane@example.com", "item": "Wireless Noise-Canceling Headphones", "status": "Delivered", "trackingNumber": "1Z999AA10123456784", "carrier": "UPS", "estimatedDelivery": "2026-06-10", "orderDate": "2026-06-04" },
+  { "id": "ORD-10051", "email": "mike@example.com", "item": "Standing Desk Converter", "status": "In Transit", "trackingNumber": "9400111899223487382910", "carrier": "USPS", "estimatedDelivery": "2026-06-19", "orderDate": "2026-06-13" },
+  { "id": "ORD-10067", "email": "sara@example.com", "item": "Yoga Mat (Purple)", "status": "Processing", "trackingNumber": null, "carrier": null, "estimatedDelivery": "2026-06-21", "orderDate": "2026-06-16" },
+  { "id": "ORD-10073", "email": "alex@example.com", "item": "Mechanical Keyboard (TKL)", "status": "Shipped", "trackingNumber": "771234560123", "carrier": "FedEx", "estimatedDelivery": "2026-06-18", "orderDate": "2026-06-14" },
+  { "id": "ORD-10089", "email": "priya@example.com", "item": "Vitamin D3 + K2 (90 ct)", "status": "Delivered", "trackingNumber": "1Z999BB10987654321", "carrier": "UPS", "estimatedDelivery": "2026-06-11", "orderDate": "2026-06-06" },
+  { "id": "ORD-10094", "email": "carlos@example.com", "item": "Portable Espresso Maker", "status": "Return Initiated", "trackingNumber": "9400111899223487390011", "carrier": "USPS", "estimatedDelivery": null, "orderDate": "2026-06-01" },
+  { "id": "ORD-10102", "email": "lisa@example.com", "item": "Bamboo Cutting Board Set (3pc)", "status": "Delivered", "trackingNumber": "771234560456", "carrier": "FedEx", "estimatedDelivery": "2026-06-08", "orderDate": "2026-06-03" },
+  { "id": "ORD-10115", "email": "tom@example.com", "item": "Smart LED Desk Lamp", "status": "In Transit", "trackingNumber": "1Z999CC10555123456", "carrier": "UPS", "estimatedDelivery": "2026-06-20", "orderDate": "2026-06-15" },
+  { "id": "ORD-10128", "email": "amy@example.com", "item": "Resistance Bands Set", "status": "Cancelled", "trackingNumber": null, "carrier": null, "estimatedDelivery": null, "orderDate": "2026-06-12" },
+  { "id": "ORD-10133", "email": "james@example.com", "item": "Reusable Water Bottle (32oz, Slate)", "status": "Shipped", "trackingNumber": "771234560789", "carrier": "FedEx", "estimatedDelivery": "2026-06-18", "orderDate": "2026-06-14" }
+]
