@@ -62,7 +62,9 @@ export async function initChat(panelEl) {
                               tierHint === "wasm" ? "Running on WASM" : "Template Mode";
       tierBadge.className = "tier-badge tier-" + tierHint;
     }
-    if (pct >= 1) {
+    if (pct >= 1 && !modelReady) {
+      // Guard: the progress callback fires pct>=1 more than once (WebLLM reports
+      // 1.0 repeatedly, plus the final explicit call). Greet + enable exactly once.
       modelReady = true;
       input.disabled = false;
       sendBtn.disabled = false;

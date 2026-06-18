@@ -45,17 +45,24 @@ async function retrieveEmbedding(queryText, topK = 3) {
     .slice(0, topK);
 }
 
-// Keyword fallback (pre-embed warm-up or Tier 3)
+// Keyword fallback (used before embeddings warm up, or in Tier 3 template mode).
+// Drop stopwords so matching keys on meaningful terms, and score by how much of
+// the customer's intent the entry covers (fraction of query terms matched) — a
+// far better relevance signal than dividing by the entry's length.
+const STOPWORDS = new Set(
+  "a an the is are was were be been being to of for and or but in on at it its this that these those i me my we our you your he she they them do does did can could would should will what when where why which who how with from as by about if then so just please".split(" ")
+);
 function tokenize(text) {
-  return text.toLowerCase().replace(/[^a-z0-9\s]/g, "").split(/\s+/).filter(Boolean);
+  return text.toLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter((t) => t && !STOPWORDS.has(t));
 }
 function retrieveKeyword(queryText, topK = 3) {
-  const qTokens = new Set(tokenize(queryText));
+  const qTokens = [...new Set(tokenize(queryText))];
+  if (!qTokens.length) return corpus.slice(0, topK).map((entry) => ({ entry, score: 0 }));
   return corpus
     .map(entry => {
-      const eTokens = tokenize(entry.q + " " + entry.a);
-      const matches = eTokens.filter(t => qTokens.has(t)).length;
-      const score = matches / Math.max(eTokens.length, 1);
+      const eTokens = new Set(tokenize(entry.q + " " + entry.a));
+      const hits = qTokens.filter(t => eTokens.has(t)).length;
+      const score = hits / qTokens.length; // fraction of the query's meaningful words covered (0..1)
       return { entry, score };
     })
     .sort((a, b) => b.score - a.score)
@@ -70,18 +77,29 @@ export async function retrieve(queryText, topK = 3) {
 }
 
 export function buildSystemPrompt(topChunks, orderContext = null) {
-  const context = topChunks.map(c => `Q: ${c.entry.q}\nA: ${c.entry.a}`).join("\n\n");
-  let prompt = `You are SupportAI, a helpful US customer support assistant for an online retail store.
-Answer ONLY using the context below. If the answer is not in the context, say you're not sure and offer to connect the user with a human agent.
-Be friendly, concise, and professional. Keep responses under 3 sentences unless the customer needs step-by-step instructions.
-US retail customer service tone.
+  const kb = topChunks
+    .map((c, i) => `[${i + 1}] Q: ${c.entry.q}\n    A: ${c.entry.a}`)
+    .join("\n");
 
-KNOWLEDGE BASE:
-${context}`;
+  let prompt = `You are SupportAI, the customer-support assistant for a US-based online retail store. You handle questions about orders, shipping, returns, payments, and accounts.
+
+HOW TO ANSWER
+- Ground every answer in the KNOWLEDGE BASE and ORDER INFO below — treat them as the only source of truth for policies, prices, timeframes, and steps. Never invent or guess a policy, price, date, or order detail.
+- First work out what the customer actually needs, then answer that directly. Lead with the answer; add only the detail that helps.
+- Be specific: quote the exact figures and timeframes from the context (e.g. "within 30 days", "$5.99 standard shipping"), not vague paraphrases.
+- If the needed answer is not in the context, say so in one honest sentence and offer to connect them with a human agent — do not fill space with generic advice.
+- Use a short numbered list only for multi-step tasks (e.g. starting a return). Otherwise keep it to 1–3 sentences.
+- Tone: warm, clear, professional US retail support. If the customer is frustrated, briefly acknowledge it first. No emojis, no headings, and don't repeat the customer's question back to them.
+
+KNOWLEDGE BASE (most relevant first; use the entries that fit the question and ignore the rest):
+${kb || "(no relevant articles were found for this question)"}`;
 
   if (orderContext) {
-    prompt += `\n\nORDER INFO:\n${orderContext}`;
+    prompt += `\n\nORDER INFO (verified account data — use these exact details when answering about this order):\n${orderContext}`;
   }
+
+  prompt += `\n\nIf the request is outside support (approving refunds, changing account data you can't verify, or anything not covered above), briefly explain you can't do that here and offer a human agent.`;
+
   return prompt;
 }
 
