@@ -28,6 +28,10 @@ const GROWYARD_URL =
 const LIFE_DASHBOARD_URL =
   import.meta.env.VITE_LIFE_DASHBOARD_URL ||
   "https://mwegter95.github.io/life-dashboard/";
+// VITE_FEELGOOD_URL overrides the Feel-Good Productivity iframe src for local dev.
+const FEELGOOD_URL =
+  import.meta.env.VITE_FEELGOOD_URL ||
+  "https://mwegter95.github.io/feel-good-productivity/";
 
 export const apps = [
   {
@@ -108,5 +112,18 @@ export const apps = [
     color: "#FA243C", // Apple Music red
     icon: "🎧",
     frameStyle: "walnut",
+  },
+  {
+    id: 7,
+    slug: "feel-good-productivity",
+    title: "Feel-Good Productivity",
+    description:
+      "An interactive workbook for Ali Abdaal's Feel-Good Productivity. Work through all 54 experiments, save your reflections, and track what you've done — signed in to your account.",
+    category: "Productivity",
+    status: "live",
+    href: FEELGOOD_URL,
+    color: "#F5973A", // warm sun orange
+    icon: "🌅",
+    frameStyle: "baroque",
   },
 ];

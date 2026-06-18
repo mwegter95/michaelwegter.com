@@ -177,6 +177,23 @@ const details = {
     ],
     screenshots: [],
   },
+
+  'feel-good-productivity': {
+    tagline: 'The whole of Ali Abdaal’s Feel-Good Productivity as a workbook you actually do — with your reflections and progress saved.',
+    paragraphs: [
+      "Most productivity books get read once and shelved. Feel-Good Productivity is built around 54 concrete “experiments” — small, doable changes spread across nine chapters — and those are exactly the kind of thing that evaporates the moment you close the cover. This app turns the book into an interactive companion: every part, every chapter, and every experiment laid out in order, each with a short summary of the idea, a clear “do this” prompt, and the reflection fields to fill in as you go.",
+      "It’s organised the way the book is — Energise (Play, Power, People), Unblock (Seek Clarity, Find Courage, Get Started), and Sustain (Conserve, Recharge, Align). A progress ring and per-chapter counters show how far you’ve worked through it, you tick each experiment off as you try it, and everything you write is saved to your account so you can come back, reread your answers, and keep going. It signs in with the same account as the rest of the site.",
+    ],
+    features: [
+      'All 3 parts, 9 chapters, and 54 experiments from the book, in order',
+      'Each experiment: a brief summary, a concrete action, and reflection prompts',
+      'Mark experiments done and watch a progress ring fill as you go',
+      'Rich inputs — short answers, journal-style reflections, lists, and 1–5 ratings (Wheel of Life)',
+      'Everything saved to your account, synced across devices',
+      'One sign-in shared with Life Dashboard and Growyard',
+    ],
+    screenshots: [],
+  },
 }
 
 /* ── Lightbox ────────────────────────────────────────────── */

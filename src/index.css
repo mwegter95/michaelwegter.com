@@ -535,21 +535,46 @@ main { padding-top: var(--nav-height); }
   min-height: 0;
 }
 
-/* Desktop area — takes the space left above the status bar; scrolls if needed */
+/* Desktop area — takes the space left above the status bar; scrolls if needed.
+   As the app list grows the icon grid stays a tidy two columns and the extra
+   rows scroll vertically inside the CRT (the screen is a fixed % of the Mac
+   image, so it never widens the machine). minmax(0, 1fr) lets each column
+   shrink so a long app title can never push a third "bit of width" out past
+   the screen edge — overflow is contained to vertical scroll only. */
 .mac-desktop {
   width: 100%;
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;          /* scrolling the desktop won't yank the page */
+  -webkit-overflow-scrolling: touch;     /* momentum scroll on iOS */
   background: #1a2830;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-rows: auto;
   align-content: start;
   padding: 14px 6px 10px 6px; /* status bar reserves its own space in-flow now */
   gap: 3px;
   box-sizing: border-box;
+  /* Retro scrollbar so it's visually clear there's more to scroll to. */
+  scrollbar-width: thin;
+  scrollbar-color: #6b7a82 #1a2830;
 }
+.mac-desktop::-webkit-scrollbar { width: 11px; }
+.mac-desktop::-webkit-scrollbar-track { background: #14202730; border-left: 1px solid #0d1418; }
+.mac-desktop::-webkit-scrollbar-thumb {
+  background: #6b7a82;
+  border: 2px solid #1a2830;
+  border-radius: 2px;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.25), inset -1px -1px 0 rgba(0,0,0,0.35);
+}
+.mac-desktop::-webkit-scrollbar-thumb:hover { background: #80909a; }
+
+/* Icons must be allowed to shrink inside their column (handles the extra width
+   gracefully on narrow screens instead of bleeding past the bezel). */
+.mac-icon { min-width: 0; }
+.mac-icon-img { max-width: 100%; }
 
 /* Expanded Mac — padding-bottom is set via inline style in MacDesktop based on row count */
 
