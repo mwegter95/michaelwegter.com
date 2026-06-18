@@ -247,6 +247,26 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 12,
+    slug: "audio-software-engineer-needed-for",
+    title: "Sanctuary Playback Engine",
+    description:
+      "A full-featured worship playback engine built in the browser: 6-stem multitrack mixer with sample-accurate sync, section navigation with A/B loop, configurable count-in, beat-locked cue cards, and a waveform scrubber. All audio generated programmatically via Web Audio API.",
+    category: "Music",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/audio-software-engineer-needed-for/",
+    color: "#F0A830",
+    icon: "🎙️",
+    frameStyle: "walnut",
+    client: "Worship Platform (Upwork)",
+    postingSummary:
+      "Experienced audio software engineer needed to audit, stabilize, and fix a desktop worship playback platform covering transport reliability, section navigation, audio sync, click track timing, stem routing, and mixer channel behavior.",
+    builtFor: "Audio Software Engineer for Worship Playback Platform (Upwork)",
+    date: "2026-06-18",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 export const allWorkSamples = workSampleRegistry;
