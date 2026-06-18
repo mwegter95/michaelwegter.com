@@ -1,0 +1,61 @@
+{
+  "timestamp": "2026-06-16T01:51:32.561Z",
+  "demo": "CivicQ Landing Page",
+  "url": "https://michaelwegter.com/demos/civicq/",
+  "viewport": "1440x900",
+  "captures": [
+    {
+      "name": "Full Above-Fold View",
+      "file": "00-full-above-fold.png",
+      "description": "Complete above-fold view of CivicQ landing page at 1440x900"
+    },
+    {
+      "name": "Hero Section",
+      "file": "01-hero.png",
+      "description": "CivicQ landing page hero with video thumbnail and primary CTAs"
+    },
+    {
+      "name": "Feature Cards Grid",
+      "file": "02-features.png",
+      "description": "2x2 grid of feature cards with LIVE / IN DEVELOPMENT status pills"
+    },
+    {
+      "name": "Scoring Methodology",
+      "file": "03-scoring.png",
+      "description": "Custom 6-dimension weighted scoring visualization (SVG)"
+    },
+    {
+      "name": "Honest Status Disclosure",
+      "file": "04-status.png",
+      "description": "Two-column live vs. in-development status breakdown"
+    },
+    {
+      "name": "Organization Hub",
+      "file": "05-org-hub.png",
+      "description": "Org hub with wireframe mockup and email capture form"
+    },
+    {
+      "name": "Fundraising Module",
+      "file": "06-funding.png",
+      "description": "$75K funds breakdown graphic with GoFundMe CTA"
+    },
+    {
+      "name": "Partners & Press",
+      "file": "07-partners.png",
+      "description": "Three-column card section for organizations and press coverage"
+    },
+    {
+      "name": "Hero Flow Recording",
+      "file": "hero-flow.webm",
+      "description": "Full screen recording of page load, smooth scroll through all sections, and email interaction"
+    }
+  ],
+  "mediaDirectory": "/Users/michaelwegter/Desktop/Projects/michaelwegter.com/public/demos/civicq/media",
+  "notes": [
+    "All media captured from live production deployment",
+    "Screenshots represent key sections of the landing page",
+    "Video demonstrates full page load and scroll through all 10 sections plus email capture interaction",
+    "Captures are deterministic and reproducible",
+    "Format: PNG for screenshots, WebM for video"
+  ]
+}
