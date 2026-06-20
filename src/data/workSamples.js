@@ -267,6 +267,26 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 13,
+    slug: "adverteyes",
+    title: "AdvertEyes OOH Ops Platform",
+    description:
+      "Full-stack internal ops platform for an OOH advertising company. Inventory management with Leaflet map, campaign builder, booking conflict detection, live weather/install-risk (Open-Meteo), traffic scoring (TomTom), and RBAC across 4 user roles.",
+    category: "Data",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/adverteyes/",
+    color: "#FF6B1A",
+    icon: "👁",
+    frameStyle: "walnut",
+    client: "OOH Advertising Co. (Upwork)",
+    postingSummary:
+      "Full Stack Developer needed for custom business web application with admin dashboard, user management, API integrations, database-driven features, and modern responsive frontend (React/Next.js/Node/TS).",
+    builtFor: "Full Stack Developer - Custom Web App + Admin Dashboard (Upwork)",
+    date: "2026-06-19",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 export const allWorkSamples = workSampleRegistry;
