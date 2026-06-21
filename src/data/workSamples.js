@@ -27,6 +27,26 @@
 
 const workSampleRegistry = [
   {
+    id: 9,
+    slug: "mn-state-park-tracker",
+    title: "MN State Park Tracker",
+    description:
+      "A full-stack personal journal for tracking Minnesota's 73 state parks: interactive Leaflet map with custom pins, visit logs with photo uploads, distance from home, and per-park descriptions. Real auth, real backend, real data.",
+    category: "Productivity",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/mn-state-park-tracker/",
+    color: "#2D5A3D",
+    icon: "🌲",
+    frameStyle: "walnut",
+    client: "Upwork, MN State Park Enthusiast",
+    postingSummary:
+      "User-friendly app to track which MN state parks you've visited, with map/list views, photo memories, attendees, date, home distance, and login.",
+    builtFor: "MN State Park Tracker App (Upwork)",
+    date: "2026-06-21",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
+  {
     id: 8,
     slug: "construction-company-website",
     title: "Cornerstone Construction Co.",
