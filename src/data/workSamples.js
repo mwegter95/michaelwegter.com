@@ -27,6 +27,26 @@
 
 const workSampleRegistry = [
   {
+    id: 10,
+    slug: "telehealthy",
+    title: "TeleHealthy Voice Ops Console",
+    description:
+      "AI-powered voice operations platform for healthcare practices: 24/7 inbound call simulator with live intent detection, confidence scoring, and automated booking; outbound dialer with dynamic CRM-driven scripts; patient CRM; and a call analytics dashboard.",
+    category: "Utility",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/telehealthy/",
+    color: "#0D9488",
+    icon: "🩺",
+    frameStyle: "walnut",
+    client: "Healthcare / Service Business (Upwork)",
+    postingSummary:
+      "AI Receptionist (24/7 inbound booking, FAQs, escalation) + AI Outbound Caller (dynamic CRM scripts, reminders) for a medical/psychiatry practice. Webhook + SMS integration, call recording, analytics dashboard, warm transfer logic.",
+    builtFor: "AI & Automation Engineer -- Voice Receptionist & Automated Caller System (Upwork)",
+    date: "2026-06-21",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
+  {
     id: 9,
     slug: "mn-state-park-tracker",
     title: "MN State Park Tracker",
