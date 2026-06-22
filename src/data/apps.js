@@ -126,4 +126,17 @@ export const apps = [
     icon: "🌅",
     frameStyle: "baroque",
   },
+  {
+    id: 8,
+    slug: "mn-state-park-tracker",
+    title: "MN State Park Tracker",
+    description:
+      "Track all 73 Minnesota state parks: an interactive map, visit logs with photos, attendees, dates, and distance from home — with real login and a real backend.",
+    category: "Utility",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/mn-state-park-tracker/",
+    color: "#2E6B3E", // pine green
+    icon: "🌲",
+    frameStyle: "walnut",
+  },
 ];

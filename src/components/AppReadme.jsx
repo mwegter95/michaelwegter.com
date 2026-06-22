@@ -194,6 +194,24 @@ const details = {
     ],
     screenshots: [],
   },
+
+  'mn-state-park-tracker': {
+    tagline: 'A personal field journal for all 73 Minnesota state parks — map, memories, and miles, signed in to your account.',
+    paragraphs: [
+      "MN State Park Tracker is a full-stack app for logging your way through every one of Minnesota's 73 state parks. The whole system is laid out on an interactive Leaflet map with a custom pin for each park: visited parks light up, unvisited ones stay muted, so a single glance shows how much of the state you've covered. Tap any pin (or switch to the list view) to open a park, read a short description, see how far it is from home, and log a visit.",
+      "Each visit is a real memory, not just a checkbox: the date you went, who came along, a note about what made it special, and as many photos as you want from the trip. Photos are handled the way phones actually take them — iPhone HEIC/HEIF files are converted on the fly, orientation is corrected, and you can add several at once straight from the camera roll. Everything is saved to your account through a real authenticated backend, so your map and your memories follow you across devices.",
+      "It's built to be genuinely useful for a weekend-warrior park-goer: see what's near you, plan the next trip, and keep a growing, photo-rich record of the ones you've already crossed off.",
+    ],
+    features: [
+      'Interactive map of all 73 MN state parks with custom visited / unvisited pins',
+      'Map and list views, each with per-park descriptions and distance from home',
+      'Visit logs: date, attendees, a memory note, and multiple photos per visit',
+      'Handles iPhone photos — HEIC/HEIF conversion, auto-orientation, multi-select upload',
+      'Real accounts and a real backend — your data syncs across devices',
+      'A clear at-a-glance picture of how much of the state you have explored',
+    ],
+    screenshots: [],
+  },
 }
 
 /* ── Lightbox ────────────────────────────────────────────── */
