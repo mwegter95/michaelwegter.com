@@ -327,6 +327,26 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 14,
+    slug: "solo-law",
+    title: "Solo Law Premium Website + CMS",
+    description:
+      "Full-stack boutique law firm site: Angular 18 + TypeScript + Tailwind CSS, multilingual (EN/ES/FR), Flask OOP backend with JWT-auth CMS. Features a live WebGPU agentic AI content assistant (Draft → Reflect → Eval rubric loop, falls back to mock mode).",
+    category: "Utility",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/solo-law/",
+    color: "#C9A96E",
+    icon: "⚖️",
+    frameStyle: "baroque",
+    client: "Solo/Boutique Law Practice (Upwork)",
+    postingSummary:
+      "Premium responsive CMS-driven law firm website with multilingual support, editorial B&W design, AI-assisted visual content, and Angular TypeScript frontend.",
+    builtFor: "Premium Website Designer/Developer: CMS, Multilingual, AI-Assisted (Upwork)",
+    date: "2026-06-22",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 export const allWorkSamples = workSampleRegistry;
