@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auction Scraper Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────────────────────── -->
+  <header>
+    <div class="header-brand">
+      <h1>🏺 Auction Scraper</h1>
+      <span class="tagline">Live Multi-Source ETL Console</span>
+    </div>
+
+    <div class="header-controls">
+      <div class="source-checkboxes">
+        <label>
+          <input type="checkbox" class="source-cb" value="leland_little" checked>
+          Leland Little
+        </label>
+        <label>
+          <input type="checkbox" class="source-cb" value="heritage_auctions" checked>
+          Heritage Auctions
+        </label>
+        <label>
+          <input type="checkbox" class="source-cb" value="bonhams" checked>
+          Bonhams
+        </label>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button id="btn-run" class="btn-run">
+        <span class="run-icon">▶</span>
+        <span class="spinner"></span>
+        Run Scraper
+      </button>
+      <button id="btn-export" class="btn-secondary" disabled>
+        ⬇ Export JSON
+      </button>
+      <button id="btn-view-all" class="btn-secondary">
+        { } View Dataset
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Source Status Bar ───────────────────────────────────────────────── -->
+  <div id="status-bar">
+    <div class="source-status" data-source="leland_little" data-state="idle">
+      <span class="status-dot"></span>
+      <span class="source-status-name">Leland Little</span>
+      <span class="source-status-badge">Idle</span>
+      <span class="source-status-meta">requests + BS4</span>
+    </div>
+
+    <div class="source-status" data-source="heritage_auctions" data-state="idle">
+      <span class="status-dot"></span>
+      <span class="source-status-name">Heritage Auctions</span>
+      <span class="source-status-badge">Idle</span>
+      <span class="source-status-meta">JSON-LD / Playwright</span>
+    </div>
+
+    <div class="source-status" data-source="bonhams" data-state="idle">
+      <span class="status-dot"></span>
+      <span class="source-status-name">Bonhams</span>
+      <span class="source-status-badge">Idle</span>
+      <span class="source-status-meta">Playwright / _next/data</span>
+    </div>
+
+    <span id="status-total">0 of 0 lots</span>
+  </div>
+
+  <!-- ── Filter Bar ─────────────────────────────────────────────────────── -->
+  <div id="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Source</span>
+      <select id="filter-source" class="filter-select">
+        <option value="all">All Sources</option>
+        <option value="leland_little">Leland Little</option>
+        <option value="heritage_auctions">Heritage</option>
+        <option value="bonhams">Bonhams</option>
+      </select>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <label class="filter-toggle">
+      <input type="checkbox" id="filter-has-image">
+      Has image
+    </label>
+
+    <div class="filter-divider"></div>
+
+    <div class="estimate-range">
+      <span class="filter-label">Max&nbsp;Estimate</span>
+      <input type="range" id="filter-est-max" min="0" max="500000" step="1000" value="500000">
+      <span id="est-max-label">Any</span>
+    </div>
+
+    <div class="sort-group">
+      <span class="filter-label">Sort</span>
+      <select id="sort-select" class="filter-select">
+        <option value="default">Default</option>
+        <option value="date">Sale Date</option>
+        <option value="estimate_low">Estimate: Low → High</option>
+        <option value="estimate_high">Estimate: High → Low</option>
+        <option value="source">Source</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ── Main Content ───────────────────────────────────────────────────── -->
+  <div id="main">
+
+    <!-- Lot cards grid -->
+    <div id="lots-grid">
+      <div class="lots-empty">
+        <div class="empty-icon">🏺</div>
+        <p>Select sources above and click <strong>Run Scraper</strong></p>
+        <small>
+          Lot cards stream in as each auction house is scraped. Images,
+          estimates, and sale dates are normalized to a consistent schema.
+          Click any thumbnail to zoom; click { } to inspect raw JSON.
+        </small>
+      </div>
+    </div>
+
+    <!-- Telemetry log -->
+    <div id="telemetry-section">
+      <div class="telemetry-header">
+        <span class="telemetry-title">Telemetry Log</span>
+        <span id="telemetry-count">0</span>
+        <span class="telemetry-toggle">▼ Show</span>
+      </div>
+      <div id="telemetry-log"></div>
+    </div>
+
+  </div>
+
+  <!-- ── Dataset Summary Bar (shown after job_done) ────────────────────── -->
+  <div id="dataset-bar">
+    <div class="dataset-summary" id="dataset-summary"></div>
+  </div>
+
+  <!-- ── JSON Inspector Overlay ─────────────────────────────────────────── -->
+  <div id="inspector-overlay">
+    <div id="inspector-panel">
+      <div class="inspector-header">
+        <div class="inspector-title" id="inspector-title">Lot Details</div>
+        <div class="inspector-tabs">
+          <button class="inspector-tab active" data-tab="normalized">Normalized</button>
+          <button class="inspector-tab" data-tab="raw_json_ld">Raw JSON-LD</button>
+        </div>
+        <button class="btn-close-inspector" id="btn-close-inspector" title="Close">✕</button>
+      </div>
+      <div class="inspector-body" id="inspector-body"></div>
+      <div class="inspector-copy">
+        <button class="btn-copy" id="btn-copy-json">Copy JSON</button>
+        <span class="copy-hint">Copies the active tab's data to clipboard</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Lightbox ───────────────────────────────────────────────────────── -->
+  <div id="lightbox">
+    <button class="btn-close-lb" id="btn-close-lb" title="Close">✕</button>
+    <img id="lb-img" src="" alt="Lot image">
+    <div id="lb-caption"
+         style="color:rgba(255,255,255,.7);font-family:'Cormorant Garamond',serif;font-size:16px;text-align:center;max-width:600px;padding:0 16px;"></div>
+    <div id="lightbox-nav">
+      <button class="lb-btn" id="lb-prev">&#8592;</button>
+      <span id="lb-counter"
+            style="color:rgba(255,255,255,.5);font-size:12px;min-width:48px;text-align:center;">1 / 1</span>
+      <button class="lb-btn" id="lb-next">&#8594;</button>
+    </div>
+  </div>
+
+  <!-- ── Toast notification ─────────────────────────────────────────────── -->
+  <div id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

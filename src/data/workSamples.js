@@ -347,6 +347,26 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 15,
+    slug: "auction-scraper",
+    title: "Auction Scraper Console",
+    description:
+      "Live multi-source ETL pipeline: three auction houses (static + JS-rendered), SSE streaming dashboard, real-time lot cards with images, raw vs. normalized JSON inspector, per-source telemetry log with rate-limit and retry events, and CSV/JSON export.",
+    category: "Data",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/auction-scraper/",
+    color: "#8B6914",
+    icon: "🏺",
+    frameStyle: "walnut",
+    client: "Upwork / Collectibles Subscription Service",
+    postingSummary:
+      "Data Acquisition Engineer for a collectibles subscription service: Python scrapers (requests+BS4 for static, Playwright for JS-rendered), normalized JSON output, rate limiting, responsible scraping, ongoing ETL pipeline.",
+    builtFor: "Backend Data Acquisition / ETL Engineer (Upwork)",
+    date: "2026-06-23",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 export const allWorkSamples = workSampleRegistry;
