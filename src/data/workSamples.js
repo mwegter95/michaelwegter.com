@@ -367,6 +367,26 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 16,
+    slug: "client-finder-1-0",
+    title: "Client Finder 1.0",
+    description:
+      "B2B lead discovery and analysis tool for MN-based SMBs: Google-powered search pipeline, WebGPU AI site audit (modernity, mobile, functionality scores), contact enrichment, and a full CRM dashboard with drill-down modals, screenshots, and outreach tracking.",
+    category: "Data",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/client-finder-1-0/",
+    color: "#2563EB",
+    icon: "🔍",
+    frameStyle: "walnut",
+    client: "Upwork / Custom Software Agency",
+    postingSummary:
+      "Local client discovery tool for a MN-based custom software and web dev agency: Google/Serper search pipeline, WebGPU AI technical audit, contact enrichment, FastAPI + React CRM dashboard with SQLite persistence.",
+    builtFor: "Expert Python & AI System Architect -- Client Finder 1.0 (Upwork)",
+    date: "2026-06-24",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 export const allWorkSamples = workSampleRegistry;
