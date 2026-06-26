@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { workSamples } from '../data/workSamples'
+import { workSamples, allWorkSamples } from '../data/workSamples'
+import { useSiteAuth } from '../auth/SiteAuth'
 
 /**
  * WorkSamples - gallery of client-proposal demos.
@@ -8,10 +9,14 @@ import { workSamples } from '../data/workSamples'
  * card links to /work-samples/:slug, which AppFrame renders as a full-viewport
  * iframe of the same-origin demo under /demos/<slug>/.
  *
+ * Hidden samples are private: they only appear when the owner is signed in.
+ *
  * Self-contained styling via the site design tokens so it stays consistent
  * without depending on MacDesktop internals.
  */
 export default function WorkSamples() {
+  const { isOwner } = useSiteAuth()
+  const list = isOwner ? allWorkSamples : workSamples
   return (
     <section className="mac-section mac-section-full" style={{ paddingTop: '72px', paddingBottom: '0' }}>
       <div className="container" style={{ paddingTop: '0', paddingBottom: '40px' }}>
@@ -32,9 +37,15 @@ export default function WorkSamples() {
             Real, working demos built to answer real project briefs. Click any one
             to open and use it yourself.
           </p>
+          {isOwner && (
+            <p style={{ marginTop: '12px', fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', gap: '7px' }}>
+              <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981' }} />
+              Owner view — private samples are visible to you only.
+            </p>
+          )}
         </div>
 
-        {workSamples.length === 0 ? (
+        {list.length === 0 ? (
           <p style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '14px',
@@ -51,7 +62,7 @@ export default function WorkSamples() {
             gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
             gap: '20px',
           }}>
-            {workSamples.map((s) => (
+            {list.map((s) => (
               <Link
                 key={s.id}
                 to={`/work-samples/${s.slug}`}
@@ -63,10 +74,22 @@ export default function WorkSamples() {
                   borderTop: `3px solid ${s.color}`,
                   padding: '22px',
                   transition: 'background 0.2s, transform 0.2s',
+                  position: 'relative',
                 }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--bg-card-hover)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--bg-card)'; e.currentTarget.style.transform = 'none' }}
               >
+                {s.hidden && (
+                  <span title="Private — visible to you only" style={{
+                    position: 'absolute', top: '14px', right: '14px',
+                    fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.06em',
+                    textTransform: 'uppercase', color: 'var(--text-muted)',
+                    border: '1px solid var(--border-subtle)', borderRadius: '4px', padding: '2px 6px',
+                    display: 'inline-flex', alignItems: 'center', gap: '4px',
+                  }}>
+                    🔒 Private
+                  </span>
+                )}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
                   <span style={{ fontSize: '26px', lineHeight: 1 }}>{s.icon}</span>
                   <span style={{

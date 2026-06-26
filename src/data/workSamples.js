@@ -375,6 +375,7 @@ const workSampleRegistry = [
       "B2B lead discovery and analysis tool for MN-based SMBs: Google-powered search pipeline, WebGPU AI site audit (modernity, mobile, functionality scores), contact enrichment, and a full CRM dashboard with drill-down modals, screenshots, and outreach tracking.",
     category: "Data",
     status: "live",
+    hidden: true,
     href: import.meta.env.BASE_URL + "demos/client-finder-1-0/",
     color: "#2563EB",
     icon: "🔍",

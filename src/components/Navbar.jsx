@@ -1,12 +1,16 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { apps } from '../data/apps'
+import { useSiteAuth } from '../auth/SiteAuth'
+import SignInModal from './SignInModal'
 
 export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [signInOpen, setSignInOpen] = useState(false)
   const dropdownRef = useRef(null)
   const location = useLocation()
+  const { user, isOwner, logout } = useSiteAuth()
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -128,6 +132,26 @@ export default function Navbar() {
             Work Samples
           </Link>
 
+          {/* Owner sign-in (non-blocking, off to the side) */}
+          {user ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '6px' }}>
+              <span title={user.email} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-secondary)' }}>
+                <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: isOwner ? '#10B981' : 'var(--text-muted)' }} />
+                {user.display_name || user.email.split('@')[0]}
+              </span>
+              <button onClick={logout} className="nav-link" style={{ fontSize: '12px', opacity: 0.75 }}>
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => setSignInOpen(true)} className="nav-link" style={{ marginLeft: '6px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <svg viewBox="0 0 16 16" width="13" height="13" fill="none" aria-hidden="true">
+                <path d="M6 2H3v12h3M10 11l3-3-3-3M13 8H6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Sign in
+            </button>
+          )}
+
         </div>
 
         {/* Mobile toggle */}
@@ -164,8 +188,27 @@ export default function Navbar() {
           <Link to="/work-samples" className="nav-link" style={{ display: 'block', padding: '12px 0' }}>
             Work Samples
           </Link>
+          {user ? (
+            <button
+              className="nav-link"
+              style={{ display: 'block', padding: '12px 0', textAlign: 'left', width: '100%' }}
+              onClick={() => { logout(); setMobileOpen(false) }}
+            >
+              Sign out ({user.display_name || user.email.split('@')[0]})
+            </button>
+          ) : (
+            <button
+              className="nav-link"
+              style={{ display: 'block', padding: '12px 0', textAlign: 'left', width: '100%' }}
+              onClick={() => { setSignInOpen(true); setMobileOpen(false) }}
+            >
+              Sign in
+            </button>
+          )}
         </div>
       )}
+
+      <SignInModal open={signInOpen} onClose={() => setSignInOpen(false)} />
     </nav>
   )
 }
