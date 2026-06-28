@@ -388,6 +388,26 @@ const workSampleRegistry = [
     proposalPageUrl: null,
   },
   {
+    id: 18,
+    slug: "orschell-excavating-e-commerce-full",
+    title: "Orschell Supply Co.",
+    description:
+      "Full-stack e-commerce platform: storefront, cart, checkout, JWT auth, admin CMS with product/inventory/order management. Node.js + TypeScript + SQLite backend (PostgreSQL-ready schema). Mock payment labeled as demo.",
+    category: "Data",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/orschell-excavating-e-commerce-full/",
+    color: "#F76B10",
+    icon: "🏗",
+    frameStyle: "walnut",
+    client: "Orschell Excavating",
+    postingSummary:
+      "Backend for existing e-commerce site: auth, catalog, inventory, orders, payment gateway, REST API, Node.js + TypeScript + PostgreSQL.",
+    builtFor: "Full-Stack E-Commerce Developer (Upwork)",
+    date: "2026-06-28",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
+  {
     id: 16,
     slug: "client-finder-1-0",
     title: "Client Finder 1.0",
