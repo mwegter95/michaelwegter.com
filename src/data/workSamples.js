@@ -368,6 +368,26 @@ const workSampleRegistry = [
     proposalPageUrl: null,
   },
   {
+    id: 17,
+    slug: "maryland-driveway-restore",
+    title: "Maryland Driveway Restore",
+    description:
+      "Full WordPress demo for a premium Maryland driveway restoration company. Real WP dashboard login available. 9 pages, mobile-first with sticky CTAs, before/after comparison slider, 3-tier pricing, gallery with lightbox, FAQ accordion, and Rank Math SEO. Custom mdr-theme built from scratch.",
+    category: "Creative",
+    status: "live",
+    href: "https://api.michaelwegter.com/demos/maryland-driveway-restore/",
+    color: "#2F5D3A",
+    icon: "🛣️",
+    frameStyle: "walnut",
+    client: "Maryland Driveway Restore",
+    postingSummary:
+      "Phase 1 WordPress site: 9 pages, mobile-first, local SEO, lead capture forms. Phase 2: 30-50 city landing pages, interactive estimate calculator, advanced SEO.",
+    builtFor: "WordPress Developer (Upwork)",
+    date: "2026-06-27",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
+  {
     id: 16,
     slug: "client-finder-1-0",
     title: "Client Finder 1.0",
