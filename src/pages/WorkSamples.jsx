@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { workSamples, allWorkSamples, availableTagSections } from '../data/workSamples'
 import { useSiteAuth } from '../auth/SiteAuth'
@@ -10,10 +10,12 @@ import { useSiteAuth } from '../auth/SiteAuth'
  * card links to /work-samples/:slug, which AppFrame renders as a full-viewport
  * iframe of the same-origin demo under /demos/<slug>/.
  *
- * A tag filter sits above the grid: tags are grouped into sections, every tag is
- * selected by default (so all samples show), and a sample stays visible when it
- * has at least one selected tag. Section headers toggle a whole group; "Clear
- * selection" empties the set and "Select all" restores it.
+ * A tag filter sits in a sticky left sidebar (its own scroll when long): tags are
+ * grouped into sections, every tag is selected by default (so all samples show),
+ * and a sample stays visible when it has at least one selected tag. Section
+ * headers toggle a whole group; "Clear selection" empties the set and "Select all"
+ * restores it. On mobile the sidebar collapses into a "Tags" hamburger that opens
+ * the filter as a left drawer, closed by its ✕ or by tapping the backdrop.
  *
  * Hidden samples are private: they only appear when the owner is signed in.
  */
@@ -24,6 +26,20 @@ export default function WorkSamples() {
   const sections = useMemo(() => availableTagSections(list), [list])
   const allTags = useMemo(() => sections.flatMap((section) => section.tags), [sections])
   const [selected, setSelected] = useState(() => new Set(allTags))
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
+  const closeDrawer = () => setDrawerOpen(false)
+
+  useEffect(() => {
+    if (!drawerOpen) return
+    const onKey = (e) => { if (e.key === 'Escape') setDrawerOpen(false) }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [drawerOpen])
 
   const toggleTag = (tag) => {
     setSelected((prev) => {
@@ -86,42 +102,39 @@ export default function WorkSamples() {
           )}
         </div>
 
-        {sections.length > 0 && (
-          <div style={{
-            border: '1px solid var(--border-default)',
-            background: 'var(--bg-surface)',
-            padding: '18px 20px',
-            marginBottom: '28px',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '12px',
-              marginBottom: '14px',
-              flexWrap: 'wrap',
-            }}>
-              <span style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: 'var(--text-secondary)',
-              }}>
-                Filter by tag · {filtered.length} of {list.length}
-              </span>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button type="button" onClick={selectAll} disabled={allSelected} className="ws-action">
-                  Select all
-                </button>
-                <button type="button" onClick={clearSelection} disabled={noneSelected} className="ws-action">
-                  Clear selection
-                </button>
-              </div>
-            </div>
+        <div className="ws-layout">
+          <div
+            className={`ws-backdrop${drawerOpen ? ' open' : ''}`}
+            onClick={closeDrawer}
+            aria-hidden="true"
+          />
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {sections.map((section) => {
+          {sections.length > 0 && (
+            <aside className={`ws-sidebar${drawerOpen ? ' open' : ''}`} aria-label="Tag filters">
+              <div className="ws-filter">
+                <div className="ws-filter-head">
+                  <span className="ws-filter-title">Filter by tag</span>
+                  <span className="ws-filter-count">{filtered.length} of {list.length}</span>
+                  <button
+                    type="button"
+                    className="ws-drawer-close"
+                    onClick={closeDrawer}
+                    aria-label="Close tag filters"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div className="ws-filter-actions">
+                  <button type="button" onClick={selectAll} disabled={allSelected} className="ws-action">
+                    Select all
+                  </button>
+                  <button type="button" onClick={clearSelection} disabled={noneSelected} className="ws-action">
+                    Clear selection
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  {sections.map((section) => {
                 const sectionOn = section.tags.every((tag) => selected.has(tag))
                 return (
                   <div key={section.id} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px' }}>
@@ -149,12 +162,25 @@ export default function WorkSamples() {
                     })}
                   </div>
                 )
-              })}
-            </div>
-          </div>
-        )}
+                  })}
+                </div>
+              </div>
+            </aside>
+          )}
 
-        {filtered.length === 0 ? (
+          <div className="ws-main">
+            {sections.length > 0 && (
+              <button
+                type="button"
+                className="ws-hamburger ws-action"
+                onClick={() => setDrawerOpen(true)}
+                aria-expanded={drawerOpen}
+              >
+                <span className="ws-hamburger-icon" aria-hidden="true">☰</span> Tags
+              </button>
+            )}
+
+            {filtered.length === 0 ? (
           <p style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '14px',
@@ -271,6 +297,8 @@ export default function WorkSamples() {
             ))}
           </div>
         )}
+          </div>
+        </div>
       </div>
     </section>
   )

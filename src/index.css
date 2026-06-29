@@ -2469,3 +2469,100 @@ main { padding-top: var(--nav-height); }
   border-color: var(--accent);
   background: var(--accent-pale);
 }
+
+/* ─────────────────────────────────────────────
+   WORK SAMPLES — sticky sidebar + mobile drawer
+───────────────────────────────────────────── */
+.ws-layout { display: flex; gap: 28px; align-items: flex-start; }
+.ws-main { flex: 1 1 auto; min-width: 0; }
+
+.ws-sidebar {
+  flex: 0 0 264px;
+  width: 264px;
+  position: sticky;
+  top: 84px;
+  max-height: calc(100vh - 104px);
+  display: flex;
+  overflow: hidden;
+}
+.ws-filter {
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  padding: 16px 16px 18px;
+}
+.ws-filter::-webkit-scrollbar { width: 8px; }
+.ws-filter::-webkit-scrollbar-thumb { background: var(--border-active); border-radius: 4px; }
+.ws-filter::-webkit-scrollbar-track { background: transparent; }
+
+.ws-filter-head { display: flex; align-items: center; gap: 10px; }
+.ws-filter-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.ws-filter-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+.ws-filter-actions { display: flex; gap: 8px; margin: 14px 0 16px; }
+.ws-filter-actions .ws-action { flex: 1 1 auto; text-align: center; }
+
+.ws-drawer-close {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.ws-drawer-close:hover { color: var(--text-primary); border-color: var(--border-active); }
+
+.ws-hamburger { display: none; }
+.ws-hamburger-icon { font-size: 14px; line-height: 1; }
+.ws-backdrop { display: none; }
+
+@media (max-width: 860px) {
+  .ws-layout { display: block; }
+  .ws-hamburger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .ws-drawer-close { display: inline-flex; }
+  .ws-backdrop.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1200;
+  }
+  .ws-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 320px;
+    max-width: 86vw;
+    max-height: 100vh;
+    z-index: 1300;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-default);
+  }
+  .ws-sidebar.open { transform: translateX(0); box-shadow: 8px 0 32px rgba(0, 0, 0, 0.5); }
+  .ws-filter { border: none; max-height: 100vh; padding-top: 18px; }
+}
