@@ -2473,7 +2473,12 @@ main { padding-top: var(--nav-height); }
 /* ─────────────────────────────────────────────
    WORK SAMPLES — sticky sidebar + mobile drawer
 ───────────────────────────────────────────── */
-.ws-layout { display: flex; gap: 28px; align-items: flex-start; }
+/* Widen this page past the standard 1200 content box so the tag sidebar can sit
+   in what used to be the left gutter (out of the box) while the card grid keeps
+   its full 3-wide size. */
+.ws-page { max-width: 1500px; }
+
+.ws-layout { display: flex; gap: 32px; align-items: flex-start; }
 .ws-main { flex: 1 1 auto; min-width: 0; }
 
 .ws-sidebar {

@@ -76,7 +76,7 @@ export default function WorkSamples() {
 
   return (
     <section className="mac-section mac-section-full" style={{ paddingTop: '72px', paddingBottom: '0' }}>
-      <div className="container" style={{ paddingTop: '0', paddingBottom: '40px' }}>
+      <div className="container ws-page" style={{ paddingTop: '0', paddingBottom: '40px' }}>
         <div style={{ marginBottom: '28px' }}>
           <span className="label" style={{ display: 'block', marginBottom: '12px' }}>
             Client Work
