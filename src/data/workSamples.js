@@ -20,6 +20,10 @@
 //   color         "#rrggbb" from the site palette
 //   icon          single emoji
 //   frameStyle    "baroque" | "walnut"
+//   tags          string[]; technologies + descriptors used to filter the gallery.
+//                 Every tag SHOULD belong to a section in `tagSections` below.
+//   screenshot    BASE_URL-relative path to a hero still under public/work-samples/,
+//                 or null when no capture exists yet.
 //   client        client name or null
 //   postingSummary one-line summary of the Upwork posting
 //   builtFor      the role/job title from the posting
@@ -38,6 +42,8 @@ const workSampleRegistry = [
     color: "#2D5A3D",
     icon: "🌲",
     frameStyle: "walnut",
+    tags: ["React", "Flask", "Python", "Leaflet", "Maps", "JWT Auth", "Full-Stack"],
+    screenshot: null,
     client: "Upwork, MN State Park Enthusiast",
     postingSummary:
       "User-friendly app to track which MN state parks you've visited, with map/list views, photo memories, attendees, date, home distance, and login.",
@@ -58,6 +64,8 @@ const workSampleRegistry = [
     color: "#E8991A",
     icon: "🏗️",
     frameStyle: "walnut",
+    tags: ["JavaScript", "Marketing Site", "Landing Page"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/construction-company-website.png",
     client: "Upwork, Construction Company Owner",
     postingSummary:
       "Professional website for a residential and commercial construction company. Needed video hero homepage, services with pricing, projects gallery, and contact page. Extra emphasis on premium, clean UI.",
@@ -78,6 +86,8 @@ const workSampleRegistry = [
     color: "#1A56DB",
     icon: "🎓",
     frameStyle: "walnut",
+    tags: ["React", "Chart.js", "Flask", "Python", "Real-time", "JWT Auth", "Dashboard", "Data Viz", "Full-Stack"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/edtech-school-connect-web-portal.png",
     client: "Upwork EdTech Prospect",
     postingSummary:
       "Build an EdTech School Connect Web Portal for school-parent communication with real-time student performance and activity updates.",
@@ -98,6 +108,8 @@ const workSampleRegistry = [
     color: "#12b4c8",
     icon: "🏠",
     frameStyle: "baroque",
+    tags: ["JavaScript", "Calculator", "Data Viz"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/grocapitus-investor-tools.png",
     client: "Grocapitus Investments",
     postingSummary:
       "Data-driven multifamily firm wants a vibe-coder to turn concepts into lightweight, AI-built educational investor tools, fast and under CEO direction.",
@@ -118,6 +130,8 @@ const workSampleRegistry = [
     color: "#e8b820",
     icon: "🌿",
     frameStyle: "walnut",
+    tags: ["JavaScript", "Marketing Site", "HIPAA-aware"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/aba-services-website.png",
     client: "Demo for Upwork posting",
     postingSummary:
       "ABA clinic needs a visually appealing, user-friendly website that communicates services and values, with design and development handled as one package.",
@@ -138,6 +152,8 @@ const workSampleRegistry = [
     color: "#e8b820",
     icon: "🖼️",
     frameStyle: "walnut",
+    tags: ["Shopify", "E-commerce", "JWT Auth"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/art-print-storefront.png",
     client: "Upwork / Vibe Claude Coding Tutor",
     postingSummary:
       "Build and teach a custom editorial Shopify storefront for fine-art print selling, using Claude as a core part of the workflow.",
@@ -158,6 +174,8 @@ const workSampleRegistry = [
     color: "#12b4c8",
     icon: "🏥",
     frameStyle: "baroque",
+    tags: ["Next.js", "JWT Auth", "RBAC", "Booking", "E-commerce", "HIPAA-aware", "Dashboard", "Full-Stack"],
+    screenshot: null,
     client: "US Healthcare Startup (Upwork)",
     postingSummary:
       "Full-stack developer needed to build a healthcare web app with Next.js, Supabase, Stripe, and Vercel for US healthcare clients requiring HIPAA-aware design.",
@@ -178,6 +196,8 @@ const workSampleRegistry = [
     color: "#12b4c8",
     icon: "🏋️",
     frameStyle: "walnut",
+    tags: ["React Native", "Mobile App", "Flask", "Python", "Data Viz", "Full-Stack"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/repsetta-fitness.png",
     client: "Repsetta (Upwork)",
     postingSummary:
       "Early-stage fitness startup seeks a hybrid mobile developer to build high-quality, user-friendly iOS and Android apps in React Native, for a long-term engagement.",
@@ -199,6 +219,8 @@ const workSampleRegistry = [
     color: "#12b4c8",
     icon: "🧾",
     frameStyle: "baroque",
+    tags: ["React", "FastAPI", "Python", "Data Viz", "ETL", "Dashboard", "Full-Stack"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/full-stack-developer-python-fastapi.png",
     client: "Upwork / Fiscal Compliance SaaS",
     postingSummary:
       "Build a B2B compliance SaaS that ingests 500+ MB XML files, applies 170+ reconciliation rules, and delivers multi-tenant analytical dashboards.",
@@ -219,6 +241,8 @@ const workSampleRegistry = [
     color: "#3DBFA8",
     icon: "🏛️",
     frameStyle: "walnut",
+    tags: ["React", "Landing Page", "Data Viz", "Flask", "Python"],
+    screenshot: null,
     client: "Upwork / CivicQ",
     postingSummary:
       "Build the public-facing home page at civicq.org: a 10-section dark-mode landing page matched precisely to an existing staging design system, with three coded data visualizations, an email-capture form with CSV backup, and a /methodology page, fully responsive and WCAG 2.1 AA accessible.",
@@ -239,6 +263,8 @@ const workSampleRegistry = [
     color: "#10B981",
     icon: "🚛",
     frameStyle: "walnut",
+    tags: ["NestJS", "Node.js", "TypeScript", "PostgreSQL", "Next.js", "RBAC", "Dashboard", "Full-Stack"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/trucking-freight-factoring-and-banking.png",
     client: "Upwork / Freight Fintech",
     postingSummary:
       "Migrate a mature freight factoring + banking platform (PHP/Laravel + Flutter) to a TypeScript NestJS + Drizzle monorepo; build factoring/FIDC, banking/BaaS, payments, identity & RBAC domains with real-DB integration tests and a Next.js 15 admin console.",
@@ -259,6 +285,8 @@ const workSampleRegistry = [
     color: "#1D6AE5",
     icon: "💬",
     frameStyle: "walnut",
+    tags: ["JavaScript", "AI", "RAG", "On-device AI", "WebGPU", "Dashboard"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/ai-chatbot-for-customer-support.png",
     client: "US Online Retailer",
     postingSummary:
       "AI-powered chatbot for customer support with FAQ knowledge base, order status lookup, human escalation with ET business-hours detection, and Zendesk ticket creation. In-browser AI, zero token cost.",
@@ -279,6 +307,8 @@ const workSampleRegistry = [
     color: "#F0A830",
     icon: "🎙️",
     frameStyle: "walnut",
+    tags: ["JavaScript", "Audio", "Real-time"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/audio-software-engineer-needed-for.png",
     client: "Worship Platform (Upwork)",
     postingSummary:
       "Experienced audio software engineer needed to audit, stabilize, and fix a desktop worship playback platform covering transport reliability, section navigation, audio sync, click track timing, stem routing, and mixer channel behavior.",
@@ -299,6 +329,8 @@ const workSampleRegistry = [
     color: "#FF6B1A",
     icon: "👁",
     frameStyle: "walnut",
+    tags: ["React", "Leaflet", "Maps", "RBAC", "Dashboard", "Full-Stack"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/adverteyes.png",
     client: "OOH Advertising Co. (Upwork)",
     postingSummary:
       "Full Stack Developer needed for custom business web application with admin dashboard, user management, API integrations, database-driven features, and modern responsive frontend (React/Next.js/Node/TS).",
@@ -319,6 +351,8 @@ const workSampleRegistry = [
     color: "#C9A96E",
     icon: "⚖️",
     frameStyle: "baroque",
+    tags: ["Angular", "TypeScript", "Tailwind CSS", "Flask", "Python", "JWT Auth", "CMS", "Multilingual", "AI", "WebGPU", "Full-Stack"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/solo-law.png",
     client: "Solo/Boutique Law Practice (Upwork)",
     postingSummary:
       "Premium responsive CMS-driven law firm website with multilingual support, editorial B&W design, AI-assisted visual content, and Angular TypeScript frontend.",
@@ -339,6 +373,8 @@ const workSampleRegistry = [
     color: "#0D9488",
     icon: "🩺",
     frameStyle: "walnut",
+    tags: ["JavaScript", "AI", "CRM", "Dashboard", "Data Viz"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/telehealthy.png",
     client: "Healthcare / Service Business (Upwork)",
     postingSummary:
       "AI Receptionist (24/7 inbound booking, FAQs, escalation) + AI Outbound Caller (dynamic CRM scripts, reminders) for a medical/psychiatry practice. Webhook + SMS integration, call recording, analytics dashboard, warm transfer logic.",
@@ -359,6 +395,8 @@ const workSampleRegistry = [
     color: "#8B6914",
     icon: "🏺",
     frameStyle: "walnut",
+    tags: ["Python", "Web Scraping", "ETL", "Real-time", "Dashboard"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/auction-scraper.png",
     client: "Upwork / Collectibles Subscription Service",
     postingSummary:
       "Data Acquisition Engineer for a collectibles subscription service: Python scrapers (requests+BS4 for static, Playwright for JS-rendered), normalized JSON output, rate limiting, responsible scraping, ongoing ETL pipeline.",
@@ -379,6 +417,8 @@ const workSampleRegistry = [
     color: "#2F5D3A",
     icon: "🛣️",
     frameStyle: "walnut",
+    tags: ["WordPress", "PHP", "Marketing Site", "CMS"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/maryland-driveway-restore.png",
     client: "Maryland Driveway Restore",
     postingSummary:
       "Phase 1 WordPress site: 9 pages, mobile-first, local SEO, lead capture forms. Phase 2: 30-50 city landing pages, interactive estimate calculator, advanced SEO.",
@@ -399,6 +439,8 @@ const workSampleRegistry = [
     color: "#F76B10",
     icon: "🏗",
     frameStyle: "walnut",
+    tags: ["Node.js", "TypeScript", "SQLite", "E-commerce", "JWT Auth", "CMS", "REST API", "Dashboard", "Full-Stack"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/orschell-excavating-e-commerce-full.png",
     client: "Orschell Excavating",
     postingSummary:
       "Backend for existing e-commerce site: auth, catalog, inventory, orders, payment gateway, REST API, Node.js + TypeScript + PostgreSQL.",
@@ -420,6 +462,8 @@ const workSampleRegistry = [
     color: "#2563EB",
     icon: "🔍",
     frameStyle: "walnut",
+    tags: ["React", "FastAPI", "Python", "SQLite", "AI", "WebGPU", "CRM", "Web Scraping", "Dashboard", "Full-Stack"],
+    screenshot: null,
     client: "Upwork / Custom Software Agency",
     postingSummary:
       "Local client discovery tool for a MN-based custom software and web dev agency: Google/Serper search pipeline, WebGPU AI technical audit, contact enrichment, FastAPI + React CRM dashboard with SQLite persistence.",
@@ -429,6 +473,82 @@ const workSampleRegistry = [
     proposalPageUrl: null,
   },
 ];
+
+// Grouped tag taxonomy for the Work Samples filter UI. Sections render as
+// toggle-able groups; each tag is an individual toggle. When adding a new work
+// sample, reuse an existing tag where one fits and only add a new tag here when
+// no current tag describes the technology or app style.
+export const tagSections = [
+  {
+    id: "frontend",
+    label: "Frontend",
+    tags: [
+      "React",
+      "React Native",
+      "Angular",
+      "Next.js",
+      "TypeScript",
+      "JavaScript",
+      "Tailwind CSS",
+      "Chart.js",
+      "Leaflet",
+      "WordPress",
+      "Shopify",
+    ],
+  },
+  {
+    id: "backend",
+    label: "Backend",
+    tags: ["Node.js", "Python", "Flask", "FastAPI", "NestJS", "PHP", "REST API"],
+  },
+  {
+    id: "data",
+    label: "Data & Infra",
+    tags: ["PostgreSQL", "SQLite", "Web Scraping", "ETL", "Data Viz", "Real-time"],
+  },
+  {
+    id: "ai",
+    label: "AI",
+    tags: ["AI", "RAG", "On-device AI", "WebGPU"],
+  },
+  {
+    id: "auth",
+    label: "Auth & Security",
+    tags: ["JWT Auth", "RBAC", "HIPAA-aware"],
+  },
+  {
+    id: "type",
+    label: "Type & Features",
+    tags: [
+      "Dashboard",
+      "Landing Page",
+      "Marketing Site",
+      "E-commerce",
+      "CMS",
+      "Booking",
+      "CRM",
+      "Mobile App",
+      "Calculator",
+      "Audio",
+      "Maps",
+      "Multilingual",
+      "Full-Stack",
+    ],
+  },
+];
+
+// Sections limited to the tags actually present on `samples`, preserving the
+// canonical section + tag order. Used by the gallery to avoid rendering filters
+// that match nothing.
+export function availableTagSections(samples) {
+  const present = new Set(samples.flatMap((s) => s.tags || []));
+  return tagSections
+    .map((section) => ({
+      ...section,
+      tags: section.tags.filter((tag) => present.has(tag)),
+    }))
+    .filter((section) => section.tags.length > 0);
+}
 
 export const allWorkSamples = workSampleRegistry;
 export const workSamples = workSampleRegistry.filter((sample) => !sample.hidden);

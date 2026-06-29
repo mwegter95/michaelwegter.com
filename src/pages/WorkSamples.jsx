@@ -1,5 +1,6 @@
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { workSamples, allWorkSamples } from '../data/workSamples'
+import { workSamples, allWorkSamples, availableTagSections } from '../data/workSamples'
 import { useSiteAuth } from '../auth/SiteAuth'
 
 /**
@@ -9,18 +10,58 @@ import { useSiteAuth } from '../auth/SiteAuth'
  * card links to /work-samples/:slug, which AppFrame renders as a full-viewport
  * iframe of the same-origin demo under /demos/<slug>/.
  *
- * Hidden samples are private: they only appear when the owner is signed in.
+ * A tag filter sits above the grid: tags are grouped into sections, every tag is
+ * selected by default (so all samples show), and a sample stays visible when it
+ * has at least one selected tag. Section headers toggle a whole group; "Clear
+ * selection" empties the set and "Select all" restores it.
  *
- * Self-contained styling via the site design tokens so it stays consistent
- * without depending on MacDesktop internals.
+ * Hidden samples are private: they only appear when the owner is signed in.
  */
 export default function WorkSamples() {
   const { isOwner } = useSiteAuth()
   const list = isOwner ? allWorkSamples : workSamples
+
+  const sections = useMemo(() => availableTagSections(list), [list])
+  const allTags = useMemo(() => sections.flatMap((section) => section.tags), [sections])
+  const [selected, setSelected] = useState(() => new Set(allTags))
+
+  const toggleTag = (tag) => {
+    setSelected((prev) => {
+      const next = new Set(prev)
+      next.has(tag) ? next.delete(tag) : next.add(tag)
+      return next
+    })
+  }
+
+  const toggleSection = (sectionTags) => {
+    setSelected((prev) => {
+      const next = new Set(prev)
+      const allOn = sectionTags.every((tag) => next.has(tag))
+      sectionTags.forEach((tag) => (allOn ? next.delete(tag) : next.add(tag)))
+      return next
+    })
+  }
+
+  const clearSelection = () => setSelected(new Set())
+  const selectAll = () => setSelected(new Set(allTags))
+
+  const filtered = useMemo(
+    () =>
+      list.filter((s) => {
+        const tags = s.tags || []
+        if (tags.length === 0) return true
+        return tags.some((tag) => selected.has(tag))
+      }),
+    [list, selected],
+  )
+
+  const allSelected = selected.size === allTags.length
+  const noneSelected = selected.size === 0
+
   return (
     <section className="mac-section mac-section-full" style={{ paddingTop: '72px', paddingBottom: '0' }}>
       <div className="container" style={{ paddingTop: '0', paddingBottom: '40px' }}>
-        <div style={{ marginBottom: '32px' }}>
+        <div style={{ marginBottom: '28px' }}>
           <span className="label" style={{ display: 'block', marginBottom: '12px' }}>
             Client Work
           </span>
@@ -45,7 +86,75 @@ export default function WorkSamples() {
           )}
         </div>
 
-        {list.length === 0 ? (
+        {sections.length > 0 && (
+          <div style={{
+            border: '1px solid var(--border-default)',
+            background: 'var(--bg-surface)',
+            padding: '18px 20px',
+            marginBottom: '28px',
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '12px',
+              marginBottom: '14px',
+              flexWrap: 'wrap',
+            }}>
+              <span style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: 'var(--text-secondary)',
+              }}>
+                Filter by tag · {filtered.length} of {list.length}
+              </span>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button type="button" onClick={selectAll} disabled={allSelected} className="ws-action">
+                  Select all
+                </button>
+                <button type="button" onClick={clearSelection} disabled={noneSelected} className="ws-action">
+                  Clear selection
+                </button>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {sections.map((section) => {
+                const sectionOn = section.tags.every((tag) => selected.has(tag))
+                return (
+                  <div key={section.id} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px' }}>
+                    <button
+                      type="button"
+                      onClick={() => toggleSection(section.tags)}
+                      className={`ws-section${sectionOn ? ' active' : ''}`}
+                      title={sectionOn ? `Turn off all ${section.label} tags` : `Turn on all ${section.label} tags`}
+                    >
+                      {section.label}
+                    </button>
+                    {section.tags.map((tag) => {
+                      const on = selected.has(tag)
+                      return (
+                        <button
+                          key={tag}
+                          type="button"
+                          onClick={() => toggleTag(tag)}
+                          className={`ws-chip${on ? ' active' : ''}`}
+                          aria-pressed={on}
+                        >
+                          {tag}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {filtered.length === 0 ? (
           <p style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '14px',
@@ -54,7 +163,9 @@ export default function WorkSamples() {
             padding: '32px',
             textAlign: 'center',
           }}>
-            First sample coming soon.
+            {noneSelected
+              ? 'No tags selected. Pick a tag or "Select all" to see work samples.'
+              : 'No work samples match the selected tags.'}
           </p>
         ) : (
           <div style={{
@@ -62,7 +173,7 @@ export default function WorkSamples() {
             gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
             gap: '20px',
           }}>
-            {list.map((s) => (
+            {filtered.map((s) => (
               <Link
                 key={s.id}
                 to={`/work-samples/${s.slug}`}
@@ -86,9 +197,26 @@ export default function WorkSamples() {
                     textTransform: 'uppercase', color: 'var(--text-muted)',
                     border: '1px solid var(--border-subtle)', borderRadius: '4px', padding: '2px 6px',
                     display: 'inline-flex', alignItems: 'center', gap: '4px',
+                    background: 'var(--bg-card)', zIndex: 1,
                   }}>
                     🔒 Private
                   </span>
+                )}
+                {s.screenshot && (
+                  <div style={{
+                    margin: '-22px -22px 16px',
+                    borderBottom: '1px solid var(--border-subtle)',
+                    background: 'var(--bg-root)',
+                    aspectRatio: '16 / 9',
+                    overflow: 'hidden',
+                  }}>
+                    <img
+                      src={s.screenshot}
+                      alt={`${s.title} screenshot`}
+                      loading="lazy"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
+                    />
+                  </div>
                 )}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
                   <span style={{ fontSize: '26px', lineHeight: 1 }}>{s.icon}</span>
@@ -113,6 +241,21 @@ export default function WorkSamples() {
                   lineHeight: 1.6,
                   marginBottom: '16px',
                 }}>{s.description}</p>
+                {s.tags && s.tags.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
+                    {s.tags.map((tag) => (
+                      <span key={tag} style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '10px',
+                        letterSpacing: '0.04em',
+                        color: 'var(--text-secondary)',
+                        border: '1px solid var(--border-default)',
+                        borderRadius: '4px',
+                        padding: '2px 7px',
+                      }}>{tag}</span>
+                    ))}
+                  </div>
+                )}
                 {s.client && (
                   <div style={{
                     fontFamily: 'var(--font-mono)',

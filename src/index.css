@@ -2407,3 +2407,65 @@ main { padding-top: var(--nav-height); }
   .app-detail-title-row { flex-direction: column; gap: 10px; }
   .app-detail-badge { font-size: 28px; }
 }
+
+/* ─────────────────────────────────────────────
+   WORK SAMPLES — tag filter controls
+───────────────────────────────────────────── */
+.ws-action {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: 5px;
+  padding: 5px 11px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.ws-action:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: var(--border-active);
+  background: var(--bg-card);
+}
+.ws-action:disabled { opacity: 0.4; cursor: default; }
+
+.ws-section {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px dashed var(--border-active);
+  border-radius: 5px;
+  padding: 5px 11px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.ws-section:hover { color: var(--text-primary); border-color: var(--accent); }
+.ws-section.active {
+  color: var(--bg-root);
+  background: var(--accent);
+  border-color: var(--accent);
+  border-style: solid;
+}
+
+.ws-chip {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.ws-chip:hover { color: var(--text-primary); border-color: var(--border-active); }
+.ws-chip.active {
+  color: var(--text-primary);
+  border-color: var(--accent);
+  background: var(--accent-pale);
+}
