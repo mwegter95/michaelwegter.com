@@ -547,7 +547,7 @@ main { padding-top: var(--nav-height); }
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  overscroll-behavior: contain;          /* scrolling the desktop won't yank the page */
+  overscroll-behavior: auto;             /* chain to the page once the desktop hits top/bottom */
   -webkit-overflow-scrolling: touch;     /* momentum scroll on iOS */
   background: #1a2830;
   display: grid;
