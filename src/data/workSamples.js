@@ -31,6 +31,28 @@
 
 const workSampleRegistry = [
   {
+    id: 10,
+    slug: "card-shopper",
+    title: "Card Shopper - curated trading card marketplace",
+    description:
+      "A card-show-style marketplace for sports, Pokemon, and Magic cards: browse verified shops on a US map, dig through a value box with a real face-down card flip, and run a zero-fee seller booth with AI-assisted upload and drop announcements. Fully interactive prototype with localStorage persistence.",
+    category: "E-commerce",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/card-shopper/",
+    color: "#0E3B2E",
+    icon: "🃏",
+    frameStyle: "baroque",
+    tags: ["React", "JavaScript", "Maps", "E-commerce", "Dashboard", "Mobile App", "Real-time"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/card-shopper.png",
+    client: "Upwork, Card Shopper (trading card marketplace founder)",
+    postingSummary:
+      "Curated card-show-style marketplace: US map of verified shops, value-box flip browse, 4-step AI upload, zero-fee Stripe subscription.",
+    builtFor: "Card Shopper - curated trading card marketplace (Upwork)",
+    date: "2026-06-30",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
+  {
     id: 9,
     slug: "mn-state-park-tracker",
     title: "MN State Park Tracker",
