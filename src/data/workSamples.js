@@ -450,6 +450,28 @@ const workSampleRegistry = [
     proposalPageUrl: null,
   },
   {
+    id: 19,
+    slug: "panhandle-garage-door-company",
+    title: "Dimitroff Door Repair — SEO-First WordPress",
+    description:
+      "Production WordPress site for a Texas Panhandle door company: SEO-architected service silos, 12 city landing pages, LocalBusiness schema, Core Web Vitals optimization, click-to-call conversion CTAs, and an integrated live SEO audit tool.",
+    category: "Utility",
+    status: "live",
+    href: "https://api.michaelwegter.com/demos/panhandle-garage-door-company/",
+    color: "#1B3A5C",
+    icon: "🚪",
+    frameStyle: "walnut",
+    client: "Dimitroff Door Repair",
+    postingSummary:
+      "SEO-first WordPress redesign for a Texas Panhandle garage door and commercial door company targeting the highest regional rankings and qualified phone call generation.",
+    builtFor: "WordPress & SEO Developer (Upwork)",
+    date: "2026-06-29",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+    screenshot: null,
+    tags: ["WordPress", "Local SEO", "Technical SEO", "PHP", "Full-Stack", "Landing Page", "Dashboard"],
+  },
+  {
     id: 16,
     slug: "client-finder-1-0",
     title: "Client Finder 1.0",
