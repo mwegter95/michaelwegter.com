@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pathwaize Intelligence Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Model Loading Overlay -->
+  <div id="model-overlay" class="model-overlay">
+    <div class="model-overlay-inner">
+      <div class="pathwaize-logo-large">P</div>
+      <h2>Pathwaize Intelligence Center</h2>
+      <p id="model-status-text">Initializing AI engine...</p>
+      <div class="progress-bar-wrap">
+        <div id="model-progress" class="progress-bar-fill" style="width:0%"></div>
+      </div>
+      <p class="model-hint" id="model-hint-text">Loading AI model  -  first load ~30s; cached on return</p>
+    </div>
+  </div>
+
+  <!-- GHL Chrome Wrapper -->
+  <div class="ghl-chrome">
+    <div class="ghl-chrome-left">
+      <div class="pathwaize-logo">P</div>
+      <span class="ghl-app-name">Pathwaize Intelligence Center</span>
+      <span class="ghl-embed-label">GoHighLevel Custom Menu</span>
+    </div>
+    <div class="ghl-chrome-right">
+      <span id="workspace-name-header">Austin Fix &amp; Flip Operations</span>
+      <div class="avatar-stub">AF</div>
+    </div>
+  </div>
+
+  <!-- Main App Shell -->
+  <div class="app-shell">
+
+    <!-- Left Rail -->
+    <nav class="left-rail">
+      <button class="rail-btn active" data-engine="authority" title="Authority Engine">🎯</button>
+      <button class="rail-btn" data-engine="newsletter" title="Newsletter Engine">📰</button>
+      <button class="rail-btn" data-engine="knowledge" title="Knowledge Engine">📚</button>
+      <div class="rail-spacer"></div>
+      <button class="rail-btn" id="workspace-rail-btn" title="Workspace Settings">⚙️</button>
+      <button class="rail-btn" id="history-rail-btn" title="Run History">🕐</button>
+    </nav>
+
+    <!-- Center Workspace -->
+    <main class="center-workspace">
+
+      <!-- Engine Tabs -->
+      <div class="engine-tabs">
+        <button class="engine-tab active" data-engine="authority">
+          <span class="tab-icon">🎯</span> Authority Engine
+        </button>
+        <button class="engine-tab" data-engine="newsletter">
+          <span class="tab-icon">📰</span> Newsletter Engine
+        </button>
+        <button class="engine-tab" data-engine="knowledge">
+          <span class="tab-icon">📚</span> Knowledge Engine
+        </button>
+      </div>
+
+      <!-- Persistent Intelligence Bar -->
+      <div class="intel-bar">
+        <span class="intel-bar-icon">🧠</span>
+        <span class="intel-bar-label">Context:</span>
+        <span id="intel-bar-context" class="intel-bar-text">Austin fix-and-flip investor | Lead source: cold calls | Tone: direct</span>
+        <button class="intel-bar-edit" id="edit-workspace-btn">Edit Context</button>
+      </div>
+
+      <!-- Prompt Chips -->
+      <div class="prompt-chips">
+        <span class="chips-label">Quick start:</span>
+        <button class="chip" data-engine="authority" data-fill="Write a LinkedIn post about why cold calling still works for real estate investors in a competitive market">Generate LinkedIn Post</button>
+        <button class="chip" data-engine="newsletter" data-fill="Write a newsletter about our 5-touch follow-up sequence and why most investors quit too early">Write Newsletter</button>
+        <button class="chip" data-engine="knowledge" data-fill="Document our seller objection script for handling price gap objections on fix-and-flip acquisitions">Document Process</button>
+        <button class="chip" data-engine="authority" data-fill="Generate 5 LinkedIn content angles for an Austin fix-and-flip investor focused on motivated sellers">Brainstorm Topics</button>
+        <button class="chip" data-engine="knowledge" data-fill="Document our ARV calculation process and comparable sales methodology for Austin single-family properties">Research Comp</button>
+      </div>
+
+      <!-- Engine Forms -->
+      <div class="engine-forms">
+
+        <!-- Authority Engine Form -->
+        <div id="authority-form" class="engine-form active">
+          <div class="form-meta">
+            <span class="engine-badge engine-authority">Authority Engine</span>
+            <span class="engine-desc">Generate founder-authority content for LinkedIn, X, and other channels.</span>
+          </div>
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="authority-platform">Platform</label>
+              <select id="authority-platform" class="form-select">
+                <option value="linkedin">LinkedIn</option>
+                <option value="twitter">X / Twitter</option>
+                <option value="general">General</option>
+              </select>
+            </div>
+            <div class="form-row form-row-full">
+              <label for="authority-input">Content Brief</label>
+              <textarea id="authority-input" class="form-textarea" rows="3" placeholder="e.g. Write a LinkedIn post about why cold calling still works for real estate investors in a competitive market"></textarea>
+            </div>
+          </div>
+          <button class="run-btn" id="authority-run-btn">
+            <span class="run-btn-icon">▶</span> Run Authority Engine
+          </button>
+        </div>
+
+        <!-- Newsletter Engine Form -->
+        <div id="newsletter-form" class="engine-form">
+          <div class="form-meta">
+            <span class="engine-badge engine-newsletter">Newsletter Engine</span>
+            <span class="engine-desc">Generate newsletter drafts with 3 subject lines, preview text, and approval workflow.</span>
+          </div>
+          <div class="form-grid">
+            <div class="form-row form-row-full">
+              <label for="newsletter-input">Newsletter Brief</label>
+              <textarea id="newsletter-input" class="form-textarea" rows="3" placeholder="e.g. Write a newsletter about our 5-touch follow-up sequence and why most investors quit too early"></textarea>
+            </div>
+          </div>
+          <button class="run-btn" id="newsletter-run-btn">
+            <span class="run-btn-icon">▶</span> Run Newsletter Engine
+          </button>
+        </div>
+
+        <!-- Knowledge Engine Form -->
+        <div id="knowledge-form" class="engine-form">
+          <div class="form-meta">
+            <span class="engine-badge engine-knowledge">Knowledge Engine</span>
+            <span class="engine-desc">Generate and save knowledge base entries to Google Drive or GitHub.</span>
+          </div>
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="knowledge-category">Category</label>
+              <select id="knowledge-category" class="form-select">
+                <option value="process">Process</option>
+                <option value="playbook">Playbook</option>
+                <option value="faq">FAQ</option>
+                <option value="definition">Definition</option>
+              </select>
+            </div>
+            <div class="form-row form-row-full">
+              <label for="knowledge-input">Knowledge Brief</label>
+              <textarea id="knowledge-input" class="form-textarea" rows="3" placeholder="e.g. Document our seller objection script for handling price gap objections on fix-and-flip acquisitions"></textarea>
+            </div>
+          </div>
+          <button class="run-btn" id="knowledge-run-btn">
+            <span class="run-btn-icon">▶</span> Run Knowledge Engine
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Output Area -->
+      <div id="output-area" class="output-area"></div>
+
+      <!-- Model Status Strip -->
+      <div class="model-status-strip">
+        <span id="model-indicator" class="model-indicator">⚪ Initializing...</span>
+      </div>
+
+    </main>
+
+    <!-- Right Panel -->
+    <aside class="right-panel">
+      <div class="panel-section queue-section">
+        <div class="panel-header">
+          <span class="panel-title">Pending Review</span>
+          <span id="queue-count" class="badge">0</span>
+        </div>
+        <div id="output-queue" class="output-queue-list">
+          <p class="empty-state">No outputs pending review</p>
+        </div>
+      </div>
+
+      <div class="panel-section brief-section">
+        <div class="panel-header">
+          <span class="panel-title">Intel Brief</span>
+          <span class="badge badge-stub">Stub</span>
+        </div>
+        <div id="intel-brief" class="intel-brief-list"></div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Bottom Bar -->
+  <footer class="bottom-bar">
+    <div class="run-log-strip">
+      <span class="log-label">Run Log:</span>
+      <div id="run-log-entries" class="run-log-entries">
+        <span class="log-empty">No runs yet</span>
+      </div>
+    </div>
+    <div class="usage-stats">
+      <span id="stat-runs">Runs: 0</span>
+      <span class="stat-sep">|</span>
+      <span id="stat-total">Total: $0.0000</span>
+      <span class="stat-sep">|</span>
+      <span id="stat-auth">Auth: $0.0000</span>
+      <span class="stat-sep">|</span>
+      <span id="stat-nl">NL: $0.0000</span>
+      <span class="stat-sep">|</span>
+      <span id="stat-kb">KB: $0.0000</span>
+      <span class="stat-sep">|</span>
+      <span id="stat-model" class="stat-model">Model: initializing</span>
+    </div>
+  </footer>
+
+  <!-- Workspace Modal -->
+  <div id="workspace-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Workspace &amp; Intelligence Context</h3>
+        <button class="modal-close" id="close-workspace-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <label>Workspace Name</label>
+          <input type="text" id="ws-name" class="form-input" value="Austin Fix &amp; Flip Operations">
+        </div>
+        <div class="form-row">
+          <label>Business Context (injected into every engine run)</label>
+          <textarea id="ws-context" class="form-textarea" rows="3">Austin-based fix-and-flip investor. Primary lead source: cold calls. Typical deal size: $280K-$420K ARV. Average hold: 90 days. Team: 2 acquisitions, 1 project manager.</textarea>
+        </div>
+        <div class="form-row">
+          <label>Niche</label>
+          <input type="text" id="ws-niche" class="form-input" value="Fix-and-flip residential, single-family">
+        </div>
+        <div class="form-row">
+          <label>Location</label>
+          <input type="text" id="ws-location" class="form-input" value="Austin, TX">
+        </div>
+        <div class="form-row">
+          <label>Tone</label>
+          <input type="text" id="ws-tone" class="form-input" value="Direct, authoritative, no fluff">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="cancel-workspace-modal">Cancel</button>
+        <button class="btn-primary" id="save-workspace-btn">Save Context</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revision Modal -->
+  <div id="revision-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Request Edits</h3>
+        <button class="modal-close" id="close-revision-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <label>Revision Instructions</label>
+          <textarea id="revision-notes" class="form-textarea" rows="4" placeholder="Describe the changes you want... e.g. Make the tone more direct, add a specific example about Austin market, shorten to 100 words"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="cancel-revision-modal">Cancel</button>
+        <button class="btn-primary" id="submit-revision-btn">Re-generate with Edits</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -494,6 +494,28 @@ const workSampleRegistry = [
     tags: ["WordPress", "Local SEO", "Technical SEO", "PHP", "Full-Stack", "Landing Page", "Dashboard"],
   },
   {
+    id: 20,
+    slug: "real-estate-intelligence-center",
+    title: "Pathwaize Intelligence Center",
+    description:
+      "AI workflow execution console for real estate investors. Three engines (Authority, Newsletter, Knowledge) wired end-to-end through a run/review/approve/push pipeline powered by on-device WebGPU inference.",
+    category: "Data",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/real-estate-intelligence-center/",
+    color: "#0EA5E9",
+    icon: "🎯",
+    frameStyle: "walnut",
+    tags: ["JavaScript", "WebGPU", "On-device AI", "AI", "Dashboard", "Full-Stack", "Data Viz"],
+    screenshot: null,
+    client: "Pathwaize",
+    postingSummary:
+      "Build an AI-powered execution console for real estate investors: 3 AI engines, run/review/approve/push workflow, backend LLM routing layer, approval-gated publishing.",
+    builtFor: "Full-Stack SaaS Developer (Upwork)",
+    date: "2026-06-30",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
+  {
     id: 16,
     slug: "client-finder-1-0",
     title: "Client Finder 1.0",
