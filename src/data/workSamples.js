@@ -516,6 +516,28 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 20,
+    slug: "agripro",
+    title: "AgriPro Operations Console",
+    description:
+      "Internal ops platform for an agricultural procurement business: role-based access for four user types, field inspection workflows with AI-powered OCR cert scanning and anomaly detection, multi-stage procurement approvals, warehouse allocation, audit logging, and dashboards with PDF and Excel export.",
+    category: "Dashboard",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/agripro/",
+    color: "#1D4ED8",
+    icon: "🌾",
+    frameStyle: "walnut",
+    tags: ["React", "JavaScript", "AI", "RBAC", "Dashboard", "Full-Stack", "Data Viz"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/agripro.png",
+    client: "Upwork, Agricultural Procurement Business",
+    postingSummary:
+      "Internal ops platform for ag procurement: field inspections, lab testing, OCR cert scanning, anomaly detection, multi-stage approvals, warehouse allocation, and role-based dashboards.",
+    builtFor: "AI App & Web Development for Agriculture Procurement Business (Upwork)",
+    date: "2025-07-11",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 // Grouped tag taxonomy for the Work Samples filter UI. Sections render as
