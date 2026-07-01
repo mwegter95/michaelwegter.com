@@ -582,6 +582,28 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 21,
+    slug: "realty-ops-console",
+    title: "Plat Realty Ops Console",
+    description:
+      "Full-featured property management platform built on Angular + TypeScript + Tailwind: listing CRUD with a deal state machine that enforces valid pipeline transitions, CRM lead capture from public inquiry forms, Kanban deal pipeline with commission calculations, a block-based CMS with live preview and publish, and a dashboard aggregating KPIs across all pipeline stages. Laravel/PHP backend architecture modeled in demo-src with Eloquent models, migrations, policies, form requests, and a DealStateMachine.",
+    category: "Dashboard",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/realty-ops-console/",
+    color: "#4A5C47",
+    icon: "🏡",
+    frameStyle: "walnut",
+    tags: ["Angular", "TypeScript", "Tailwind CSS", "PHP", "CMS", "CRM", "Dashboard", "Full-Stack", "RBAC"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/realty-ops-console.png",
+    client: "Wacky Eagle Technologies",
+    postingSummary:
+      "Freelance full-stack web developer (PHP/WordPress/Laravel) for a small web shop. Screening question: describe your most complex PHP project. Demo answers with a Laravel/Angular realty ops console.",
+    builtFor: "Freelance Web Developer (As-Needed - Full-Stack - WordPress - PHP) (Upwork)",
+    date: "2025-07-01",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 // Grouped tag taxonomy for the Work Samples filter UI. Sections render as
