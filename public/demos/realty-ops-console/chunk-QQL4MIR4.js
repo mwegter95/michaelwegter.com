@@ -1,0 +1,1 @@
+import{Ib as o,J as i,N as n,j as r}from"./chunk-7MFFRGO3.js";var a=class e{constructor(t){this.db=t}db;getAll(){return r(this.db.getAll("agents"))}getById(t){return r(this.db.get("agents",t))}static \u0275fac=function(c){return new(c||e)(n(o))};static \u0275prov=i({token:e,factory:e.\u0275fac,providedIn:"root"})};export{a};
