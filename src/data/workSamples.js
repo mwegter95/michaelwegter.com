@@ -31,6 +31,28 @@
 
 const workSampleRegistry = [
   {
+    id: 11,
+    slug: "ks-global-estates",
+    title: "KS Global Estates",
+    description:
+      "A full-featured luxury real estate platform: synchronized split-pane map and list, faceted filtering across 6 dimensions, custom Leaflet price-pin markers, property detail modals with gallery carousel and inquiry form, and a persisted favorites system. 25 properties across 14 global cities.",
+    category: "Creative",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/ks-global-estates/",
+    color: "#B8975A",
+    icon: "🏛️",
+    frameStyle: "baroque",
+    tags: ["React", "Leaflet", "Maps", "JavaScript", "Full-Stack", "E-commerce", "Dashboard", "Mobile App"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/ks-global-estates.png",
+    client: "KS Global Estates",
+    postingSummary:
+      "Professional website for a global real estate firm: premium design, property listings in list and map view, and a mock database of properties.",
+    builtFor: "Website Design and Development for KS Global Estates (Upwork)",
+    date: "2025-07-14",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
+  {
     id: 10,
     slug: "card-shopper",
     title: "Card Shopper - curated trading card marketplace",
