@@ -604,6 +604,27 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 22,
+    slug: "cinched-crm",
+    title: "Cinched CRM - Multi-Tenant SaaS",
+    description:
+      "Interactive architecture demo for converting a single-tenant wedding CRM into a multi-tenant SaaS: Supabase RLS isolation with live SQL generator, self-serve onboarding wizard, Stripe billing state machine, role-based access control with seat-limit gates, and a 4-tab strategy hub covering hosting migration, Google OAuth vs Nylas, and production readiness.",
+    category: "Dashboard",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/cinched-crm/",
+    color: "#1B2B4B",
+    icon: "💍",
+    frameStyle: "baroque",
+    tags: ["React", "Supabase", "SaaS", "RBAC", "Dashboard", "CRM", "Full-Stack"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/cinched-crm.png",
+    postingSummary:
+      "Convert a single-tenant wedding CRM into a multi-tenant SaaS: Supabase + RLS, Stripe billing, self-serve onboarding, white-label branding, roles/seats, and production migration from Replit.",
+    builtFor: "Converting Single Tenant to Multi-Tenant CRM (Upwork)",
+    date: "2025-07-15",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 // Grouped tag taxonomy for the Work Samples filter UI. Sections render as
@@ -636,7 +657,7 @@ export const tagSections = [
   {
     id: "data",
     label: "Data & Infra",
-    tags: ["PostgreSQL", "SQLite", "Web Scraping", "ETL", "Data Viz", "Real-time"],
+    tags: ["PostgreSQL", "SQLite", "Supabase", "Web Scraping", "ETL", "Data Viz", "Real-time"],
   },
   {
     id: "ai",
@@ -655,6 +676,7 @@ export const tagSections = [
       "Dashboard",
       "Landing Page",
       "Marketing Site",
+      "SaaS",
       "E-commerce",
       "CMS",
       "Booking",
