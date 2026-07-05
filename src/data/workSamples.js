@@ -31,6 +31,28 @@
 
 const workSampleRegistry = [
   {
+    id: 23,
+    slug: "studio-fortress",
+    title: "Studio Fortress - Studio Management SaaS",
+    description:
+      "Full-featured multi-tenant SaaS platform for dance, music, gymnastics, and art studios. Live role switcher (Admin/Staff/Teacher/Parent), Recharts analytics, sub request workflow, Stripe billing UI, parent portal with multi-child enrollment, and an SEO marketing site with pricing and trial signup.",
+    category: "SaaS",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/studio-fortress/",
+    color: "#0F172A",
+    icon: "🏰",
+    frameStyle: "walnut",
+    tags: ["React", "Node.js", "PostgreSQL", "Stripe", "Dashboard", "Multi-tenant", "CRM", "Data Viz", "Full-Stack", "Scheduling"],
+    screenshot: null,
+    client: "Studio Fortress (Upwork)",
+    postingSummary:
+      "Multi-tenant SaaS for class-based studios: scheduling, billing, attendance, parent portal, analytics, and a marketing site.",
+    builtFor: "Senior Full-Stack SaaS Developer (React/Node) — Studio/Club Management App",
+    date: "2026-07-04",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
+  {
     id: 11,
     slug: "ks-global-estates",
     title: "KS Global Estates",
@@ -528,14 +550,14 @@ const workSampleRegistry = [
     icon: "🎯",
     frameStyle: "walnut",
     tags: ["JavaScript", "WebGPU", "On-device AI", "AI", "Dashboard", "Full-Stack", "Data Viz"],
-    screenshot: null,
+    screenshot: import.meta.env.BASE_URL + "work-samples/real-estate-intelligence-center.png",
     client: "Pathwaize",
     postingSummary:
       "Build an AI-powered execution console for real estate investors: 3 AI engines, run/review/approve/push workflow, backend LLM routing layer, approval-gated publishing.",
     builtFor: "Full-Stack SaaS Developer (Upwork)",
     date: "2026-06-30",
-    proposalDeckUrl: null,
-    proposalPageUrl: null,
+    proposalDeckUrl: "demos/real-estate-intelligence-center/proposal/deck.pptx",
+    proposalPageUrl: "demos/real-estate-intelligence-center/proposal/one-pager.html",
   },
   {
     id: 16,
@@ -652,7 +674,7 @@ export const tagSections = [
   {
     id: "backend",
     label: "Backend",
-    tags: ["Node.js", "Python", "Flask", "FastAPI", "NestJS", "PHP", "REST API"],
+    tags: ["Node.js", "Python", "Flask", "FastAPI", "NestJS", "PHP", "REST API", "Stripe"],
   },
   {
     id: "data",
@@ -687,6 +709,8 @@ export const tagSections = [
       "Maps",
       "Multilingual",
       "Full-Stack",
+      "Multi-tenant",
+      "Scheduling",
     ],
   },
 ];

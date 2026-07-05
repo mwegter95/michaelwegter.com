@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pathwaize Intelligence Center Proposal | Michael Wegter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg-base:       #0B0F1A;
+  --bg-surface:    #141929;
+  --bg-elevated:   #1A2236;
+  --border:        #1E2740;
+  --accent-blue:   #0EA5E9;
+  --accent-cyan:   #06B6D4;
+  --status-ok:     #22C55E;
+  --status-warn:   #F59E0B;
+  --status-run:    #8B5CF6;
+  --text-primary:  #F1F5F9;
+  --text-secondary:#94A3B8;
+  --text-muted:    #475569;
+  --font-ui:       'Inter', system-ui, sans-serif;
+  --font-mono:     'DM Mono', 'Courier New', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent-blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 28px; }
+
+/* HERO */
+header.hero {
+  padding: 72px 0 52px;
+  border-bottom: 1px solid var(--border);
+  background: radial-gradient(ellipse 900px 340px at 80% -10%, rgba(14,165,233,.13), transparent 65%),
+              radial-gradient(ellipse 600px 280px at 10% 120%, rgba(6,182,212,.07), transparent 60%);
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  margin-bottom: 18px;
+}
+header.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.12;
+  margin-bottom: 20px;
+}
+header.hero h1 .accent { color: var(--accent-blue); }
+header.hero p.lede {
+  font-size: 1.12rem;
+  color: var(--text-secondary);
+  max-width: 640px;
+  margin-bottom: 32px;
+}
+.cta-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent-blue); color: #fff;
+  padding: 12px 24px; border-radius: 6px;
+  font-weight: 600; font-size: .95rem;
+  transition: background .15s;
+}
+.btn-primary:hover { background: #0284c7; text-decoration: none; }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--bg-elevated); color: var(--text-primary);
+  padding: 12px 24px; border-radius: 6px;
+  font-weight: 500; font-size: .95rem; border: 1px solid var(--border);
+  transition: background .15s;
+}
+.btn-secondary:hover { background: #243050; text-decoration: none; }
+.byline {
+  margin-top: 30px;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--text-muted);
+  letter-spacing: .04em;
+}
+.byline span { color: var(--text-secondary); }
+
+/* SECTIONS */
+section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+section h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
+section .sub { color: var(--text-secondary); margin-bottom: 32px; max-width: 680px; }
+
+/* STATUS CHIPS */
+.chip {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.chip-blue   { background: rgba(14,165,233,.15); color: var(--accent-blue); }
+.chip-green  { background: rgba(34,197,94,.13);  color: var(--status-ok); }
+.chip-warn   { background: rgba(245,158,11,.13); color: var(--status-warn); }
+.chip-purple { background: rgba(139,92,246,.13); color: var(--status-run); }
+.chip-cyan   { background: rgba(6,182,212,.13);  color: var(--accent-cyan); }
+
+/* WORKFLOW FLOW */
+.workflow-row {
+  display: flex; gap: 0; align-items: stretch; flex-wrap: wrap;
+  margin-top: 8px;
+}
+.wf-step {
+  flex: 1 1 140px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 20px 18px;
+  position: relative;
+}
+.wf-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -1px; top: 50%; transform: translateY(-50%);
+  width: 0; height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 10px solid var(--border);
+  z-index: 2;
+}
+.wf-step:first-child { border-radius: 6px 0 0 6px; }
+.wf-step:last-child  { border-radius: 0 6px 6px 0; }
+.wf-num {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--accent-blue);
+  margin-bottom: 6px;
+}
+.wf-label {
+  font-weight: 600;
+  font-size: .9rem;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.wf-desc { font-size: .8rem; color: var(--text-secondary); }
+
+/* ENGINES GRID */
+.engines-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.engine-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+}
+.engine-card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 4px; }
+.engine-card p  { font-size: .88rem; color: var(--text-secondary); margin: 10px 0 16px; line-height: 1.5; }
+.engine-tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ARCHITECTURE */
+.arch-block {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 28px 32px;
+}
+.arch-block .mono-label {
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  color: var(--accent-blue);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.arch-chain {
+  display: flex; gap: 0; flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: .82rem;
+}
+.arch-node {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 10px 16px;
+  position: relative;
+}
+.arch-node:not(:last-child)::after {
+  content: '→';
+  position: absolute; right: -16px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); font-size: 1rem; z-index: 2;
+}
+.arch-node:first-child { border-radius: 4px 0 0 4px; }
+.arch-node:last-child  { border-radius: 0 4px 4px 0; }
+.arch-node .sub-note   { display: block; font-size: .68rem; color: var(--text-muted); margin-top: 3px; }
+.arch-divider { width: 32px; } /* spacer for arrow */
+
+.stack-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 24px; }
+.stack-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 18px;
+}
+.stack-item h4 { font-size: .82rem; font-weight: 600; color: var(--accent-cyan); margin-bottom: 6px; font-family: var(--font-mono); }
+.stack-item p  { font-size: .82rem; color: var(--text-secondary); }
+
+/* MILESTONES */
+.milestones { display: flex; flex-direction: column; gap: 14px; }
+.milestone {
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  align-items: center; gap: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 18px 22px;
+}
+.milestone h4 { font-size: .92rem; font-weight: 600; margin-bottom: 3px; }
+.milestone p  { font-size: .82rem; color: var(--text-secondary); }
+.milestone .dur {
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+.milestone .price {
+  font-family: var(--font-mono);
+  font-size: .92rem;
+  font-weight: 600;
+  color: var(--status-ok);
+  text-align: right;
+}
+.milestone-total {
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  gap: 16px; padding: 14px 22px;
+  border-top: 1px solid var(--border);
+}
+.milestone-total .label { font-size: .85rem; font-weight: 600; color: var(--text-secondary); }
+.milestone-total .t-dur {
+  font-family: var(--font-mono); font-size: .85rem; color: var(--text-primary); text-align: center; font-weight: 600;
+}
+.milestone-total .t-price {
+  font-family: var(--font-mono); font-size: 1rem; color: var(--status-ok); text-align: right; font-weight: 700;
+}
+
+/* PROOF */
+.proof-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.proof-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 22px;
+}
+.proof-card h4 { font-size: .9rem; font-weight: 600; color: var(--accent-blue); margin-bottom: 8px; }
+.proof-card p  { font-size: .84rem; color: var(--text-secondary); line-height: 1.55; }
+
+/* FOOTER */
+footer {
+  padding: 44px 0 60px;
+  text-align: center;
+}
+footer p { color: var(--text-secondary); font-size: .9rem; margin-bottom: 6px; }
+footer .mono { font-family: var(--font-mono); font-size: .78rem; color: var(--text-muted); letter-spacing: .04em; }
+
+/* RESPONSIVE */
+@media (max-width: 680px) {
+  .milestone { grid-template-columns: 1fr; }
+  .milestone .dur, .milestone .price { text-align: left; }
+  .milestone-total { grid-template-columns: 1fr; }
+  .arch-chain { flex-direction: column; }
+  .arch-node:not(:last-child)::after { content: '↓'; right: auto; bottom: -18px; top: auto; left: 50%; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <p class="hero-eyebrow">Proposal &mdash; Pathwaize Intelligence Center MVP</p>
+    <h1>A working <span class="accent">Intelligence Center</span><br>you can click right now.</h1>
+    <p class="lede">Before we talk scope and timeline, here is the execution console you described, fully functional in the browser. Run an engine, review the output, approve it, push it. That is the core workflow, live.</p>
+    <div class="cta-row">
+      <a class="btn-primary" href="https://michaelwegter.com/demos/real-estate-intelligence-center/" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M6 5.5l4 2.5-4 2.5V5.5z" fill="currentColor"/></svg>
+        Open Live Demo
+      </a>
+      <a class="btn-secondary" href="https://michaelwegter.com/work-samples/real-estate-intelligence-center" target="_blank">View Portfolio Entry</a>
+    </div>
+    <p class="byline">Prepared by <span>Michael Wegter</span> &nbsp;|&nbsp; <span>michaelwegter.com</span> &nbsp;|&nbsp; <span>github.com/mwegter95</span></p>
+  </div>
+</header>
+
+<!-- CORE WORKFLOW -->
+<section>
+  <div class="wrap">
+    <h2>The workflow you described</h2>
+    <p class="sub">Every engine in the demo supports this exact loop. Approval is a hard gate: outputs cannot push to any destination until you explicitly click Approve.</p>
+    <div class="workflow-row">
+      <div class="wf-step">
+        <div class="wf-num">01</div>
+        <div class="wf-label">Run</div>
+        <div class="wf-desc">User fills the brief and fires an engine</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">02</div>
+        <div class="wf-label">Generate</div>
+        <div class="wf-desc">LLM router routes and returns structured output</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">03</div>
+        <div class="wf-label">Review</div>
+        <div class="wf-desc">Output lands in Pending Review queue, status: needs-review</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">04</div>
+        <div class="wf-label">Revise</div>
+        <div class="wf-desc">User requests edits; engine re-runs with revision notes</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">05</div>
+        <div class="wf-label">Approve</div>
+        <div class="wf-desc">User clicks Approve; status flips to approved</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">06</div>
+        <div class="wf-label">Save / Push</div>
+        <div class="wf-desc">Push button unlocks; output saved to destination</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THREE ENGINES -->
+<section>
+  <div class="wrap">
+    <h2>Three engines, wired end-to-end</h2>
+    <p class="sub">All three run in the demo today. Priority order follows the posting exactly.</p>
+    <div class="engines-grid">
+      <div class="engine-card">
+        <span class="chip chip-blue">Priority 1</span>
+        <h3 style="margin-top:12px;">Authority Engine</h3>
+        <p>Generates founder-authority content: LinkedIn posts, X threads, thought-leadership pieces. Supports topic, tone, and platform input. Revision and approval-gated push to LinkedIn or X.</p>
+        <div class="engine-tag-row">
+          <span class="chip chip-purple">run</span>
+          <span class="chip chip-warn">needs-review</span>
+          <span class="chip chip-green">approved</span>
+          <span class="chip chip-cyan">pushed</span>
+        </div>
+      </div>
+      <div class="engine-card">
+        <span class="chip chip-blue">Priority 2</span>
+        <h3 style="margin-top:12px;">Newsletter Engine</h3>
+        <p>Generates newsletter body copy plus three subject-line options and preview text. Selectable subject lines. Revision panel. Approval-gated save or schedule action.</p>
+        <div class="engine-tag-row">
+          <span class="chip chip-purple">run</span>
+          <span class="chip chip-warn">needs-review</span>
+          <span class="chip chip-green">approved</span>
+          <span class="chip chip-cyan">pushed</span>
+        </div>
+      </div>
+      <div class="engine-card">
+        <span class="chip chip-blue">Priority 3</span>
+        <h3 style="margin-top:12px;">Knowledge Engine Lite</h3>
+        <p>Generates business knowledgebase entries. Destination picker: Google Drive or GitHub. Save receipt with file path and link to the saved asset. Visual confirmation on success.</p>
+        <div class="engine-tag-row">
+          <span class="chip chip-purple">run</span>
+          <span class="chip chip-warn">needs-review</span>
+          <span class="chip chip-green">approved</span>
+          <span class="chip chip-cyan">saved to Drive / GitHub</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section>
+  <div class="wrap">
+    <h2>Backend LLM routing layer</h2>
+    <p class="sub">The frontend never calls OpenAI, Claude, or any provider directly. It calls a provider-agnostic LLMRouter. Adding a second provider is one config entry, not a rebuild.</p>
+    <div class="arch-block">
+      <p class="mono-label">Request flow</p>
+      <div class="arch-chain">
+        <div class="arch-node">
+          Frontend
+          <span class="sub-note">Next.js / React iframe</span>
+        </div>
+        <div class="arch-divider"></div>
+        <div class="arch-node" style="color:var(--accent-blue);">
+          POST /route
+          <span class="sub-note">{ engine, payload, workspace_id }</span>
+        </div>
+        <div class="arch-divider"></div>
+        <div class="arch-node">
+          LLM Router
+          <span class="sub-note">selects model from config registry</span>
+        </div>
+        <div class="arch-divider"></div>
+        <div class="arch-node">
+          Provider API
+          <span class="sub-note">OpenAI / Claude / local model</span>
+        </div>
+        <div class="arch-divider"></div>
+        <div class="arch-node" style="color:var(--status-ok);">
+          Supabase log
+          <span class="sub-note">run_id, model, tokens, cost, status</span>
+        </div>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-item">
+        <h4>Frontend</h4>
+        <p>Next.js / React, embedded in GoHighLevel via iframe custom menu page. Calls only the backend router, never any LLM provider.</p>
+      </div>
+      <div class="stack-item">
+        <h4>LLM Router</h4>
+        <p>AWS Lambda + API Gateway (or Next.js API route). Provider-agnostic contract: engine name + payload in, normalized output + run metadata out.</p>
+      </div>
+      <div class="stack-item">
+        <h4>Data Layer</h4>
+        <p>Supabase (Postgres + Auth + RLS). Runs, outputs, usage logs, workspace isolation. Your existing Supabase investment carries forward.</p>
+      </div>
+      <div class="stack-item">
+        <h4>Integrations</h4>
+        <p>Google Drive API + GitHub API, server-side OAuth. LinkedIn + X push via approved APIs. Frontend sees only receipts, never API keys.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPROVAL GATING -->
+<section>
+  <div class="wrap">
+    <h2>Approval gating, not just a UI pattern</h2>
+    <p class="sub">Two independent layers prevent unapproved outputs from publishing, sending, or saving to connected systems.</p>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:20px;">
+      <div class="engine-card">
+        <h3>Frontend status machine</h3>
+        <p>Every output has a status field. The Push/Save button is rendered disabled and cursor: not-allowed unless status is exactly "approved". There is no code path that advances an output to "pushed" without an explicit user click on Approve. You can verify this in the demo: try clicking Push before Approve.</p>
+      </div>
+      <div class="engine-card">
+        <h3>Backend guard (production)</h3>
+        <p>The backend's push endpoints check the output's status in Supabase before executing. A 403 is returned if status is not "approved", even if a client somehow bypasses the frontend gate. Frontend and backend enforce the same rule independently.</p>
+      </div>
+      <div class="engine-card">
+        <h3>Output status lifecycle</h3>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+          <div><span class="chip chip-purple">generating</span>&nbsp; engine is running</div>
+          <div><span class="chip chip-warn">needs-review</span>&nbsp; output ready, no action yet</div>
+          <div><span class="chip" style="background:rgba(239,68,68,.13);color:#EF4444;">revised</span>&nbsp; revision requested, re-running</div>
+          <div><span class="chip chip-green">approved</span>&nbsp; user approved, push unlocked</div>
+          <div><span class="chip chip-cyan">pushed</span>&nbsp; saved to destination</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MILESTONES -->
+<section>
+  <div class="wrap">
+    <h2>Build plan and budget</h2>
+    <p class="sub">Fixed-price milestones. Each one is deployable before the next starts. No billing until you have seen the working increment.</p>
+    <div class="milestones">
+      <div class="milestone">
+        <div>
+          <h4>Milestone 1 &mdash; UI Shell + Authority Engine end-to-end</h4>
+          <p>3-col console layout, GHL iframe embed, run/review/approve/push on Authority Engine, run records, usage log, LLM routing layer wired</p>
+        </div>
+        <div class="dur">1.5 weeks</div>
+        <div class="price">$2,500</div>
+      </div>
+      <div class="milestone">
+        <div>
+          <h4>Milestone 2 &mdash; Newsletter Engine end-to-end</h4>
+          <p>Full body + 3 subject lines + preview text, selectable subjects, revision panel, approval-gated save/schedule</p>
+        </div>
+        <div class="dur">1 week</div>
+        <div class="price">$1,500</div>
+      </div>
+      <div class="milestone">
+        <div>
+          <h4>Milestone 3 &mdash; Knowledge Engine Lite + Drive/GitHub save</h4>
+          <p>KB entry generation, destination picker, server-side OAuth for Drive + GitHub, save receipt with file path</p>
+        </div>
+        <div class="dur">1.5 weeks</div>
+        <div class="price">$2,000</div>
+      </div>
+      <div class="milestone">
+        <div>
+          <h4>Milestone 4 &mdash; Outputs queue + approve/revise/re-run flow</h4>
+          <p>Pending Review queue, click-to-review, approve/request-edits/re-run actions, run history panel</p>
+        </div>
+        <div class="dur">1 week</div>
+        <div class="price">$1,500</div>
+      </div>
+      <div class="milestone">
+        <div>
+          <h4>Milestone 5 &mdash; Intel Brief stub + polish + GHL QA + deploy</h4>
+          <p>Intel Brief 6-section stub, workspace context, GHL postMessage integration, final QA, production deploy</p>
+        </div>
+        <div class="dur">1 week</div>
+        <div class="price">$1,500</div>
+      </div>
+    </div>
+    <div class="milestone-total">
+      <div class="label">Total</div>
+      <div class="t-dur">6 to 7 weeks</div>
+      <div class="t-price">$9,000</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY ME -->
+<section>
+  <div class="wrap">
+    <h2>Why me</h2>
+    <p class="sub">Concrete proof points, not a list of buzzwords.</p>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <h4>Full-stack with real ownership</h4>
+        <p>Sole developer and SME for TDAAS at U.S. Bank (via Turnberry), 600 users/month, ~60k LOC in React + Python + SQL + Java. If something broke, I fixed it, often within 10 minutes. Led the 6-month Azure Cloud migration as the project's main representative.</p>
+      </div>
+      <div class="proof-card">
+        <h4>LLM workflows in production</h4>
+        <p>At Optum (current contract, April 2026), I am the team's go-to for AI-assisted development using Azure OpenAI. The Intelligence Center demo implements prompt chaining, JSON-schema-enforced structured outputs, sliding context windows, and a 1-retry reflection loop, all running in the browser right now.</p>
+      </div>
+      <div class="proof-card">
+        <h4>The demo speaks for itself</h4>
+        <p>I built the working Intelligence Center demo before applying. The run/review/approve/push workflow, the approval gate, the LLM routing layer, the run records, and all three engines are functional. That is my application: working software, not a slide deck about potential.</p>
+      </div>
+      <div class="proof-card">
+        <h4>No overengineering</h4>
+        <p>The demo is 12 files. The backend design is one routing service and four Supabase tables. V1 should prove the core workflow quickly and cleanly, not ship every future feature. I read the posting: the goal is a lean MVP that validates the Intelligence Center concept, not a year-long build.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <p>Ready to move forward? The demo is live at <a href="https://michaelwegter.com/demos/real-estate-intelligence-center/" target="_blank">michaelwegter.com/demos/real-estate-intelligence-center</a></p>
+    <p>Portfolio: <a href="https://michaelwegter.com" target="_blank">michaelwegter.com</a> &nbsp;|&nbsp; GitHub: <a href="https://github.com/mwegter95" target="_blank">github.com/mwegter95</a></p>
+    <p class="mono" style="margin-top:20px;">Michael Wegter &nbsp;|&nbsp; Full-Stack Developer &nbsp;|&nbsp; Proposal generated July 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>
