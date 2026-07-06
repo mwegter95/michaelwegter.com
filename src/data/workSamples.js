@@ -652,14 +652,14 @@ const workSampleRegistry = [
     slug: "bowling-shirt-designer",
     title: "Strikehouse - 3D Bowling Shirt Designer",
     description:
-      "Interactive 3D bowling shirt customizer: orbit the shirt, swap body/collar/sleeve colors, drop in six canvas-generated retro patterns or upload your own artwork, and print a live name across the back with adjustable font, size, and color. Add-to-cart captures a real 3D thumbnail; save & share persists the design. Built on Next.js 14 + React Three Fiber + Zustand, with a PHP microservice proxied through a Flask (Python) API. Ships as the fix for a customizer audit brief: code-split 3D bundle, guarded state reads, graceful network fallback.",
+      "Interactive 3D bowling shirt customizer with owayo-level fabric realism: upload any image and it wraps all the way around the shirt, or load separate front and back photos that align independently. Smart Align auto-centers your design with WebGPU-accelerated subject detection (deterministic fallback), and live zoom, crop, pan, and rotation sliders update the render in real time. Still swap body/collar/sleeve colors and print a live name across the back. Built on Next.js 14 + React Three Fiber + Zustand with a physically based sheen material, studio HDR lighting, a knit normal map for cloth micro-texture, and a 2K CanvasTexture UV compositor.",
     category: "E-commerce",
     status: "live",
     href: import.meta.env.BASE_URL + "demos/bowling-shirt-designer/",
     color: "#1a1f3c",
     icon: "🎳",
     frameStyle: "baroque",
-    tags: ["Next.js", "React", "TypeScript", "Three.js", "Flask", "PHP", "Tailwind CSS", "E-commerce", "Full-Stack"],
+    tags: ["Next.js", "React", "TypeScript", "Three.js", "WebGPU", "AI", "Flask", "PHP", "Tailwind CSS", "E-commerce", "Full-Stack"],
     screenshot: import.meta.env.BASE_URL + "work-samples/bowling-shirt-designer.png",
     client: null,
     postingSummary:
