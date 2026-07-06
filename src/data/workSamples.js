@@ -647,6 +647,28 @@ const workSampleRegistry = [
     proposalDeckUrl: null,
     proposalPageUrl: null,
   },
+  {
+    id: 24,
+    slug: "bowling-shirt-designer",
+    title: "Strikehouse - 3D Bowling Shirt Designer",
+    description:
+      "Interactive 3D bowling shirt customizer: orbit the shirt, swap body/collar/sleeve colors, drop in six canvas-generated retro patterns or upload your own artwork, and print a live name across the back with adjustable font, size, and color. Add-to-cart captures a real 3D thumbnail; save & share persists the design. Built on Next.js 14 + React Three Fiber + Zustand, with a PHP microservice proxied through a Flask (Python) API. Ships as the fix for a customizer audit brief: code-split 3D bundle, guarded state reads, graceful network fallback.",
+    category: "E-commerce",
+    status: "live",
+    href: import.meta.env.BASE_URL + "demos/bowling-shirt-designer/",
+    color: "#1a1f3c",
+    icon: "🎳",
+    frameStyle: "baroque",
+    tags: ["Next.js", "React", "TypeScript", "Three.js", "Flask", "PHP", "Tailwind CSS", "E-commerce", "Full-Stack"],
+    screenshot: import.meta.env.BASE_URL + "work-samples/bowling-shirt-designer.png",
+    client: null,
+    postingSummary:
+      "Senior frontend audit: diagnose JS errors, state-management failures, and homepage bounce in a React e-commerce customizer, and provide fixes or a remediation roadmap.",
+    builtFor: "Technical Code & Flow Audit: E-Commerce Apparel Customizer (React/JS)",
+    date: "2026-07-06",
+    proposalDeckUrl: null,
+    proposalPageUrl: null,
+  },
 ];
 
 // Grouped tag taxonomy for the Work Samples filter UI. Sections render as
@@ -664,6 +686,7 @@ export const tagSections = [
       "Next.js",
       "TypeScript",
       "JavaScript",
+      "Three.js",
       "Tailwind CSS",
       "Chart.js",
       "Leaflet",
