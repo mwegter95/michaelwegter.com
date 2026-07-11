@@ -18,8 +18,7 @@ export default function Home() {
         <div className="container">
           <div className="hero-content">
             <div className="hero-eyebrow">
-              <span className="hero-eyebrow-dash" />
-              <span className="label">Software Engineer · Creative Developer</span>
+              <span className="label">Software Engineer</span>
             </div>
 
             <h1 className="hero-heading">
