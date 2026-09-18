@@ -1,0 +1,84 @@
+/* Shared styling for the standalone legal pages (privacy.html, terms.html).
+   Deliberately self-contained: these are plain static files served straight by
+   GitHub Pages, outside the React app, so Google's OAuth reviewer can always
+   reach them even if the SPA fails to boot. */
+:root {
+  --mustard: #e8b820;
+  --bg-root: #121118;
+  --bg-surface: #191720;
+  --bg-card: #1e1c26;
+  --border-subtle: #201e2a;
+  --border-default: #2c2a38;
+  --text-primary: #f2ede4;
+  --text-secondary: #8a8898;
+  --text-muted: #4a4858;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg-root);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 56px 20px 96px; }
+header.doc-hd { border-bottom: 1px solid var(--border-default); padding-bottom: 28px; margin-bottom: 40px; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--mustard); margin: 0 0 14px;
+}
+h1 { font-family: var(--font-display); font-size: clamp(30px, 6vw, 42px); line-height: 1.12; margin: 0 0 14px; letter-spacing: -0.02em; }
+.updated { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin: 0; }
+h2 {
+  font-family: var(--font-display); font-size: 21px; letter-spacing: -0.01em;
+  margin: 44px 0 12px; padding-top: 4px;
+}
+h3 { font-family: var(--font-display); font-size: 16px; margin: 26px 0 8px; color: var(--text-primary); }
+p, li { color: var(--text-secondary); }
+p { margin: 0 0 14px; }
+strong { color: var(--text-primary); font-weight: 600; }
+ul { margin: 0 0 16px; padding-left: 22px; }
+li { margin-bottom: 8px; }
+a { color: var(--mustard); text-decoration: none; border-bottom: 1px solid rgba(232, 184, 32, 0.35); }
+a:hover { border-bottom-color: var(--mustard); }
+code {
+  font-family: var(--font-mono); font-size: 13px;
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: 4px; padding: 1px 6px; color: var(--text-primary);
+}
+.callout {
+  background: var(--bg-card); border: 1px solid var(--border-default);
+  border-left: 3px solid var(--mustard);
+  border-radius: 8px; padding: 18px 20px; margin: 22px 0;
+}
+.callout p:last-child { margin-bottom: 0; }
+.callout h3 { margin-top: 0; }
+table { width: 100%; border-collapse: collapse; margin: 6px 0 20px; font-size: 14.5px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border-subtle); vertical-align: top; }
+th {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-muted); font-weight: 500;
+}
+td { color: var(--text-secondary); }
+td:first-child { color: var(--text-primary); width: 34%; }
+footer.doc-ft {
+  margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border-default);
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);
+  display: flex; gap: 18px; flex-wrap: wrap;
+}
+footer.doc-ft a { border-bottom: none; color: var(--text-secondary); }
+footer.doc-ft a:hover { color: var(--mustard); }
+@media (max-width: 560px) {
+  .wrap { padding: 36px 18px 72px; }
+  table, thead, tbody, th, td, tr { display: block; }
+  thead { display: none; }
+  td { border-bottom: none; padding: 2px 0; }
+  td:first-child { width: auto; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); padding-top: 12px; }
+  tr { border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px; display: block; }
+}

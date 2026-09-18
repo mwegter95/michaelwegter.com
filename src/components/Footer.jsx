@@ -27,6 +27,15 @@ export default function Footer() {
           <a href="mailto:mwegter95@gmail.com" className="footer-link">
             Email
           </a>
+          {/* Plain static files in public/ — not React routes — so they stay
+              reachable (for Google's OAuth review, among others) even if the
+              SPA fails to boot. */}
+          <a href="/privacy.html" className="footer-link">
+            Privacy
+          </a>
+          <a href="/terms.html" className="footer-link">
+            Terms
+          </a>
         </div>
       </div>
     </footer>

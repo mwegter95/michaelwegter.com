@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy · Life Dashboard · michaelwegter.com</title>
+<meta name="description" content="Privacy policy for Life Dashboard and the other apps on michaelwegter.com, including how Google Calendar data is used.">
+<link rel="canonical" href="https://michaelwegter.com/privacy.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/_legal.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc-hd">
+  <p class="eyebrow">michaelwegter.com</p>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: September 18, 2026</p>
+</header>
+
+<p>
+  This policy covers <strong>Life Dashboard</strong> and the other personal apps
+  published at <a href="https://michaelwegter.com">michaelwegter.com</a> (the
+  “Apps”). They are built and operated by Michael Wegter as independent personal
+  projects, not by or on behalf of any employer or client.
+</p>
+
+<p>
+  The short version: the Apps collect only what they need in order to work, the
+  data lives on a server I run, nothing is sold or used for advertising, and you
+  can delete all of it at any time.
+</p>
+
+<h2>1. Who is responsible</h2>
+<p>
+  Michael Wegter, Minnesota, United States. Contact:
+  <a href="mailto:mwegter95@gmail.com">mwegter95@gmail.com</a>. For privacy
+  questions, please put “Privacy” in the subject line.
+</p>
+
+<h2>2. What the Apps collect</h2>
+
+<h3>Account information</h3>
+<p>
+  If you create an account you provide an email address, a password, and
+  optionally a display name. Passwords are stored only as a salted hash — they
+  are never stored or transmitted in readable form. You can also use Life
+  Dashboard without an account, in which case the App generates a random device
+  token stored in your browser and your data is tied to that token rather than
+  to you personally.
+</p>
+
+<h3>Content you create</h3>
+<p>
+  Habits and to-dos, the days you check them off and the points earned,
+  end-of-day reflections, and your mantra. This is the substance of the App and
+  is visible only to you.
+</p>
+
+<h3>Google Calendar data (optional)</h3>
+<p>
+  Connecting Google Calendar is entirely optional; every other feature works
+  without it. If you connect it, the App requests a single <strong>read-only</strong>
+  scope, <code>https://www.googleapis.com/auth/calendar.readonly</code>, and uses
+  it to read your upcoming events for roughly the next four months so it can
+  suggest dated reminders — a gift before a birthday, packing before a trip,
+  paperwork before an appointment.
+</p>
+<table>
+  <thead><tr><th>Item</th><th>How it is handled</th></tr></thead>
+  <tbody>
+    <tr><td>OAuth refresh token</td><td>Stored encrypted at rest on the server. Never shown, logged or shared.</td></tr>
+    <tr><td>Your Google account email</td><td>Stored so the App can show you which calendar is connected.</td></tr>
+    <tr><td>Event title, date, location, calendar</td><td>Fetched live when you open the dashboard or when reminders are generated. Not stored as a copy — only the short reminder text the App generates is saved.</td></tr>
+    <tr><td>Everything else in your calendar</td><td>Not requested. The scope is read-only, so the App cannot create, edit or delete anything in your calendar.</td></tr>
+  </tbody>
+</table>
+
+<h3>What is not collected</h3>
+<p>
+  No third-party analytics, no advertising or tracking pixels, no cookies beyond
+  what is needed to keep you signed in, no location data, no contacts, no
+  payment information. The Apps are free and there is nothing to buy.
+</p>
+
+<h2>3. How the data is used</h2>
+<ul>
+  <li>To show you your own habits, streaks, points and reminders.</li>
+  <li>To keep you signed in across sessions and devices.</li>
+  <li>To turn upcoming calendar events into suggested reminders, if you connected a calendar.</li>
+  <li>To keep the service running — diagnosing errors and preventing abuse.</li>
+</ul>
+<p>
+  Your data is <strong>not</strong> used to train any machine-learning model, is
+  not sold or rented, is not used for advertising or profiling, and is not shared
+  with data brokers.
+</p>
+
+<h2>4. Google user data and the Limited Use requirements</h2>
+<div class="callout">
+  <h3>Limited Use disclosure</h3>
+  <p>
+    Life Dashboard’s use and transfer of information received from Google APIs
+    adheres to the
+    <a href="https://developers.google.com/terms/api-services-user-data-policy" rel="noopener">Google API Services User Data Policy</a>,
+    including the Limited Use requirements.
+  </p>
+</div>
+<p>Concretely, that means Google Calendar data is:</p>
+<ul>
+  <li>used only to provide and improve the reminder features you can see in the App;</li>
+  <li>never transferred to anyone else except as needed to provide those features, to comply with applicable law, or as part of a merger or acquisition with prior notice;</li>
+  <li>never used for advertising of any kind;</li>
+  <li>never sold; and</li>
+  <li>never read by a human, except where you give explicit consent for a specific support issue, where it is required by law, or where it is necessary for security purposes such as investigating abuse.</li>
+</ul>
+
+<h2>5. Sub-processors</h2>
+<p>These are the only third parties that ever touch data from the Apps:</p>
+<table>
+  <thead><tr><th>Service</th><th>What it receives</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Google Calendar API</td>
+      <td>The OAuth request itself. Google is the source of the calendar data, not a recipient of your other App data.</td>
+    </tr>
+    <tr>
+      <td>GitHub Models API<br>(AI reminder generation)</td>
+      <td>If you connect a calendar: the <strong>title, date and duration</strong> of upcoming events, sent so a language model can classify each one and phrase a short reminder. Nothing else from your account is sent — no email address, no habit history, no reflections. The data is sent per request and is not used to train models.</td>
+    </tr>
+    <tr>
+      <td>GitHub Pages / Cloudflare</td>
+      <td>Standard web hosting and delivery for the static site. They see ordinary request metadata such as IP address and browser type.</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  If you never connect Google Calendar, no App data of any kind leaves the server
+  I operate.
+</p>
+
+<h2>6. Where the data lives, and for how long</h2>
+<p>
+  App data is stored in a database on a private server I operate, reachable at
+  <code>api.michaelwegter.com</code>, in the United States. Traffic to it is
+  encrypted in transit (HTTPS), and the Google refresh token is additionally
+  encrypted at rest.
+</p>
+<p>
+  Data is kept until you delete it. Anonymous device-token data that has gone
+  unused for a long period may be removed during routine maintenance.
+</p>
+
+<h2>7. Your choices and how to delete your data</h2>
+<ul>
+  <li>
+    <strong>Disconnect Google Calendar.</strong> Use the <em>Disconnect</em>
+    button in the dashboard’s Calendar panel. The stored refresh token is deleted
+    from the server immediately.
+  </li>
+  <li>
+    <strong>Revoke access from Google.</strong> You can remove the App at any
+    time at
+    <a href="https://myaccount.google.com/permissions" rel="noopener">myaccount.google.com/permissions</a>.
+  </li>
+  <li>
+    <strong>Delete individual content.</strong> Habits, reminders and reflections
+    can be removed from within the App.
+  </li>
+  <li>
+    <strong>Delete everything.</strong> Email
+    <a href="mailto:mwegter95@gmail.com">mwegter95@gmail.com</a> from your
+    account’s address and I will delete the account and all associated data,
+    normally within 30 days.
+  </li>
+</ul>
+<p>
+  Depending on where you live you may also have the right to access, correct,
+  export or restrict the processing of your personal data, and to complain to a
+  supervisory authority. Email me and I will help.
+</p>
+
+<h2>8. Security</h2>
+<p>
+  Passwords are hashed, the OAuth refresh token is encrypted at rest, and all
+  traffic runs over HTTPS. That said, this is a personal project maintained by
+  one person — no system is perfectly secure, and you should not store anything
+  in it that you would be harmed by losing or disclosing.
+</p>
+
+<h2>9. Children</h2>
+<p>
+  The Apps are not directed at children under 13 and I do not knowingly collect
+  personal information from them. If you believe a child has provided
+  information, email me and I will delete it.
+</p>
+
+<h2>10. Changes</h2>
+<p>
+  If this policy changes materially, the date at the top will change and, where
+  the change affects data already collected, the App will say so. Continuing to
+  use the Apps after a change means you accept the updated policy.
+</p>
+
+<footer class="doc-ft">
+  <a href="/">michaelwegter.com</a>
+  <a href="/terms.html">Terms of Service</a>
+  <a href="mailto:mwegter95@gmail.com">Contact</a>
+</footer>
+
+</div>
+</body>
+</html>
