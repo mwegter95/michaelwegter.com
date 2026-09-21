@@ -34,6 +34,7 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 import MacDesktop from '../MacDesktop.jsx'
+import { SiteAuthProvider } from '../../auth/SiteAuth.jsx'
 import { apps } from '../../data/apps.js'
 
 const here = dirname(fileURLToPath(import.meta.url))
@@ -68,21 +69,34 @@ function mobileBlock() {
 
 function renderMac() {
   return render(
-    <MemoryRouter>
-      <MacDesktop showAll />
-    </MemoryRouter>
+    <SiteAuthProvider>
+      <MemoryRouter>
+        <MacDesktop showAll />
+      </MemoryRouter>
+    </SiteAuthProvider>
   )
 }
+
+// Private (ownerOnly) apps are hidden from a signed-out visitor, which is what
+// the tests render as.
+const publicApps = apps.filter(a => !a.ownerOnly)
 
 function iconFor(app) {
   return screen.getAllByText(app.title)[0].closest('.mac-icon')
 }
 
 describe('MacDesktop — icons and status bar coexist without overlap', () => {
-  it('renders every app as an icon', () => {
+  it('renders every public app as an icon', () => {
     renderMac()
-    apps.forEach(app => {
+    publicApps.forEach(app => {
       expect(screen.getAllByText(app.title).length).toBeGreaterThan(0)
+    })
+  })
+
+  it('hides owner-only apps from a signed-out visitor', () => {
+    renderMac()
+    apps.filter(a => a.ownerOnly).forEach(app => {
+      expect(screen.queryByText(app.title)).toBeNull()
     })
   })
 

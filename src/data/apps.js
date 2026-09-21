@@ -139,4 +139,21 @@ export const apps = [
     icon: "🌲",
     frameStyle: "walnut",
   },
+  {
+    id: 9,
+    slug: "gaming-dashboard",
+    title: "Gaming Activity",
+    description:
+      "Private: how long I actually play Rocket League, Fortnite and anything else I add. A tracker on the gaming PC publishes sessions to mw-backend; this dashboard reads them.",
+    category: "Utility",
+    status: "live",
+    // Built from the pc-gaming-activity-dashboard repo into public/demos/.
+    href: import.meta.env.BASE_URL + "demos/gaming-dashboard/",
+    color: "#b08a05", // mustard — slot 1 of the dashboard's chart palette
+    icon: "🎮",
+    frameStyle: "walnut",
+    // Private: only the owner sees it on /apps, and only the owner can open it.
+    // MacDesktop and AppFrame both honour this flag.
+    ownerOnly: true,
+  },
 ];
