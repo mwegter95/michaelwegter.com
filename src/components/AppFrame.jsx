@@ -8,9 +8,14 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { apps } from '../data/apps'
 import { allWorkSamples } from '../data/workSamples'
+import { useSiteAuth } from '../auth/SiteAuth'
 
 export default function AppFrame({ appId }) {
-  const app = [...apps, ...allWorkSamples].find(a => a.id === appId || a.slug === appId)
+  const { isOwner } = useSiteAuth()
+  const found = [...apps, ...allWorkSamples].find(a => a.id === appId || a.slug === appId)
+  // A private app is invisible to anyone not signed in as the owner — the same
+  // "not found" response as a slug that does not exist.
+  const app = found && found.ownerOnly && !isOwner ? null : found
   const [loaded, setLoaded] = useState(false)
   const iframeRef = useRef(null)
   // Auto-resize iframe to match its content height when the embedded app

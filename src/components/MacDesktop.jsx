@@ -26,6 +26,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { apps } from '../data/apps'
+import { useSiteAuth } from '../auth/SiteAuth'
 
 function useClockTime() {
   const fmt = () => new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' })
@@ -426,7 +427,12 @@ export default function MacDesktop({ showAll = false }) {
   const [tapped, setTapped]   = useState(null)
   const clearTimer = useRef(null)
   const time = useClockTime()
-  const displayApps = showAll ? apps : apps.slice(0, 4)
+  const { isOwner } = useSiteAuth()
+  // Apps flagged ownerOnly are private tools, not portfolio pieces: they stay
+  // out of the four-icon preview, and only the owner sees them on /apps.
+  const displayApps = showAll
+    ? apps.filter(a => !a.ownerOnly || isOwner)
+    : apps.filter(a => !a.ownerOnly).slice(0, 4)
   const navigate = useNavigate()
 
 
