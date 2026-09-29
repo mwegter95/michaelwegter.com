@@ -29,6 +29,10 @@ const LIFE_DASHBOARD_URL =
   import.meta.env.VITE_LIFE_DASHBOARD_URL ||
   "https://mwegter95.github.io/life-dashboard/";
 // VITE_FEELGOOD_URL overrides the Feel-Good Productivity iframe src for local dev.
+// VITE_JOBSCOUT_URL overrides the Job Scout iframe src for local dev (set by `npm run dev:local`).
+const JOBSCOUT_URL =
+  import.meta.env.VITE_JOBSCOUT_URL ||
+  "https://mwegter95.github.io/ultimate-job-scraper/";
 const FEELGOOD_URL =
   import.meta.env.VITE_FEELGOOD_URL ||
   "https://mwegter95.github.io/feel-good-productivity/";
@@ -141,6 +145,19 @@ export const apps = [
   },
   {
     id: 9,
+    slug: "job-scout", // → michaelwegter.com/apps/job-scout (iframe)
+    title: "Job Scout",
+    description:
+      "Finds local employers on its own — lesser-known manufacturers included — reads openings straight from their careers systems, and scores each role against your resume with a local LLM. A Zillow-style list and map.",
+    category: "Productivity",
+    status: "live",
+    href: JOBSCOUT_URL,
+    color: "#0F6E6E", // Job Scout deep teal
+    icon: "🧭",
+    frameStyle: "baroque",
+  },
+  {
+    id: 10,
     slug: "gaming-dashboard",
     title: "Gaming Activity",
     description:

@@ -212,6 +212,40 @@ const details = {
     ],
     screenshots: [],
   },
+
+  'job-scout': {
+    tagline: 'A job search that starts from the employers around you — including the ones nobody has heard of — instead of from a job board.',
+    paragraphs: [
+      "Job boards only show the jobs someone paid to advertise. Job Scout starts from a place instead: give it a home address, a radius, the kinds of roles you want and the industries you're curious about, and it goes looking for the employers themselves — searching Google Maps, the web and OpenStreetMap town by town. An injection molder in Willernie or a millwork shop in Oakdale shows up right next to the household names.",
+      "Every company it finds gets categorized from its own website: industry, products, size, ownership and whether it's a name most people would recognize. Lesser-known local makers are flagged as hidden gems. Then it finds each company's careers page, recognizes the careers system behind it (Workday, Oracle, Greenhouse, Lever, Paylocity and more) and reads the openings straight from the source — and since Minnesota's pay-transparency law took effect, many come with a salary range.",
+      "Each role is scored against your resume and what you want (and want to avoid) by an LLM running on a desktop GPU at home, so your resume never leaves your own machines. The result is a Zillow-style view: filters for fit, salary, remote/hybrid/on-site, distance and recency; a list beside a map with salary pins; and a tracker from saved to applied to offer.",
+    ],
+    features: [
+      'Discovers local employers by itself from a location, radius, industries and keywords',
+      'Categorizes each company from its own site and surfaces lesser-known "hidden gem" makers',
+      'Reads openings directly from careers systems — Workday, Oracle, Greenhouse, Lever, Paylocity, Workable and more',
+      'Scores every role against your resume with a local LLM (Gemma on an RTX 3060) — nothing sent to a cloud AI',
+      'Zillow-style list + map with salary pins, work-style, distance and fit filters',
+      'Tracker for saved, applied, interviewing and offers; follow companies to catch new openings',
+    ],
+    screenshots: [
+      {
+        src: '/screenshots/job_scout_jobs_map.png',
+        type: 'image',
+        alt: 'Job Scout jobs view: a list of marketing roles with salary pills and fit scores beside a map of the Twin Cities with salary pins.',
+        caption: 'Jobs: fit-ranked roles beside a map with salary pins (demo data)',
+        aspect: 16 / 10,
+        wide: true,
+      },
+      {
+        src: '/screenshots/job_scout_hidden_gems.png',
+        type: 'image',
+        alt: 'Job Scout companies view filtered to hidden gems: local manufacturers with gem scores, products and how each was found.',
+        caption: 'Companies: hidden-gem local makers the app found and categorized (demo data)',
+        aspect: 16 / 10,
+      },
+    ],
+  },
 }
 
 /* ── Lightbox ────────────────────────────────────────────── */
