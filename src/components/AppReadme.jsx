@@ -216,13 +216,14 @@ const details = {
   'job-scout': {
     tagline: 'A job search that starts from the employers around you — including the ones nobody has heard of — instead of from a job board.',
     paragraphs: [
-      "Job boards only show the jobs someone paid to advertise. Job Scout starts from a place instead: give it a home address, a radius, the kinds of roles you want and the industries you're curious about, and it goes looking for the employers themselves — searching Google Maps, the web and OpenStreetMap town by town. An injection molder in Willernie or a millwork shop in Oakdale shows up right next to the household names.",
-      "Every company it finds gets categorized from its own website: industry, products, size, ownership and whether it's a name most people would recognize. Lesser-known local makers are flagged as hidden gems. Then it finds each company's careers page, recognizes the careers system behind it (Workday, Oracle, Greenhouse, Lever, Paylocity and more) and reads the openings straight from the source — and since Minnesota's pay-transparency law took effect, many come with a salary range.",
-      "Each role is scored against your resume and what you want (and want to avoid) by an LLM running on a desktop GPU at home, so your resume never leaves your own machines. The result is a Zillow-style view: filters for fit, salary, remote/hybrid/on-site, distance and recency; a list beside a map with salary pins; and a tracker from saved to applied to offer.",
+      "Job boards only show the jobs someone paid to advertise. Job Scout starts from a place instead: give it a home address, a radius and the kinds of jobs you want — job categories, target titles, levels and a few sentences in your own words — and press Find matches. It goes looking for the employers themselves, searching Google Maps, the web and OpenStreetMap town by town, so a 150-person software company or an independent clinic group down the road shows up right next to the household names.",
+      "Every company it finds gets categorized from its own website: industry, products, size, ownership and whether it's a name most people would recognize. Local, independent, mid-sized employers most people haven't heard of are flagged as hidden gems, whatever they do. Then it finds each company's careers page, recognizes the careers system behind it (Workday, Oracle, Greenhouse, Lever, Paylocity and more) and reads the openings straight from the source — and since Minnesota's pay-transparency law took effect, many come with a salary range. A progress strip shows each step while it works.",
+      "Each role in your field is scored against your resume and what you want (and want to avoid) by an LLM running on a desktop GPU at home, so your resume never leaves your own machines. The result is a Zillow-style view: filters for fit, salary, remote/hybrid/on-site, distance and recency; a list beside a map with salary pins; and a tracker from saved to applied to offer.",
     ],
     features: [
-      'Discovers local employers by itself from a location, radius, industries and keywords',
-      'Categorizes each company from its own site and surfaces lesser-known "hidden gem" makers',
+      'One Find matches button: discovers local employers by itself, reads their jobs and scores the ones in your field, with live progress',
+      'Any field: pick job categories, target titles and levels, and describe what you want in your own words',
+      'Categorizes each company from its own site and surfaces lesser-known local "hidden gem" employers in every industry',
       'Reads openings directly from careers systems — Workday, Oracle, Greenhouse, Lever, Paylocity, Workable and more',
       'Scores every role against your resume with a local LLM (Gemma on an RTX 3060) — nothing sent to a cloud AI',
       'Zillow-style list + map with salary pins, work-style, distance and fit filters',
@@ -240,8 +241,15 @@ const details = {
       {
         src: '/screenshots/job_scout_hidden_gems.png',
         type: 'image',
-        alt: 'Job Scout companies view filtered to hidden gems: local manufacturers with gem scores, products and how each was found.',
-        caption: 'Companies: hidden-gem local makers the app found and categorized (demo data)',
+        alt: 'Job Scout companies view filtered to hidden gems: lesser-known local employers across industries with gem scores, products and how each was found.',
+        caption: 'Companies: hidden-gem local employers the app found and categorized (demo data)',
+        aspect: 16 / 10,
+      },
+      {
+        src: '/screenshots/job_scout_find_matches.png',
+        type: 'image',
+        alt: 'Job Scout while Find matches runs: a progress strip listing each step (searching for employers, categorizing, checking careers pages, reading job listings, AI scoring) with counts and the latest log line.',
+        caption: 'Find matches: live progress through every step (demo data)',
         aspect: 16 / 10,
       },
     ],

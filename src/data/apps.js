@@ -148,7 +148,7 @@ export const apps = [
     slug: "job-scout", // → michaelwegter.com/apps/job-scout (iframe)
     title: "Job Scout",
     description:
-      "Finds local employers on its own — lesser-known manufacturers included — reads openings straight from their careers systems, and scores each role against your resume with a local LLM. A Zillow-style list and map.",
+      "Finds local employers on its own — in any industry, including the ones nobody has heard of — reads openings straight from their careers sites, and scores each role against what you want with a local LLM. A Zillow-style list and map.",
     category: "Productivity",
     status: "live",
     href: JOBSCOUT_URL,
