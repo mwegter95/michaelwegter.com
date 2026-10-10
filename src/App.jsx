@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -8,6 +9,9 @@ import Resume from './pages/Resume'
 import WorkSamples from './pages/WorkSamples'
 import AppFrame from './components/AppFrame'
 import { SiteAuthProvider } from './auth/SiteAuth'
+
+// Private inbox dashboard (owner only), loaded on demand so the rest of the site stays light.
+const InboxPage = lazy(() => import('./inbox/InboxPage'))
 
 // Reads :slug from the URL and passes it to AppFrame
 function AppFramePage() {
@@ -25,6 +29,12 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/apps" element={<Apps />} />
+              {/* A native page, not an iframe: matched ahead of /apps/:slug */}
+              <Route path="/apps/inbox" element={
+                <Suspense fallback={<div className="appframe-loading"><div className="appframe-spinner" /><span>Loading Inbox…</span></div>}>
+                  <InboxPage />
+                </Suspense>
+              } />
               {/* /apps/gallery-wall → full-viewport iframe of the app */}
               <Route path="/apps/:slug" element={<AppFramePage />} />
               <Route path="/work-samples" element={<WorkSamples />} />
