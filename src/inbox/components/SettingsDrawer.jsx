@@ -25,7 +25,8 @@ function Connection({ api, localAi }) {
       <div>
         <dt>Gmail (Apps Script)</dt>
         <dd>{!state ? 'Checking…' : state.error ? state.error : !s?.configured ? 'Not connected. Set GMAIL_SCRIPT_URL and GMAIL_SCRIPT_SECRET.'
-          : s.ok ? <><span className="ibx-ok-dot" /> Connected. {s.inbox_unread} unread in the inbox.</> : <><span className="ibx-bad-dot" /> {s.error}</>}</dd>
+          : s.ok ? <><span className="ibx-ok-dot" /> Connected. {s.inbox_unread} unread in the inbox.</> : <><span className="ibx-bad-dot" /> {s.error}</>}
+          {s?.url && <><br /><span className="ibx-mono ibx-muted">{s.url}</span></>}</dd>
       </div>
       <div>
         <dt>wegter-pc (LM Studio), optional</dt>

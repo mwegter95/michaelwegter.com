@@ -319,7 +319,7 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
       runBatch(b, ['Reading Rollup rows from 1'], () => Object.assign(b, { status: 'done', step: '', applied: 0, message: 'Imported 0 emails from the Rollup sheet. (Demo)' }))
       return reply({ batch: b })
     },
-    connection: () => reply({ script: { configured: true, ok: true, version: 1, query: 'label:inbox is:unread newer_than:150d', inbox_unread: 4, reports_to: 'https://api.michaelwegter.com/inbox/ingest' } }),
+    connection: () => reply({ script: { configured: true, url: 'https://script.google.com/macros/s/AKfycb…demo/exec', ok: true, version: 1, query: 'label:inbox is:unread newer_than:150d', inbox_unread: 4, reports_to: 'https://api.michaelwegter.com/inbox/ingest' } }),
     // A pretend wegter-pc: answers from what the export "really" contains, a few seconds per call.
     localAi: {
       health: () => reply({ ok: true, model: 'google/gemma-4-12b-qat', model_ready: true, models: ['google/gemma-4-12b-qat'], busy: false }),
