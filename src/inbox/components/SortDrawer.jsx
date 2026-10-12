@@ -5,6 +5,9 @@ import { batchSentence, dayLabel, dayKey, labelText, plural, SOURCE_NAMES, toDat
 
 const ACTIVE = new Set(['running', 'applying'])
 const SIZES = [10, 25, 50, 100]
+const CHUNK = 8               // emails per call to wegter-pc: each call has to finish inside Cloudflare's 100 s
+const BUSY_RETRIES = 40       // wegter-pc answers 409 while it's sorting something else; wait it out
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
 async function copyLater(textPromise) {
   // ClipboardItem with a promise keeps the click's permission across the fetch (Safari needs this).
@@ -30,27 +33,7 @@ function when(iso) {
   return `${dayLabel(dayKey(d))} at ${d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`
 }
 
-function Steps({ batch }) {
-  const steps = [
-    { key: 'read', text: 'Read unread email from Gmail' },
-    { key: 'sort', text: batch.source === 'ai' ? 'Sort it with AI' : 'Check the pasted JSON' },
-    { key: 'apply', text: 'Apply labels, read and archive in Gmail' },
-  ]
-  const s = (batch.step || '').toLowerCase()
-  const at = batch.status === 'applying' || s.startsWith('applying') ? 2 : s.startsWith('sorting') ? 1 : batch.source === 'ai' ? 0 : 2
-  return (
-    <ol className="ibx-steps" aria-live="polite">
-      {steps.map((st, i) => (
-        <li key={st.key} className={i < at ? 'is-done' : i === at ? 'is-now' : ''}>
-          <span className="ibx-step-mark">{i < at ? <Icon name="check" size={12} /> : i === at ? <span className="ibx-spinner" /> : null}</span>
-          <span>{i === at && batch.step ? batch.step : st.text}</span>
-        </li>
-      ))}
-    </ol>
-  )
-}
-
-function ReviewRow({ a, include, onInclude, onChange, labels }) {
+function ReviewRow({ a, include, onInclude, onChange }) {
   const [adding, setAdding] = useState('')
   return (
     <li className={`ibx-review-row${include ? '' : ' is-skipped'}${a.importance === 'high' ? ' is-high' : ''}${a.personal ? ' is-personal' : ''}`}>
@@ -59,8 +42,8 @@ function ReviewRow({ a, include, onInclude, onChange, labels }) {
         <span className="ibx-sr">Include this email</span>
       </label>
       <div className="ibx-review-main">
-        <p className="ibx-review-from">{(a.from || '').replace(/<.*>/, '').trim() || a.from}{a.personal && <span className="ibx-kind">personal</span>}</p>
-        <p className="ibx-review-subject"><span className={a.importance === 'high' ? 'ibx-mark' : undefined}>{a.subject}</span></p>
+        <p className="ibx-review-from">{(a.from || '').replace(/<.*>/, '').trim() || a.from || 'Unknown sender'}{a.personal && <span className="ibx-kind">personal</span>}</p>
+        <p className="ibx-review-subject"><span className={a.importance === 'high' ? 'ibx-mark' : undefined}>{a.subject || a.id}</span></p>
         {a.summary && <p className="ibx-review-summary">{a.summary}</p>}
         <div className="ibx-review-controls">
           <span className="ibx-review-labels">
@@ -97,12 +80,12 @@ function Review({ batch, labels, onApply, onDiscard, busy }) {
   }, [rows, skip])
   return (
     <div className="ibx-review">
-      {batch.summary && <aside className="ibx-note"><p className="ibx-note-head">What the AI saw</p><p>{batch.summary}</p></aside>}
+      {batch.summary && <aside className="ibx-note"><p className="ibx-note-head">Batch summary from {SOURCE_NAMES[batch.source] || batch.source}</p><p>{batch.summary}</p></aside>}
       <p className="ibx-muted">Nothing has changed in Gmail yet. Adjust anything that looks off, then apply.</p>
       <datalist id="ibx-label-options">{labels.map((l) => <option key={l} value={l} />)}</datalist>
       <ul className="ibx-review-list">
         {rows.map((a) => (
-          <ReviewRow key={a.id} a={a} labels={labels} include={!skip.has(a.id)}
+          <ReviewRow key={a.id} a={a} include={!skip.has(a.id)}
             onInclude={(on) => setSkip((s) => { const n = new Set(s); on ? n.delete(a.id) : n.add(a.id); return n })}
             onChange={(c) => setRows((rs) => rs.map((r) => (r.id === a.id ? { ...r, ...c } : r)))} />
         ))}
@@ -119,16 +102,64 @@ function Review({ batch, labels, onApply, onDiscard, busy }) {
   )
 }
 
-export default function SortDrawer({ api, summary, gmail, labels, onClose, onChanged, onShowHighlights }) {
-  const [mode, setMode] = useState('ai')
+/** Progress of a sort running through wegter-pc, driven from this page. */
+function PcProgress({ run, review, onStop }) {
+  const order = ['export', 'sort', 'summary', 'apply']
+  const at = order.indexOf(run.phase)
+  const steps = [
+    run.total ? `Read ${plural(run.total, 'unread email')} from Gmail` : 'Read unread email from Gmail',
+    run.total ? `Sort them on wegter-pc (${Math.min(run.done, run.total)} of ${run.total})` : 'Sort them on wegter-pc',
+    'Write the batch summary',
+    review ? 'Get the review ready' : 'Apply labels, read and archive in Gmail',
+  ]
+  const pct = run.total ? Math.round((run.done / run.total) * 100) : 0
+  return (
+    <div className="ibx-pc-run">
+      <ol className="ibx-steps" aria-live="polite">
+        {steps.map((text, i) => (
+          <li key={i} className={i < at ? 'is-done' : i === at ? 'is-now' : ''}>
+            <span className="ibx-step-mark">{i < at ? <Icon name="check" size={12} /> : i === at ? <span className="ibx-spinner" /> : null}</span>
+            <span>{text}</span>
+          </li>
+        ))}
+      </ol>
+      {run.phase === 'sort' && (
+        <div className="ibx-bar-track" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label="Sorted on wegter-pc">
+          <div className="ibx-bar-fill" style={{ width: `${pct}%` }} />
+        </div>
+      )}
+      {run.note && <p className="ibx-muted">{run.note}</p>}
+      {(run.phase === 'export' || run.phase === 'sort') && (
+        <button type="button" className="ibx-btn" onClick={onStop}>Stop</button>
+      )}
+    </div>
+  )
+}
+
+function PcStatus({ pc, onCheck }) {
+  if (!pc) return <p className="ibx-muted">Checking wegter-pc…</p>
+  if (pc.error) return <p className="ibx-pc-status"><span className="ibx-bad-dot" />{pc.error} <button type="button" className="ibx-link-btn" onClick={onCheck}>Check again</button></p>
+  if (!pc.ok) return <p className="ibx-pc-status"><span className="ibx-bad-dot" />LM Studio isn’t running on wegter-pc. Open LM Studio and start its server. <button type="button" className="ibx-link-btn" onClick={onCheck}>Check again</button></p>
+  if (!pc.model_ready) return <p className="ibx-pc-status"><span className="ibx-bad-dot" />LM Studio is running, but {pc.model} isn’t loaded. <button type="button" className="ibx-link-btn" onClick={onCheck}>Check again</button></p>
+  return <p className="ibx-pc-status"><span className="ibx-ok-dot" />wegter-pc is ready: {pc.model} in LM Studio.</p>
+}
+
+export default function SortDrawer({ api, localAi, summary, gmail, labels, onClose, onChanged, onShowHighlights }) {
+  const [mode, setMode] = useState('claude')
   const [size, setSize] = useState(summary?.settings?.batch_size || 50)
-  const [review, setReview] = useState(summary?.settings?.review_first ?? true)
   const [batch, setBatch] = useState(summary?.running_batch || null)
   const [error, setError] = useState(null)
   const [busy, setBusy] = useState(false)
   const [history, setHistory] = useState([])
+  // Claude
   const [copied, setCopied] = useState(null)   // {count, text, ok}
   const [pasted, setPasted] = useState('')
+  const [reviewPaste, setReviewPaste] = useState(false)
+  // wegter-pc
+  const [reviewPc, setReviewPc] = useState(summary?.settings?.review_first ?? true)
+  const [pc, setPc] = useState(null)
+  const [run, setRun] = useState(null)         // {phase, done, total, note}
+  const stopRef = useRef(null)
   const timer = useRef(null)
 
   const loadHistory = useCallback(() => api.batches().then((d) => setHistory(d.batches || [])).catch(() => {}), [api])
@@ -139,17 +170,20 @@ export default function SortDrawer({ api, summary, gmail, labels, onClose, onCha
       api.batch(summary.latest_batch.id).then((d) => setBatch(d.batch)).catch(() => {})
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => stopRef.current?.abort(), [])   // closing the drawer stops a wegter-pc run
 
-  // Poll a batch while it runs.
+  const checkPc = useCallback(async () => {
+    setPc(null)
+    try { setPc(await localAi.health()) } catch (e) { setPc({ error: e.message }) }
+  }, [localAi])
+  useEffect(() => { if (mode === 'wegter' && !pc) checkPc() }, [mode, pc, checkPc])
+
+  // Poll a batch while Gmail is being updated.
   useEffect(() => {
     clearTimeout(timer.current)
     if (!batch || !ACTIVE.has(batch.status)) return
     timer.current = setTimeout(async () => {
-      try {
-        setBatch((await api.batch(batch.id)).batch)
-      } catch (e) {
-        setError(e.message)
-      }
+      try { setBatch((await api.batch(batch.id)).batch) } catch (e) { setError(e.message) }
     }, 1500)
     return () => clearTimeout(timer.current)
   }, [batch, api])
@@ -165,19 +199,9 @@ export default function SortDrawer({ api, summary, gmail, labels, onClose, onCha
     settled.current = key ?? ''
   }, [batch?.id, batch?.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const start = async () => {
-    setError(null); setBusy(true)
-    try {
-      const d = await api.runTriage({ limit: size, review })
-      setBatch(d.batch)
-    } catch (e) {
-      setError(e.message)
-      if (e.body?.batch_id) api.batch(e.body.batch_id).then((d) => setBatch(d.batch)).catch(() => {})
-    } finally { setBusy(false) }
-  }
-  const copyForChatGPT = async () => {
+  const copyForClaude = async () => {
     setError(null); setBusy(true); setCopied(null)
-    const exported = api.exportForChatGPT(size)
+    const exported = api.exportEmails(size)
     const ok = await copyLater(exported.then((d) => d.text))
     try {
       const d = await exported
@@ -189,10 +213,61 @@ export default function SortDrawer({ api, summary, gmail, labels, onClose, onCha
   const applyPasted = async () => {
     setError(null); setBusy(true)
     try {
-      const d = await api.applyPasted(pasted)
+      const d = await api.applySorted({ json: pasted, source: 'claude', review: reviewPaste })
       setBatch(d.batch); setPasted(''); setCopied(null)
     } catch (e) { setError(e.message) } finally { setBusy(false) }
   }
+
+  const sortOnPc = async () => {
+    setError(null)
+    const ctl = new AbortController()
+    stopRef.current = ctl
+    const stopped = () => ctl.signal.aborted
+    try {
+      setRun({ phase: 'export', done: 0, total: 0 })
+      const exp = await api.exportEmails(size)
+      if (stopped()) throw new DOMException('stopped', 'AbortError')
+      if (!exp.count) { setRun(null); setError('Gmail has nothing new to sort.'); return }
+      const ids = exp.items.map((i) => i.id)
+      const actions = []
+      for (let i = 0; i < ids.length; i += CHUNK) {
+        setRun({ phase: 'sort', done: i, total: ids.length })
+        const part = { prompt: exp.prompt, emails: exp.blocks.slice(i, i + CHUNK).join('\n'), ids: ids.slice(i, i + CHUNK) }
+        for (let attempt = 0; ; attempt++) {
+          if (stopped()) throw new DOMException('stopped', 'AbortError')
+          try {
+            const res = await localAi.sort(part, ctl.signal)
+            actions.push(...res.actions)
+            break
+          } catch (e) {
+            if (e.name === 'AbortError') throw e
+            if (e.status === 409 && attempt < BUSY_RETRIES) {
+              setRun({ phase: 'sort', done: i, total: ids.length, note: 'wegter-pc is finishing something else. Waiting…' })
+              await sleep(3000)
+              continue
+            }
+            if (e.body?.code === 'timeout' && attempt === 0) continue   // one more try for a slow answer
+            throw e
+          }
+        }
+      }
+      setRun({ phase: 'summary', done: ids.length, total: ids.length })
+      const byId = Object.fromEntries(exp.items.map((it) => [it.id, it]))
+      const lines = actions.map((a) => `${(byId[a.id]?.from || '').replace(/<.*>/, '').trim()}: ${byId[a.id]?.subject || ''} (${a.importance}). ${a.summary}`)
+      let note = ''
+      try { note = (await localAi.summarize(lines)).summary } catch { /* the note is a nicety */ }
+      setRun({ phase: 'apply', done: ids.length, total: ids.length })
+      const d = await api.applySorted({ actions, summary: note, source: 'wegter-pc', review: reviewPc })
+      setRun(null)
+      setBatch(d.batch)
+    } catch (e) {
+      setRun(null)
+      setError(e.name === 'AbortError' ? 'Stopped. Nothing changed in Gmail.' : e.message)
+    } finally {
+      stopRef.current = null
+    }
+  }
+
   const applyReviewed = async (body) => {
     setError(null); setBusy(true)
     try { setBatch((await api.applyReviewed(batch.id, body)).batch) } catch (e) { setError(e.message) } finally { setBusy(false) }
@@ -202,10 +277,12 @@ export default function SortDrawer({ api, summary, gmail, labels, onClose, onCha
     try { await api.discard(batch.id); setBatch(null); onChanged(); loadHistory() } catch (e) { setError(e.message) } finally { setBusy(false) }
   }
 
-  const running = batch && ACTIVE.has(batch.status)
+  const applying = batch && ACTIVE.has(batch.status)
   const reviewing = batch?.status === 'review'
   const finished = batch && (batch.status === 'done' || batch.status === 'failed')
   const notConnected = summary && !summary.configured?.script
+  const idle = !applying && !reviewing && !finished && !run
+  const pcReady = pc?.ok && pc?.model_ready
 
   return (
     <Drawer title="Sort new mail" onClose={onClose} wide={reviewing}>
@@ -217,7 +294,11 @@ export default function SortDrawer({ api, summary, gmail, labels, onClose, onCha
         </div>
       )}
 
-      {running && <Steps batch={batch} />}
+      {run && <PcProgress run={run} review={reviewPc} onStop={() => stopRef.current?.abort()} />}
+
+      {applying && (
+        <p className="ibx-applying" aria-live="polite"><span className="ibx-spinner" /> {batch.step && batch.step !== 'Applying' ? batch.step : 'Applying labels, read and archive in Gmail'}</p>
+      )}
 
       {reviewing && <Review batch={batch} labels={labels} onApply={applyReviewed} onDiscard={discard} busy={busy} />}
 
@@ -234,11 +315,11 @@ export default function SortDrawer({ api, summary, gmail, labels, onClose, onCha
         </div>
       )}
 
-      {!running && !reviewing && !finished && (
+      {idle && (
         <>
           <div className="ibx-tabs" role="tablist" aria-label="How to sort">
-            <button type="button" role="tab" aria-selected={mode === 'ai'} className={mode === 'ai' ? 'is-current' : ''} onClick={() => setMode('ai')}>Sort with AI</button>
-            <button type="button" role="tab" aria-selected={mode === 'chatgpt'} className={mode === 'chatgpt' ? 'is-current' : ''} onClick={() => setMode('chatgpt')}>Use ChatGPT</button>
+            <button type="button" role="tab" aria-selected={mode === 'claude'} className={mode === 'claude' ? 'is-current' : ''} onClick={() => setMode('claude')}>Copy for Claude</button>
+            <button type="button" role="tab" aria-selected={mode === 'wegter'} className={mode === 'wegter' ? 'is-current' : ''} onClick={() => setMode('wegter')}>Sort on wegter-pc</button>
           </div>
 
           <label className="ibx-field ibx-field--inline">
@@ -248,28 +329,20 @@ export default function SortDrawer({ api, summary, gmail, labels, onClose, onCha
             </select>
           </label>
 
-          {mode === 'ai' ? (
-            <div className="ibx-mode" role="tabpanel">
-              <p>The server’s AI ({summary?.configured?.ai || 'not set'}) reads the next {size} unread emails with your prompt and people list, then labels, marks read and archives them in Gmail.</p>
-              <label className="ibx-check">
-                <input type="checkbox" checked={review} onChange={(e) => setReview(e.target.checked)} />
-                <span>Let me review before anything changes in Gmail</span>
-              </label>
-              <button type="button" className="ibx-btn ibx-btn--primary ibx-btn--big" onClick={start} disabled={busy || notConnected}>
-                {busy ? <span className="ibx-spinner" /> : <Icon name="sort" />} Sort {size} emails
-              </button>
-            </div>
-          ) : (
+          {mode === 'claude' ? (
             <div className="ibx-mode" role="tabpanel">
               <ol className="ibx-numbered">
                 <li>
-                  <p>Copy the next {size} emails with your prompt, then paste them into ChatGPT.</p>
-                  <button type="button" className="ibx-btn ibx-btn--primary" onClick={copyForChatGPT} disabled={busy || notConnected}>
-                    {busy && !pasted ? <span className="ibx-spinner" /> : <Icon name="copy" />} Copy {size} emails for ChatGPT
-                  </button>
+                  <p>Copy the next {size} unread emails with your triage prompt.</p>
+                  <div className="ibx-btn-row ibx-btn-row--start">
+                    <button type="button" className="ibx-btn ibx-btn--primary" onClick={copyForClaude} disabled={busy || notConnected}>
+                      {busy && !pasted ? <span className="ibx-spinner" /> : <Icon name="copy" />} Copy {size} emails for Claude
+                    </button>
+                    <a className="ibx-btn" href="https://claude.ai/new" target="_blank" rel="noopener noreferrer"><Icon name="external" /> Open Claude</a>
+                  </div>
                   {copied && (
                     copied.count === 0 ? <p className="ibx-muted">Nothing is waiting in Gmail.</p>
-                      : copied.ok ? <p className="ibx-ok">Copied {plural(copied.count, 'email')} and the prompt.</p>
+                      : copied.ok ? <p className="ibx-ok">Copied {plural(copied.count, 'email')} and the prompt. Paste them into Claude.</p>
                         : (
                           <details className="ibx-copybox" open>
                             <summary>Your browser blocked copying. Select all of this and copy it.</summary>
@@ -279,12 +352,30 @@ export default function SortDrawer({ api, summary, gmail, labels, onClose, onCha
                   )}
                 </li>
                 <li>
-                  <p>Paste ChatGPT’s reply here.</p>
-                  <textarea className="ibx-textarea ibx-textarea--mono" rows={7} value={pasted} onChange={(e) => setPasted(e.target.value)}
+                  <p>Paste Claude’s reply here.</p>
+                  <textarea className="ibx-textarea ibx-textarea--mono" rows={7} value={pasted} onChange={(e) => setPasted(e.target.value)} aria-label="Claude's reply"
                     placeholder={'{"actions":[{"id":"…","labels":["A. Read"],"importance":"low","archive_ok":true}],"summary":"…"}'} />
-                  <button type="button" className="ibx-btn ibx-btn--primary" onClick={applyPasted} disabled={busy || !pasted.trim()}>Apply to Gmail</button>
+                  <label className="ibx-check">
+                    <input type="checkbox" checked={reviewPaste} onChange={(e) => setReviewPaste(e.target.checked)} />
+                    <span>Let me review before anything changes in Gmail</span>
+                  </label>
+                  <button type="button" className="ibx-btn ibx-btn--primary" onClick={applyPasted} disabled={busy || !pasted.trim()}>
+                    {reviewPaste ? 'Review' : 'Apply to Gmail'}
+                  </button>
                 </li>
               </ol>
+            </div>
+          ) : (
+            <div className="ibx-mode" role="tabpanel">
+              <PcStatus pc={pc} onCheck={checkPc} />
+              <p>Your browser takes the next {size} unread emails to Gemma in LM Studio on wegter-pc, {CHUNK} at a time, with your prompt and people list. No outside AI service sees them, and nothing changes in Gmail until the end.</p>
+              <label className="ibx-check">
+                <input type="checkbox" checked={reviewPc} onChange={(e) => setReviewPc(e.target.checked)} />
+                <span>Let me review before anything changes in Gmail</span>
+              </label>
+              <button type="button" className="ibx-btn ibx-btn--primary ibx-btn--big" onClick={sortOnPc} disabled={!pcReady || notConnected}>
+                <Icon name="sort" /> Sort {size} emails on wegter-pc
+              </button>
             </div>
           )}
         </>

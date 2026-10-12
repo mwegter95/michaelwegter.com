@@ -9,7 +9,7 @@ function renderInbox(api = createMockApi({ delay: 0 })) {
   render(
     <SiteAuthProvider>
       <MemoryRouter initialEntries={['/apps/inbox']}>
-        <Inbox api={api} demo={false} />
+        <Inbox api={api} localAi={api.localAi} demo={false} />
       </MemoryRouter>
     </SiteAuthProvider>,
   )
@@ -65,19 +65,55 @@ describe('Inbox dashboard', () => {
     expect(before.pinned).toBe(false)
   })
 
-  it('sorts with AI, shows the review, applies it and refreshes', async () => {
+  it('copies for Claude, takes the pasted reply and applies it', async () => {
     renderInbox(createMockApi({ delay: 0 }))
     await screen.findByText('Thanksgiving plans')
     fireEvent.click(screen.getByRole('button', { name: /Sort 23 new/ }))
-    fireEvent.click(await screen.findByRole('button', { name: 'Sort 50 emails' }))
+    expect(screen.getByRole('tab', { name: 'Copy for Claude' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('link', { name: /Open Claude/ })).toHaveAttribute('href', 'https://claude.ai/new')
+    fireEvent.click(screen.getByRole('button', { name: 'Copy 50 emails for Claude' }))
+    // jsdom has no clipboard, so the text is offered to copy by hand
+    const box = await screen.findByText(/Your browser blocked copying/)
+    const exported = box.closest('details').querySelector('textarea').value
+    const ids = [...exported.matchAll(/^ID: (.+)$/gm)].map((m) => m[1])
+    expect(ids).toHaveLength(23)
+    const reply = { actions: ids.map((id) => ({ id, labels: ['A. Read'], importance: 'low', personal: false, archive_ok: true, summary: 'x' })), summary: 'All routine.' }
+    fireEvent.change(screen.getByRole('textbox', { name: "Claude's reply" }), { target: { value: '```json\n' + JSON.stringify(reply) + '\n```' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Apply to Gmail' }))
+    expect(await screen.findByText('Done.', {}, { timeout: 4000 })).toBeInTheDocument()
+    expect(screen.getByText('Done.').closest('.ibx-result')).toHaveTextContent('Sorted 23 emails, archived 23')
+    await waitFor(() => expect(screen.getByText(/Triage sorted 49 emails today/)).toBeInTheDocument())
+  })
+
+  it('sorts on wegter-pc a few at a time, shows the review, applies it and refreshes', async () => {
+    const api = createMockApi({ delay: 0 })
+    const sort = vi.spyOn(api.localAi, 'sort')
+    renderInbox(api)
+    await screen.findByText('Thanksgiving plans')
+    fireEvent.click(screen.getByRole('button', { name: /Sort 23 new/ }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Sort on wegter-pc' }))
+    expect(await screen.findByText(/wegter-pc is ready/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Sort 50 emails on wegter-pc' }))
     expect(await screen.findByText('Nothing has changed in Gmail yet. Adjust anything that looks off, then apply.', {}, { timeout: 4000 })).toBeInTheDocument()
-    // skip the first email
-    const first = screen.getAllByRole('checkbox', { name: 'Include this email' })[0]
-    fireEvent.click(first)
+    expect(sort).toHaveBeenCalledTimes(3) // 23 emails, 8 per call
+    expect(sort.mock.calls.every(([part]) => part.ids.length <= 8)).toBe(true)
+    expect(screen.getByText(/Batch summary from wegter-pc/)).toBeInTheDocument()
+    fireEvent.click(screen.getAllByRole('checkbox', { name: 'Include this email' })[0])
     fireEvent.click(screen.getByRole('button', { name: /Apply to 22 emails/ }))
     expect(await screen.findByText('Done.', {}, { timeout: 4000 })).toBeInTheDocument()
     expect(screen.getByText('Done.').closest('.ibx-result')).toHaveTextContent('Sorted 22 emails')
     await waitFor(() => expect(screen.getByText(/Triage sorted 48 emails today/)).toBeInTheDocument())
+  })
+
+  it('says when wegter-pc is unreachable and keeps its button off', async () => {
+    const api = createMockApi({ delay: 0 })
+    api.localAi.health = async () => { throw new Error('wegter-pc isn’t reachable. It may be asleep or off, or its server isn’t running.') }
+    renderInbox(api)
+    await screen.findByText('Thanksgiving plans')
+    fireEvent.click(screen.getByRole('button', { name: /Sort 23 new/ }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Sort on wegter-pc' }))
+    expect(await screen.findByText(/may be asleep or off/)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Sort 50 emails on wegter-pc' })).toBeDisabled()
   })
 
   it('keyboard: j opens the next email, e archives, ? shows shortcuts', async () => {

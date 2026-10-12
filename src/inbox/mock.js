@@ -88,9 +88,10 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
   const bodies = new Map()
   const events = []          // {day, kind, id}
   const batches = []
+  let lastExport = {}         // id → the sample email behind each exported block
   let settings = {
     prompt: '', people: PEOPLE, labels: [], batch_size: 50, query: '', review_first: true,
-    keep_people_in_inbox: true, keep_important_unread: false, block_images: false, auto_sort_hours: 0,
+    keep_people_in_inbox: true, keep_important_unread: false, block_images: false,
     rollup_imported: 0,
   }
   let waiting = 23
@@ -106,7 +107,7 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
       snippet: (typeof body === 'string' && body !== 'newsletter' ? body : summary).slice(0, 200),
       labels, importance, personal, in_inbox: inInbox, gmail_unread: false, starred: i === 1,
       message_count: i === 12 ? 3 : 1, date: at.toISOString(), sorted_at: sortedAt.toISOString(),
-      source: i % 4 === 0 ? 'chatgpt' : 'ai', batch_id: 1, read, read_at: read ? sortedAt.toISOString() : null,
+      source: i % 4 === 0 ? 'wegter-pc' : 'claude', batch_id: 1, read, read_at: read ? sortedAt.toISOString() : null,
       pinned: i === 1 || i === 15, pinned_at: i === 1 || i === 15 ? new Date(t0 - i * H).toISOString() : null,
       trashed: false,
     })
@@ -125,7 +126,7 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
 
   batches.push({
     id: 1, created_at: new Date(t0 - 0.8 * H).toISOString(), finished_at: new Date(t0 - 0.78 * H).toISOString(),
-    day: dayOf(t0), source: 'ai', status: 'done', step: '', total: 26, applied: 26, archived: 19, important: 6,
+    day: dayOf(t0), source: 'claude', status: 'done', step: '', total: 26, applied: 26, archived: 19, important: 6,
     personal: 3, missing: 0, errored: 0, message: 'Applied 26 of 26 threads.',
     summary: 'Mom asked about hosting Thanksgiving and a couple wrote about a June 2027 wedding; both need a reply. Your timesheet is due at 5 and Friday\'s flight is open for check-in. The rest was receipts, statements and newsletters, now archived.',
     error: '', proposal: null,
@@ -164,7 +165,7 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
       latest_batch: [...batches].reverse().find((b) => b.status === 'done' || b.status === 'review') || null,
       running_batch: running || null,
       gmail: { inbox_unread: 4, waiting, waiting_capped: false },
-      configured: { script: true, ai: 'copilot' },
+      configured: { script: true },
       settings: { block_images: settings.block_images, review_first: settings.review_first, batch_size: settings.batch_size },
       now: new Date(now()).toISOString(),
       local_day: today,
@@ -275,31 +276,31 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
     settings: () => reply({ ...settings, default_prompt: 'You sort Michael\'s Gmail. (The real default prompt comes from the server.)', prompt_is_default: !settings.prompt, detected_labels: [...new Set(list().flatMap((m) => m.labels))].sort() }),
     async saveSettings(changes) { settings = { ...settings, ...changes }; return this.settings() },
     labels: () => reply({ labels: [...new Set(list().flatMap((m) => m.labels))].sort(), gmail: [], used: [], error: null }),
-    async runTriage({ review = true, limit = 50 } = {}) {
-      await wait(delay)
-      const n = Math.min(limit, waiting || 5)
-      const b = newBatch('ai', { total: n })
-      runBatch(b, ['Reading unread email from Gmail', `Sorting ${n} emails with AI`], () => {
-        const actions = proposalFor(n)
-        const summary = 'A bank alert about a $612 purchase and a rehearsal-dinner inquiry need you. Marcus says the bowling shirts are in. The rest is newsletters and delivery notices.'
-        if (review) Object.assign(b, { status: 'review', step: '', summary, proposal: { actions, summary } })
-        else runBatch(b, [`Applying labels to ${n} emails in Gmail`], () => { b.summary = summary; applyActions(b, actions, 'ai') })
-      })
-      return clone({ batch: b })
-    },
-    async exportForChatGPT(limit = 50) {
-      await wait(delay + 400)
+    async exportEmails(limit = 50) {
+      await wait(delay + 300)
       const items = proposalFor(Math.min(limit, waiting || 5))
-      const text = 'You sort Michael\'s Gmail. (sample prompt)\n\n' + items.map((it, i) => `---EMAIL-${i + 1}---\nID: ${it.id}\nFrom: ${it.from}\nSubject: ${it.subject}\nDate: ${it.date}\nBody: ${it.snippet}\n`).join('\n')
-      return { count: items.length, text, items }
+      lastExport = Object.fromEntries(items.map((it) => [it.id, it]))
+      const prompt = 'You sort Michael\'s Gmail. (Sample prompt: the real one comes from your settings.)'
+      const blocks = items.map((it, i) => `---EMAIL-${i + 1}---\nID: ${it.id}\nFrom: ${it.from}\nSubject: ${it.subject}\nDate: ${it.date}\nBody: ${it.snippet}\n`)
+      return { count: items.length, text: `${prompt}\n\nEMAILS (${items.length})\n\n${blocks.join('\n')}`, prompt, blocks, items: items.map(({ id, from, subject, date }) => ({ id, from, subject, date })) }
     },
-    async applyPasted(json) {
+    async applySorted({ json, actions, summary = '', source = 'claude', review = false } = {}) {
       await wait(delay)
-      let parsed
-      try { parsed = JSON.parse(String(json).replace(/^```[a-z]*\s*|\s*```$/g, '')) } catch { throw Object.assign(new Error("That isn't valid JSON. Copy ChatGPT's whole reply, from the first [ or { to the last ] or }."), { status: 400 }) }
-      const actions = (Array.isArray(parsed) ? parsed : parsed.actions || []).filter((a) => a.id)
-      const b = newBatch('chatgpt', { total: actions.length })
-      runBatch(b, [`Applying labels to ${actions.length} emails in Gmail`], () => applyActions(b, actions.map((a) => ({ ...a, from: 'Sender <sender@example.com>', subject: a.summary || a.id })), 'chatgpt'))
+      if (!actions) {
+        let parsed
+        try { parsed = JSON.parse(String(json).trim().replace(/^```[a-z]*\s*|\s*```$/g, '')) } catch { throw Object.assign(new Error("That isn't valid JSON. Copy Claude's whole reply, from the first [ or { to the last ] or }."), { status: 400 }) }
+        actions = (Array.isArray(parsed) ? parsed : parsed.actions || []).filter((a) => a.id)
+        summary = (!Array.isArray(parsed) && parsed.summary) || summary
+      }
+      if (!actions.length) throw Object.assign(new Error('No sorted emails came back.'), { status: 400 })
+      const known = (a) => lastExport[a.id] || { from: 'Sender <sender@example.com>', subject: a.summary || a.id, date: new Date(now()).toISOString(), snippet: '' }
+      const full = actions.map((a) => ({ ...a, from: known(a).from, subject: known(a).subject, date: known(a).date, snippet: known(a).snippet }))
+      if (review) {
+        batches.filter((x) => x.status === 'review').forEach((x) => { x.status = 'discarded' })
+        return clone({ batch: newBatch(source, { status: 'review', step: '', total: full.length, summary, proposal: { actions: full, summary } }) })
+      }
+      const b = newBatch(source, { total: full.length, summary })
+      runBatch(b, [`Applying labels to ${full.length} emails in Gmail`], () => applyActions(b, full, source))
       return clone({ batch: b })
     },
     batches: () => reply({ batches: [...batches].reverse() }),
@@ -309,7 +310,7 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
       const b = batches.find((x) => x.id === id)
       const chosen = (actions || b.proposal.actions).filter((a) => !skip.includes(a.id))
       Object.assign(b, { status: 'applying', step: `Applying labels to ${chosen.length} emails in Gmail`, total: chosen.length })
-      runBatch(b, [], () => applyActions(b, chosen, 'ai'))
+      runBatch(b, [], () => applyActions(b, chosen, b.source))
       return clone({ batch: b })
     },
     async discard(id) { const b = batches.find((x) => x.id === id); b.status = 'discarded'; return reply({ batch: b }) },
@@ -318,6 +319,19 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
       runBatch(b, ['Reading Rollup rows from 1'], () => Object.assign(b, { status: 'done', step: '', applied: 0, message: 'Imported 0 emails from the Rollup sheet. (Demo)' }))
       return reply({ batch: b })
     },
-    connection: (ai) => reply({ script: { configured: true, ok: true, version: 1, query: 'label:inbox is:unread newer_than:150d', inbox_unread: 4, reports_to: 'https://api.michaelwegter.com/inbox/ingest' }, ai: ai ? { provider: 'copilot', model: 'auto', available: true } : { provider: 'copilot' } }),
+    connection: () => reply({ script: { configured: true, ok: true, version: 1, query: 'label:inbox is:unread newer_than:150d', inbox_unread: 4, reports_to: 'https://api.michaelwegter.com/inbox/ingest' } }),
+    // A pretend wegter-pc: answers from what the export "really" contains, a few seconds per call.
+    localAi: {
+      health: () => reply({ ok: true, model: 'google/gemma-4-12b-qat', model_ready: true, models: ['google/gemma-4-12b-qat'], busy: false }),
+      async sort({ ids }) {
+        await wait(delay * 3)
+        const actions = ids.filter((id) => lastExport[id]).map((id) => {
+          const { summary, labels, importance, personal, archive_ok } = lastExport[id]
+          return { id, summary, labels, importance, personal, archive_ok }
+        })
+        return { actions, summary: '', model: 'google/gemma-4-12b-qat', seconds: 4.2, missing: [] }
+      },
+      summarize: () => reply({ summary: 'A bank alert about a $612 purchase and a rehearsal-dinner inquiry need you. Marcus says the bowling shirts are in. The rest is newsletters and delivery notices.' }),
+    },
   }
 }

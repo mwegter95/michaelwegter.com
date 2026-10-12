@@ -439,6 +439,14 @@
 .ibx-steps li.is-now { color: var(--ink); font-weight: 500; }
 .ibx-step-mark { width: 18px; height: 18px; display: grid; place-items: center; color: var(--ok); flex: none; }
 .ibx-steps .ibx-spinner { color: var(--mark); border-color: rgba(232,184,32,.2); border-top-color: var(--mark); }
+.ibx-pc-run { display: grid; gap: 12px; justify-items: start; }
+.ibx-pc-run .ibx-steps { width: 100%; }
+.ibx-bar-track { width: 100%; height: 6px; border-radius: 99px; background: var(--desk-3); overflow: hidden; }
+.ibx-bar-fill { height: 100%; border-radius: 99px; background: var(--mark); transition: width .4s ease; }
+.ibx-pc-status { font-size: 13.5px; color: var(--ink); line-height: 1.5; }
+.ibx-pc-status .ibx-link-btn { margin-left: 4px; }
+.ibx-applying { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink); }
+.ibx-applying .ibx-spinner { color: var(--mark); border-color: rgba(232,184,32,.2); border-top-color: var(--mark); }
 .ibx-result { display: grid; gap: 10px; padding: 16px; border-radius: var(--radius); border: 1px solid rgba(110,212,106,.3); background: rgba(110,212,106,.06); }
 .ibx-result.is-failed { border-color: rgba(255,107,92,.35); background: rgba(255,107,92,.06); }
 .ibx-result-head { font-family: var(--display); font-size: 18px; font-weight: 600; }

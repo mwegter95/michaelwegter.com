@@ -134,6 +134,8 @@ export function batchSentence(batch) {
 }
 
 export const SOURCE_NAMES = {
+  claude: 'Claude',
+  'wegter-pc': 'wegter-pc',
   ai: 'AI',
   chatgpt: 'ChatGPT',
   sheet: 'the Sheet',

@@ -4,7 +4,6 @@ import Icon from './Icons'
 import { batchSentence } from '../format'
 
 const KINDS = [['family', 'Family'], ['friend', 'Friend'], ['vip', 'Close contact'], ['work', 'Work']]
-const AUTO = [[0, 'Off'], [2, 'Every 2 hours'], [4, 'Every 4 hours'], [6, 'Every 6 hours'], [12, 'Twice a day'], [24, 'Once a day']]
 
 function Toggle({ checked, onChange, children, hint }) {
   return (
@@ -15,15 +14,11 @@ function Toggle({ checked, onChange, children, hint }) {
   )
 }
 
-function Connection({ api }) {
+function Connection({ api, localAi }) {
   const [state, setState] = useState(null)
-  const [ai, setAi] = useState(null)
-  const [busy, setBusy] = useState(false)
-  useEffect(() => { api.connection(false).then(setState).catch((e) => setState({ error: e.message })) }, [api])
-  const checkAi = async () => {
-    setBusy(true)
-    try { setAi((await api.connection(true)).ai) } catch (e) { setAi({ available: false, error: e.message }) } finally { setBusy(false) }
-  }
+  const [pc, setPc] = useState(null)
+  useEffect(() => { api.connection().then(setState).catch((e) => setState({ error: e.message })) }, [api])
+  useEffect(() => { localAi.health().then(setPc).catch((e) => setPc({ error: e.message })) }, [localAi])
   const s = state?.script
   return (
     <dl className="ibx-conn">
@@ -33,18 +28,18 @@ function Connection({ api }) {
           : s.ok ? <><span className="ibx-ok-dot" /> Connected. {s.inbox_unread} unread in the inbox.</> : <><span className="ibx-bad-dot" /> {s.error}</>}</dd>
       </div>
       <div>
-        <dt>AI for sorting</dt>
-        <dd>
-          {ai ? (ai.available ? <><span className="ibx-ok-dot" /> {ai.provider} ({ai.model}) is answering.</> : <><span className="ibx-bad-dot" /> {ai.error}</>)
-            : <>{state?.ai?.provider || '…'} <button type="button" className="ibx-link-btn" onClick={checkAi} disabled={busy}>{busy ? 'Checking…' : 'Check it'}</button></>}
-        </dd>
+        <dt>wegter-pc (LM Studio), optional</dt>
+        <dd>{!pc ? 'Checking…' : pc.error ? <><span className="ibx-bad-dot" /> {pc.error}</>
+          : !pc.ok ? <><span className="ibx-bad-dot" /> LM Studio isn’t running on wegter-pc.</>
+            : !pc.model_ready ? <><span className="ibx-bad-dot" /> LM Studio is running, but {pc.model} isn’t loaded.</>
+              : <><span className="ibx-ok-dot" /> Ready: {pc.model}.</>}</dd>
       </div>
       {s?.reports_to && <div><dt>Sheet batches report to</dt><dd className="ibx-mono">{s.reports_to}</dd></div>}
     </dl>
   )
 }
 
-export default function SettingsDrawer({ api, onClose, onSaved }) {
+export default function SettingsDrawer({ api, localAi, onClose, onSaved }) {
   const [s, setS] = useState(null)
   const [draft, setDraft] = useState(null)
   const [error, setError] = useState(null)
@@ -60,8 +55,8 @@ export default function SettingsDrawer({ api, onClose, onSaved }) {
   const save = async () => {
     setSaving(true); setError(null)
     try {
-      const { prompt, people, batch_size, query, review_first, keep_people_in_inbox, keep_important_unread, block_images, auto_sort_hours } = draft
-      const d = await api.saveSettings({ prompt, people, batch_size, query, review_first, keep_people_in_inbox, keep_important_unread, block_images, auto_sort_hours })
+      const { prompt, people, batch_size, query, review_first, keep_people_in_inbox, keep_important_unread, block_images } = draft
+      const d = await api.saveSettings({ prompt, people, batch_size, query, review_first, keep_people_in_inbox, keep_important_unread, block_images })
       setS(d); setDraft({ ...d, prompt: d.prompt || d.default_prompt })
       onSaved?.(d)
       onClose()
@@ -136,21 +131,14 @@ export default function SettingsDrawer({ api, onClose, onSaved }) {
               <span>Gmail search for mail to sort</span>
               <input className="ibx-input ibx-mono" placeholder="label:inbox is:unread newer_than:150d (the script’s default)" value={draft.query} onChange={(e) => set('query', e.target.value)} />
             </label>
-            <Toggle checked={draft.review_first} onChange={(v) => set('review_first', v)}>Review AI sorts before applying</Toggle>
+            <Toggle checked={draft.review_first} onChange={(v) => set('review_first', v)}>Review wegter-pc sorts before applying</Toggle>
             <Toggle checked={draft.keep_important_unread} onChange={(v) => set('keep_important_unread', v)}
               hint="Important and personal mail stays bold in Gmail on your phone.">Leave important mail unread in Gmail</Toggle>
-            <label className="ibx-field">
-              <span>Sort automatically with AI</span>
-              <select className="ibx-select" value={draft.auto_sort_hours} onChange={(e) => set('auto_sort_hours', Number(e.target.value))}>
-                {AUTO.map(([h, label]) => <option key={h} value={h}>{label}</option>)}
-              </select>
-              <small>Automatic sorts apply right away, without a review.</small>
-            </label>
           </section>
 
           <section className="ibx-set">
             <h3>Triage prompt</h3>
-            <p className="ibx-muted">Used for AI sorts and copied with every ChatGPT export. <code>{'{{labels}}'}</code> becomes your label list and <code>{'{{people}}'}</code> your contacts. If you have a prompt you already use in ChatGPT, paste it here.</p>
+            <p className="ibx-muted">Copied with every export for Claude, and sent to wegter-pc. <code>{'{{labels}}'}</code> becomes your label list and <code>{'{{people}}'}</code> your contacts. If you have a prompt you already use with Claude, paste it here.</p>
             <textarea className="ibx-textarea ibx-textarea--mono" rows={14} value={draft.prompt} onChange={(e) => set('prompt', e.target.value)} aria-label="Triage prompt" />
             <div className="ibx-btn-row ibx-btn-row--start">
               <button type="button" className="ibx-btn" onClick={() => set('prompt', s.default_prompt)} disabled={draft.prompt === s.default_prompt}>Reset to default</button>
@@ -171,7 +159,7 @@ export default function SettingsDrawer({ api, onClose, onSaved }) {
 
           <section className="ibx-set">
             <h3>Connection</h3>
-            <Connection api={api} />
+            <Connection api={api} localAi={localAi} />
           </section>
 
           <section className="ibx-set">

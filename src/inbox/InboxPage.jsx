@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useSiteAuth } from '../auth/SiteAuth'
 import SignInModal from '../components/SignInModal'
-import { createApi } from './api'
+import { createApi, createLocalAi } from './api'
 import { createMockApi } from './mock'
 import { useInbox } from './useInbox'
 import Icon from './components/Icons'
@@ -77,7 +77,7 @@ function Toasts({ toasts, onDismiss }) {
   )
 }
 
-export function Inbox({ api, demo }) {
+export function Inbox({ api, localAi, demo }) {
   const inbox = useInbox(api)
   const [signIn, setSignIn] = useState(false)
   const { summary, gmail, view, label, query, list, selected, selectedId, threads, open, act, close } = inbox
@@ -235,11 +235,11 @@ export function Inbox({ api, demo }) {
       )}
 
       {drawer === 'sort' && (
-        <SortDrawer api={api} summary={summary} gmail={gmail} labels={labels} onClose={() => setDrawer(null)} onChanged={onChanged}
+        <SortDrawer api={api} localAi={localAi} summary={summary} gmail={gmail} labels={labels} onClose={() => setDrawer(null)} onChanged={onChanged}
           onShowHighlights={() => { setDrawer(null); inbox.chooseView('highlights') }} />
       )}
       {drawer === 'settings' && (
-        <SettingsDrawer api={api} onClose={() => setDrawer(null)} onSaved={(d) => { if (d) setSettings(d); onChanged() }} />
+        <SettingsDrawer api={api} localAi={localAi} onClose={() => setDrawer(null)} onSaved={(d) => { if (d) setSettings(d); onChanged() }} />
       )}
       <Toasts toasts={inbox.toasts} onDismiss={inbox.dismissToast} />
     </div>
@@ -252,6 +252,7 @@ export default function InboxPage() {
   const demo = new URLSearchParams(location.search).get('demo') === '1'
   const [signIn, setSignIn] = useState(false)
   const api = useMemo(() => (demo ? createMockApi() : token ? createApi(token) : null), [demo, token])
+  const localAi = useMemo(() => (demo ? api?.localAi : token ? createLocalAi(token) : null), [demo, token, api])
 
   useEffect(() => {
     document.title = 'Inbox — Michael Wegter'
@@ -267,5 +268,5 @@ export default function InboxPage() {
       </>
     )
   }
-  return <Inbox key={demo ? 'demo' : 'live'} api={api} demo={demo} />
+  return <Inbox key={demo ? 'demo' : 'live'} api={api} localAi={localAi} demo={demo} />
 }
