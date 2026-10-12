@@ -92,4 +92,14 @@ describe('Inbox dashboard', () => {
     act(() => { fireEvent.keyDown(window, { key: 'e' }) })
     await waitFor(() => expect(spy).toHaveBeenCalledWith([expect.any(String)], 'archive', undefined))
   })
+
+  it('shows why Gmail failed instead of a vague line', async () => {
+    const api = createMockApi({ delay: 0 })
+    api.status = async () => { throw Object.assign(new Error("Apps Script refused the request: Bad signature. GMAIL_SCRIPT_SECRET on the server doesn't match."), { status: 424, body: { code: 'auth' } }) }
+    renderInbox(api)
+    const alert = await screen.findByRole('alert')
+    expect(alert).toHaveTextContent('Gmail didn’t answer.')
+    expect(alert).toHaveTextContent('GMAIL_SCRIPT_SECRET')
+    expect(within(alert).getByRole('button', { name: 'Try again' })).toBeInTheDocument()
+  })
 })

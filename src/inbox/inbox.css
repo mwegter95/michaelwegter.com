@@ -114,6 +114,14 @@
   background: rgba(18,180,200,.10); border-bottom: 1px solid rgba(18,180,200,.25);
 }
 .ibx-demo-bar a { color: var(--pin); text-decoration: underline; margin-left: 6px; }
+.ibx-problem {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin: 0 28px 14px; padding: 10px 10px 10px 14px; border-radius: var(--radius);
+  background: rgba(255,107,92,.08); border: 1px solid rgba(255,107,92,.35);
+}
+.ibx-problem p { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; overflow-wrap: anywhere; }
+.ibx-problem strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 899px) { .ibx-problem { margin: 0 16px 12px; flex-direction: column; align-items: flex-start; } }
 .ibx-top {
   display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
   padding: 22px 28px 16px;

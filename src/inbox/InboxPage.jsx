@@ -171,7 +171,7 @@ export function Inbox({ api, demo }) {
           <p>{summary ? <>{first} <span className={summary.highlights?.unread ? 'ibx-today-hot' : undefined}>{second}</span></> : inbox.summaryError ? inbox.summaryError.message : ' '}</p>
         </div>
         <div className="ibx-top-actions">
-          {(gmail?.waiting != null || gmail?.error) && <p className="ibx-waiting">{gmail?.error && gmail.code !== 'config' ? 'Gmail didn’t answer.' : waitingSentence(gmail)}</p>}
+          {gmail?.waiting != null && !gmail?.error && <p className="ibx-waiting">{waitingSentence(gmail)}</p>}
           <button type="button" className={`ibx-btn ibx-btn--primary${running ? ' is-busy' : ''}`} onClick={() => setDrawer('sort')}>
             {running ? <span className="ibx-spinner" /> : <Icon name="sort" />}
             {running ? 'Sorting…' : reviewWaiting ? 'Review the sort' : sortLabel}
@@ -180,6 +180,13 @@ export function Inbox({ api, demo }) {
           <button type="button" className="ibx-icon-btn ibx-icon-btn--framed" onClick={() => setDrawer('settings')} aria-label="Settings" title="Settings"><Icon name="settings" /></button>
         </div>
       </header>
+
+      {gmail?.error && (
+        <div className="ibx-problem" role="alert">
+          <p><strong>{gmail.code === 'config' ? 'Gmail isn’t connected yet.' : 'Gmail didn’t answer.'}</strong> {gmail.error}</p>
+          <button type="button" className="ibx-btn" onClick={() => inbox.loadGmail(true)}>Try again</button>
+        </div>
+      )}
 
       <PinRail pins={summary?.pins} selectedId={selectedId} onOpen={open} onUnpin={(id) => act([id], 'unpin')} />
 
