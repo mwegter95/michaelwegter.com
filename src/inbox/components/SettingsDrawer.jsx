@@ -56,8 +56,8 @@ export default function SettingsDrawer({ api, localAi, onClose, onSaved }) {
   const save = async () => {
     setSaving(true); setError(null)
     try {
-      const { prompt, people, batch_size, query, review_first, keep_people_in_inbox, keep_important_unread, block_images } = draft
-      const d = await api.saveSettings({ prompt, people, batch_size, query, review_first, keep_people_in_inbox, keep_important_unread, block_images })
+      const { prompt, people, batch_size, query, review_first, keep_people_in_inbox, keep_highlights_unread, block_images } = draft
+      const d = await api.saveSettings({ prompt, people, batch_size, query, review_first, keep_people_in_inbox, keep_highlights_unread, block_images })
       setS(d); setDraft({ ...d, prompt: d.prompt || d.default_prompt })
       onSaved?.(d)
       onClose()
@@ -133,8 +133,8 @@ export default function SettingsDrawer({ api, localAi, onClose, onSaved }) {
               <input className="ibx-input ibx-mono" placeholder="label:inbox is:unread newer_than:150d (the script’s default)" value={draft.query} onChange={(e) => set('query', e.target.value)} />
             </label>
             <Toggle checked={draft.review_first} onChange={(v) => set('review_first', v)}>Review wegter-pc sorts before applying</Toggle>
-            <Toggle checked={draft.keep_important_unread} onChange={(v) => set('keep_important_unread', v)}
-              hint="Important and personal mail stays bold in Gmail on your phone.">Leave important mail unread in Gmail</Toggle>
+            <Toggle checked={draft.keep_highlights_unread} onChange={(v) => set('keep_highlights_unread', v)}
+              hint="Important and personal mail that stays in your inbox stays unread in Gmail until you open it here or mark it read.">Keep highlights unread until you open them</Toggle>
           </section>
 
           <section className="ibx-set">

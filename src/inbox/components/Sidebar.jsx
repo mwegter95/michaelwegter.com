@@ -6,7 +6,7 @@ import { labelText } from '../format'
 export const VIEWS = [
   { id: 'highlights', label: 'Highlights', hint: 'Important and personal mail' },
   { id: 'inbox', label: 'Inbox', hint: 'What is in Gmail’s inbox right now' },
-  { id: 'unread', label: 'Unread', hint: 'Sorted mail you haven’t opened here' },
+  { id: 'recent', label: 'Recently sorted', hint: 'What triage filed this past week, newest sort first' },
   { id: 'sorted', label: 'All sorted', hint: 'Everything triage has filed' },
   { id: 'pinned', label: 'Pinned', hint: 'Emails you pinned' },
 ]
@@ -15,7 +15,6 @@ export function viewCount(id, summary) {
   if (!summary) return null
   if (id === 'highlights') return summary.highlights?.unread || null
   if (id === 'inbox') return summary.gmail?.inbox_unread ?? null
-  if (id === 'unread') return summary.unread || null
   if (id === 'pinned') return summary.pins?.length || null
   return null
 }

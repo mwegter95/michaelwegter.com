@@ -22,7 +22,7 @@ const SHORTCUTS = [
   ['p', 'Pin or unpin'],
   ['s', 'Star or unstar'],
   ['/', 'Search'],
-  ['1–5', 'Highlights, Inbox, Unread, All sorted, Pinned'],
+  ['1–5', 'Highlights, Inbox, Recently sorted, All sorted, Pinned'],
   ['n', 'Sort new mail'],
   ['Esc', 'Close'],
 ]

@@ -1,12 +1,12 @@
 import { memo, useEffect, useRef, useState } from 'react'
 import Icon from './Icons'
-import { groupByDay, isHighlight, labelText, senderName, timeLabel, toDate } from '../format'
+import { groupByDay, groupBySort, labelText, looksUnread, senderName, sortGroupMeta, timeLabel, toDate } from '../format'
 
 const KIND_WORDS = { family: 'family', friend: 'friend', vip: 'close contact', work: 'work' }
 
-export const MessageRow = memo(function MessageRow({ m, selected, onOpen, onAct, showUnreadDot, peopleKinds }) {
+export const MessageRow = memo(function MessageRow({ m, selected, onOpen, onAct, peopleKinds }) {
   const high = m.importance === 'high'
-  const unread = !m.read
+  const unread = looksUnread(m)
   const kind = m.personal ? (peopleKinds?.[m.from_email] || 'personal') : null
   const cls = ['ibx-row', unread && 'is-unread', high && 'is-high', m.personal && 'is-personal', selected && 'is-selected']
     .filter(Boolean).join(' ')
@@ -14,7 +14,7 @@ export const MessageRow = memo(function MessageRow({ m, selected, onOpen, onAct,
     <article className={cls} data-id={m.id}>
       <button type="button" className="ibx-row-main" onClick={() => onOpen(m.id)} aria-current={selected ? 'true' : undefined}>
         <span className="ibx-row-top">
-          {showUnreadDot && unread && <span className="ibx-dot" aria-label="Unread" />}
+          {unread && <span className="ibx-dot" aria-label="Unread" />}
           <span className="ibx-sender">{senderName(m)}</span>
           {m.message_count > 1 && <span className="ibx-thread-n" aria-label={`${m.message_count} messages`}>{m.message_count}</span>}
           {kind && <span className="ibx-kind">{KIND_WORDS[kind] || kind}</span>}
@@ -62,7 +62,7 @@ function LatestSort({ batch }) {
 const EMPTY = {
   highlights: ['Nothing needs you right now.', 'Important and personal mail shows up here after each sort.'],
   inbox: ['Gmail’s inbox is empty.', 'Inbox zero. Enjoy it.'],
-  unread: ['You’ve opened everything that was sorted.', ''],
+  recent: ['Nothing was sorted this past week.', 'Sort new mail and it shows up here, grouped by sort.'],
   sorted: ['Nothing has been sorted yet.', 'Sort new mail to fill this in, or import your Rollup history in Settings.'],
   pinned: ['No pinned emails.', 'Pin an email to keep it in the strip above.'],
 }
@@ -70,7 +70,8 @@ const EMPTY = {
 export default function MessageList({ inbox, peopleKinds, onSort }) {
   const { list, view, label, query, selectedId, open, act, summary } = inbox
   const ref = useRef(null)
-  const groups = groupByDay(list.items, new Date(), view === 'pinned' ? 'pinned_at' : 'date')
+  const bySort = view === 'recent' && !label && !query
+  const groups = bySort ? groupBySort(list.items) : groupByDay(list.items, new Date(), view === 'pinned' ? 'pinned_at' : 'date')
 
   useEffect(() => {
     if (!selectedId || !ref.current) return
@@ -99,20 +100,23 @@ export default function MessageList({ inbox, peopleKinds, onSort }) {
     : label ? [`Nothing under ${label}.`, ''] : (EMPTY[view] || EMPTY.sorted)
   return (
     <div className="ibx-list" ref={ref}>
-      {(view === 'highlights' || view === 'sorted') && !label && !query && <LatestSort batch={summary?.latest_batch} />}
+      {(view === 'highlights' || view === 'recent' || view === 'sorted') && !label && !query && <LatestSort batch={summary?.latest_batch} />}
       {!list.items.length && (
         <div className="ibx-empty">
           <p className="ibx-empty-title">{title}</p>
           {sub && <p>{sub}</p>}
-          {view === 'sorted' && !label && !query && <button type="button" className="ibx-btn" onClick={onSort}>Sort new mail</button>}
+          {(view === 'sorted' || view === 'recent') && !label && !query && <button type="button" className="ibx-btn" onClick={onSort}>Sort new mail</button>}
         </div>
       )}
       {groups.map((g) => (
         <section key={g.key || 'none'} className="ibx-day" aria-label={g.label}>
-          <h3 className="ibx-day-h">{view === 'pinned' ? `Pinned ${g.label.toLowerCase() === 'today' || g.label.toLowerCase() === 'yesterday' ? g.label.toLowerCase() : g.label}` : g.label}</h3>
+          {bySort ? (
+            <h3 className="ibx-day-h ibx-sort-h"><span>{g.label}</span><span className="ibx-sort-meta">{sortGroupMeta(g)}</span></h3>
+          ) : (
+            <h3 className="ibx-day-h">{view === 'pinned' ? `Pinned ${g.label.toLowerCase() === 'today' || g.label.toLowerCase() === 'yesterday' ? g.label.toLowerCase() : g.label}` : g.label}</h3>
+          )}
           {g.items.map((m) => (
-            <MessageRow key={m.id} m={m} selected={m.id === selectedId} onOpen={open} onAct={act} peopleKinds={peopleKinds}
-              showUnreadDot={view !== 'sorted' || isHighlight(m)} />
+            <MessageRow key={m.id} m={m} selected={m.id === selectedId} onOpen={open} onAct={act} peopleKinds={peopleKinds} />
           ))}
         </section>
       ))}

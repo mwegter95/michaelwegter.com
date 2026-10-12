@@ -65,6 +65,23 @@ describe('Inbox dashboard', () => {
     expect(before.pinned).toBe(false)
   })
 
+  it('recently sorted groups mail by sort, and archived mail never looks unread', async () => {
+    renderInbox()
+    await screen.findByText('Thanksgiving plans')
+    fireEvent.click(screen.getByRole('button', { name: 'Recently sorted' }))
+    expect(await screen.findByText('via Claude · 9 emails · 5 in inbox')).toBeInTheDocument()
+    expect(screen.getByText('via wegter-pc · 7 emails · 2 in inbox')).toBeInTheDocument()
+    expect(screen.getByText('via the Sheet · 3 emails')).toBeInTheDocument()
+    expect(screen.queryByText('Payment received')).not.toBeInTheDocument() // sorted 8 days ago
+    const headings = screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)
+    expect(headings[0]).toMatch(/^Today, \d/)
+    expect(screen.getByText('Thanksgiving plans').closest('.ibx-row')).toHaveClass('is-unread')
+    const promo = screen.getByText('30% off fall lawn care').closest('.ibx-row')
+    expect(promo).not.toHaveClass('is-unread')
+    fireEvent.click(within(promo).getByRole('button', { name: 'Mark unread' }))
+    await waitFor(() => expect(screen.getByText('30% off fall lawn care').closest('.ibx-row')).toHaveClass('is-unread'))
+  })
+
   it('copies for Claude, takes the pasted reply and applies it', async () => {
     renderInbox(createMockApi({ delay: 0 }))
     await screen.findByText('Thanksgiving plans')

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
-  batchSentence, dayKey, dayLabel, emailDocument, groupByDay, initials, isHighlight, labelText,
-  timeLabel, todaySentences, waitingSentence,
+  batchSentence, dayKey, dayLabel, emailDocument, groupByDay, groupBySort, initials, isHighlight, labelText,
+  looksUnread, sortGroupMeta, sortTimeLabel, timeLabel, todaySentences, waitingSentence,
 } from '../format'
 
 const NOW = new Date(2026, 9, 10, 14, 30) // Sat Oct 10 2026, 2:30 PM local
@@ -27,6 +27,38 @@ describe('dates', () => {
       { id: 'c', date: new Date(2026, 9, 9, 22).toISOString() },
     ], NOW)
     expect(groups.map((g) => [g.label, g.items.map((i) => i.id)])).toEqual([['Today', ['a', 'b']], ['Yesterday', ['c']]])
+  })
+})
+
+describe('recently sorted', () => {
+  const at = (h, m = 0) => new Date(2026, 9, 10, h, m).toISOString()
+
+  it('groups mail by the sort that filed it, newest first', () => {
+    const groups = groupBySort([
+      { id: 'a', batch_id: 9, sorted_at: at(9, 14), source: 'claude', in_inbox: true },
+      { id: 'b', batch_id: 9, sorted_at: at(9, 14), source: 'claude', in_inbox: false },
+      { id: 'c', batch_id: 8, sorted_at: at(9, 10), source: 'wegter-pc', in_inbox: false },
+      // imported history shares one batch id; ten minutes apart is a different sort
+      { id: 'd', batch_id: 2, sorted_at: at(8, 30), source: 'import' },
+      { id: 'e', batch_id: 2, sorted_at: at(8, 29), source: 'import' },
+      { id: 'f', batch_id: 2, sorted_at: at(7, 0), source: 'import' },
+    ], NOW)
+    expect(groups.map((g) => g.items.map((i) => i.id))).toEqual([['a', 'b'], ['c'], ['d', 'e'], ['f']])
+    expect(groups[0].label).toBe('Today, 9:14 AM')
+    expect(sortGroupMeta(groups[0])).toBe('via Claude · 2 emails · 1 in inbox')
+    expect(sortGroupMeta(groups[1])).toBe('via wegter-pc · 1 email')
+    expect(sortGroupMeta(groups[2])).toBe('Imported · 2 emails')
+    expect(sortTimeLabel(new Date(2026, 9, 9, 18, 2), NOW)).toBe('Yesterday, 6:02 PM')
+  })
+
+  it('only mail still waiting on Michael looks unread', () => {
+    const base = { read: false, in_inbox: false, gmail_unread: false, importance: 'low', personal: false }
+    expect(looksUnread(base)).toBe(false) // archived and marked read by triage
+    expect(looksUnread({ ...base, in_inbox: true })).toBe(true)
+    expect(looksUnread({ ...base, importance: 'high' })).toBe(true)
+    expect(looksUnread({ ...base, personal: true })).toBe(true)
+    expect(looksUnread({ ...base, gmail_unread: true })).toBe(true) // marked unread on purpose
+    expect(looksUnread({ ...base, in_inbox: true, read: true })).toBe(false)
   })
 })
 

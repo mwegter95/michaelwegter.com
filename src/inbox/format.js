@@ -81,6 +81,50 @@ export function isHighlight(m) {
   return Boolean(m && (m.importance === 'high' || m.personal))
 }
 
+/** Shown as unread only while it's waiting on Michael: unopened and still in the inbox, a
+ *  highlight, or unread in Gmail. Mail triage archived and marked read never looks unread. */
+export function looksUnread(m) {
+  return Boolean(m && !m.read && (m.in_inbox || m.gmail_unread || isHighlight(m)))
+}
+
+const SORT_GAP_MS = 10 * 60 * 1000
+
+/** "Today, 9:14 AM", "Yesterday, 6:02 PM", "Sep 28, 8:30 AM". */
+export function sortTimeLabel(value, now = new Date()) {
+  const d = toDate(value)
+  if (!d) return 'Sorted'
+  return `${dayLabel(dayKey(d), now)}, ${d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`
+}
+
+/** Groups mail (newest sort first) into the sorts that filed it: one group per batch, with
+ *  imported history split wherever sort times are more than ten minutes apart. */
+export function groupBySort(items, now = new Date()) {
+  const groups = []
+  let current = null
+  let last = null
+  for (const item of items) {
+    const t = toDate(item.sorted_at)?.getTime() ?? null
+    const batch = item.batch_id ?? null
+    const same = current && current.batch === batch && t != null && last != null && Math.abs(last - t) <= SORT_GAP_MS
+    if (!same) {
+      current = { key: `${batch}-${item.sorted_at}-${groups.length}`, batch, label: sortTimeLabel(item.sorted_at, now), source: item.source, items: [] }
+      groups.push(current)
+    }
+    current.items.push(item)
+    last = t
+  }
+  return groups
+}
+
+/** "via Claude · 26 emails · 7 in inbox" under a sort's heading. */
+export function sortGroupMeta(group) {
+  const parts = [group.source === 'import' ? 'Imported' : `via ${SOURCE_NAMES[group.source] || group.source || 'triage'}`]
+  parts.push(plural(group.items.length, 'email'))
+  const inInbox = group.items.filter((m) => m.in_inbox).length
+  if (inInbox) parts.push(`${inInbox} in inbox`)
+  return parts.join(' · ')
+}
+
 export function senderName(m) {
   return (m?.from_name || m?.from_email || 'Unknown sender').trim()
 }

@@ -1,6 +1,8 @@
 // An in-browser stand-in for the /inbox API, used by ?demo=1 and the tests.
 // Every person, company and email here is invented sample data.
 
+import { looksUnread } from './format'
+
 const H = 3600e3
 const wait = (ms) => new Promise((r) => setTimeout(r, ms))
 
@@ -91,23 +93,28 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
   let lastExport = {}         // id → the sample email behind each exported block
   let settings = {
     prompt: '', people: PEOPLE, labels: [], batch_size: 50, query: '', review_first: true,
-    keep_people_in_inbox: true, keep_important_unread: false, block_images: false,
+    keep_people_in_inbox: true, keep_highlights_unread: true, block_images: false,
     rollup_imported: 0,
   }
   let waiting = 23
 
+  // The five earlier sorts that filed the sample mail, oldest first: [hours ago, source].
+  const SORTS = [[196, 'claude'], [100, 'sheet'], [49, 'claude'], [19, 'wegter-pc'], [0.78, 'claude']]
+  const sortOf = (h) => (h < 10 ? 4 : h < 48 ? 3 : h < 100 ? 2 : h < 180 ? 1 : 0)
   SEED.forEach(([h, from, subject, summary, labels, importance, personal, inInbox, body], i) => {
     const id = `demo-${(0x1a2b3c + i * 977).toString(16)}`
     const at = new Date(t0 - h * H)
     const [name, email] = parseFrom(from)
-    const sortedAt = new Date(at.getTime() + 0.4 * H)
+    const [sortH, source] = SORTS[sortOf(h)]
+    const sortedAt = new Date(t0 - sortH * H)
     const read = h > 30 ? i % 3 !== 0 : (i === 3 || i === 5 || i === 8)
     messages.set(id, {
       id, message_id: 'm' + id, from_name: name, from_email: email, subject, summary,
       snippet: (typeof body === 'string' && body !== 'newsletter' ? body : summary).slice(0, 200),
-      labels, importance, personal, in_inbox: inInbox, gmail_unread: false, starred: i === 1,
-      message_count: i === 12 ? 3 : 1, date: at.toISOString(), sorted_at: sortedAt.toISOString(),
-      source: i % 4 === 0 ? 'wegter-pc' : 'claude', batch_id: 1, read, read_at: read ? sortedAt.toISOString() : null,
+      labels, importance, personal, in_inbox: inInbox, gmail_unread: !read && inInbox && (importance === 'high' || personal),
+      starred: i === 1, message_count: i === 12 ? 3 : 1, date: at.toISOString(), sorted_at: sortedAt.toISOString(),
+      // Older reads happened long ago (keeps "read today" to the latest sort's three).
+      source, batch_id: sortOf(h) + 1, read, read_at: read ? new Date(h > 30 ? at.getTime() + 0.4 * H : sortedAt.getTime()).toISOString() : null,
       pinned: i === 1 || i === 15, pinned_at: i === 1 || i === 15 ? new Date(t0 - i * H).toISOString() : null,
       trashed: false,
     })
@@ -124,12 +131,17 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
   }
   for (const m of messages.values()) if (m.read && dayOf(m.read_at) === dayOf(t0)) events.push({ day: dayOf(t0), kind: 'read', id: m.id })
 
-  batches.push({
-    id: 1, created_at: new Date(t0 - 0.8 * H).toISOString(), finished_at: new Date(t0 - 0.78 * H).toISOString(),
-    day: dayOf(t0), source: 'claude', status: 'done', step: '', total: 26, applied: 26, archived: 19, important: 6,
-    personal: 3, missing: 0, errored: 0, message: 'Applied 26 of 26 threads.',
-    summary: 'Mom asked about hosting Thanksgiving and a couple wrote about a June 2027 wedding; both need a reply. Your timesheet is due at 5 and Friday\'s flight is open for check-in. The rest was receipts, statements and newsletters, now archived.',
-    error: '', proposal: null,
+  // One finished batch per sort; only the latest has a note.
+  const LATEST_NOTE = 'Mom asked about hosting Thanksgiving and a couple wrote about a June 2027 wedding; both need a reply. Your timesheet is due at 5 and Friday\'s flight is open for check-in. The rest was receipts, statements and newsletters, now archived.'
+  SORTS.forEach(([sortH, source], i) => {
+    const n = SEED.filter(([h]) => sortOf(h) === i)
+    batches.push({
+      id: i + 1, created_at: new Date(t0 - (sortH + 0.02) * H).toISOString(), finished_at: new Date(t0 - sortH * H).toISOString(),
+      day: dayOf(t0 - sortH * H), source, status: 'done', step: '', total: n.length, applied: n.length,
+      archived: n.filter((x) => !x[7]).length, important: n.filter((x) => x[5] === 'high').length, personal: n.filter((x) => x[6]).length,
+      missing: 0, errored: 0, message: `Applied ${n.length} of ${n.length} threads.`,
+      summary: i === SORTS.length - 1 ? LATEST_NOTE : '', error: '', proposal: null,
+    })
   })
 
   const list = () => [...messages.values()].filter((m) => !m.trashed)
@@ -150,14 +162,13 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
     for (const m of list()) for (const l of m.labels) {
       labelCounts[l] = labelCounts[l] || { name: l, count: 0, unread: 0 }
       labelCounts[l].count++
-      labelCounts[l].unread += m.read ? 0 : 1
+      labelCounts[l].unread += looksUnread(m) ? 1 : 0
     }
     const running = batches.find((b) => b.status === 'running' || b.status === 'applying')
     return {
       today: days.find((d) => d.day === today),
       days,
       highlights: { unread: list().filter((m) => hl(m) && !m.read).length, total: list().filter(hl).length },
-      unread: list().filter((m) => !m.read).length,
       in_inbox: list().filter((m) => m.in_inbox).length,
       sorted_total: list().length,
       labels: Object.values(labelCounts).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
@@ -175,7 +186,7 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
   function filtered({ view = 'highlights', label, q }) {
     let items = list()
     if (view === 'highlights') items = items.filter((m) => hl(m) && (!m.read || now() - new Date(m.date) < 14 * 24 * H))
-    if (view === 'unread') items = items.filter((m) => !m.read)
+    if (view === 'recent') items = items.filter((m) => now() - new Date(m.sorted_at) < 7 * 24 * H)
     if (view === 'pinned') items = items.filter((m) => m.pinned)
     if (view === 'inbox') items = items.filter((m) => m.in_inbox)
     if (label) items = items.filter((m) => m.labels.includes(label))
@@ -183,6 +194,7 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
       const s = q.toLowerCase()
       items = items.filter((m) => [m.subject, m.from_name, m.from_email, m.summary, m.snippet].some((x) => (x || '').toLowerCase().includes(s)))
     }
+    if (view === 'recent') return items.sort((a, b) => (a.sorted_at === b.sorted_at ? byDate(a, b) : a.sorted_at < b.sorted_at ? 1 : -1))
     return items.sort(view === 'pinned' ? (a, b) => (a.pinned_at < b.pinned_at ? 1 : -1) : byDate)
   }
 
@@ -214,11 +226,13 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
   function applyActions(batch, actions, source) {
     const at = new Date(now())
     for (const a of actions) {
+      // Like the server: highlights kept in the inbox stay unread in Gmail until opened here.
+      const keepUnread = a.keep_unread ?? (settings.keep_highlights_unread && hl(a) && !a.archive_ok)
       const [name, email] = parseFrom(a.from || 'Sender <sender@example.com>')
       messages.set(a.id, {
         id: a.id, message_id: 'm' + a.id, from_name: name, from_email: email, subject: a.subject || '(no subject)',
         summary: a.summary, snippet: a.summary, labels: a.labels, importance: a.importance, personal: !!a.personal,
-        in_inbox: !a.archive_ok, gmail_unread: !!a.keep_unread, starred: false, message_count: 1,
+        in_inbox: !a.archive_ok, gmail_unread: !!keepUnread, starred: false, message_count: 1,
         date: a.date || at.toISOString(), sorted_at: at.toISOString(), source, batch_id: batch.id,
         read: false, read_at: null, pinned: false, pinned_at: null, trashed: false,
       })
@@ -259,7 +273,7 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
       for (const id of ids) {
         const m = messages.get(id)
         if (!m) continue
-        if (action === 'read') { if (!m.read) { m.read = true; m.read_at = new Date(now()).toISOString() } events.push({ day, kind: 'read', id }) }
+        if (action === 'read') { if (!m.read) { m.read = true; m.read_at = new Date(now()).toISOString() } m.gmail_unread = false; events.push({ day, kind: 'read', id }) }
         if (action === 'unread') { m.read = false; m.read_at = null; m.gmail_unread = true }
         if (action === 'pin') { m.pinned = true; m.pinned_at = new Date(now()).toISOString() }
         if (action === 'unpin') { m.pinned = false; m.pinned_at = null }

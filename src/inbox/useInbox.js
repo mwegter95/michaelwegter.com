@@ -5,7 +5,7 @@ const GMAIL_EVERY_MS = 180_000
 
 // What each action changes on screen before the server answers.
 const PATCHES = {
-  read: () => ({ read: true }),
+  read: () => ({ read: true, gmail_unread: false }),
   unread: () => ({ read: false, gmail_unread: true }),
   pin: () => ({ pinned: true, pinned_at: new Date().toISOString() }),
   unpin: () => ({ pinned: false, pinned_at: null }),
