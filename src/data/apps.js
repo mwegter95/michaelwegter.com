@@ -173,4 +173,18 @@ export const apps = [
     // MacDesktop and AppFrame both honour this flag.
     ownerOnly: true,
   },
+  {
+    id: 11,
+    slug: "inbox", // → michaelwegter.com/apps/inbox (a native route, not an iframe)
+    title: "Inbox",
+    description:
+      "Private: a calmer way to read Gmail. Wired into the Apps Script triage — sort with AI or ChatGPT, read important mail on a clean sheet, pin, and keep a daily count.",
+    category: "Productivity",
+    status: "live",
+    href: "/apps/inbox",
+    color: "#e8b820", // mustard highlighter
+    icon: "📬",
+    frameStyle: "walnut",
+    ownerOnly: true,
+  },
 ];
