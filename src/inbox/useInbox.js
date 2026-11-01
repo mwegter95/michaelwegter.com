@@ -19,7 +19,7 @@ const PATCHES = {
 const toTime = (iso) => new Date(iso || 0).getTime() || 0
 
 /** Views that can be narrowed to chosen sorts. */
-export const SORT_VIEWS = ['recent', 'sorted']
+export const SORT_VIEWS = ['highlights', 'recent', 'sorted']
 
 const UNDO = { archive: 'inbox', trash: 'inbox', unpin: 'pin', pin: 'unpin', unread: 'read' }
 const DONE_WORDS = {

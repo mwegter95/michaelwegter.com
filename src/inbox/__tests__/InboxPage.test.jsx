@@ -123,6 +123,32 @@ describe('Inbox dashboard', () => {
     expect(await within(picker).findByText('via Claude · 2 emails')).toBeInTheDocument() // 8 days ago: All sorted only
   })
 
+  it('narrows highlights to the sorts you pick', async () => {
+    renderInbox()
+    await screen.findByText('Thanksgiving plans')
+    expect(screen.getByText('Photos from the lake')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'All sorts' }))
+    const picker = await screen.findByRole('dialog', { name: 'Choose sorts' })
+    expect(within(picker).getByText('Sorts with highlights')).toBeInTheDocument()
+    const row = await within(picker).findByText('via Claude · 1 highlight') // three days ago: a bank sign-in alert
+    fireEvent.click(within(row.closest('label')).getByRole('checkbox'))
+    expect(await screen.findByText('New sign-in from Chrome on Mac')).toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByText('Thanksgiving plans')).not.toBeInTheDocument())
+    expect(screen.queryByText('Photos from the lake')).not.toBeInTheDocument()
+    expect(screen.getByRole('group', { name: 'Showing only these sorts' })).toBeInTheDocument()
+  })
+
+  it('says the server may be out of date when it doesn’t know about sorts', async () => {
+    const api = createMockApi({ delay: 0 })
+    api.sorts = async () => { throw Object.assign(new Error("Can't reach the server. Check your connection and try again."), { status: 0 }) }
+    renderInbox(api)
+    await screen.findByText('Thanksgiving plans')
+    fireEvent.click(screen.getByRole('button', { name: 'All sorts' }))
+    const picker = await screen.findByRole('dialog', { name: 'Choose sorts' })
+    expect(await within(picker).findByText(/still running an older version/)).toBeInTheDocument()
+    expect(within(picker).getByRole('button', { name: 'Try again' })).toBeInTheDocument()
+  })
+
   it('copies for Claude, takes the pasted reply and applies it', async () => {
     renderInbox(createMockApi({ delay: 0 }))
     await screen.findByText('Thanksgiving plans')

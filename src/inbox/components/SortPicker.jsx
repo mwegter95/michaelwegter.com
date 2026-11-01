@@ -3,6 +3,17 @@ import Icon from './Icons'
 import { groupSortsByDay, plural, sortMeta, toDate } from '../format'
 
 const PAGE = 60
+const HEADS = { highlights: 'Sorts with highlights', recent: 'Sorts from this past week', sorted: 'Every sort' }
+const NONE = { highlights: 'No sort has highlights yet.', recent: 'Nothing was sorted this past week.', sorted: 'Nothing has been sorted yet.' }
+
+/** The rest of the page loads, so a failure here that never reached the server (a refused CORS
+ *  preflight) or a 404 almost always means the server is running a version from before sorts. */
+function problem(e) {
+  if (e.status === 0 || e.status === 404) {
+    return 'Couldn’t load the sorts. If the rest of the page works, the inbox server is probably still running an older version: check that the Surface pulled the latest mw-backend and restarted.'
+  }
+  return e.message
+}
 
 /** "Sorts" button in the list header: tick one or more sorts to see only the mail they filed. */
 export default function SortPicker({ api, view, selected, onChange }) {
@@ -54,7 +65,7 @@ export default function SortPicker({ api, view, selected, onChange }) {
       {open && (
         <div className="ibx-sortpick-pop" role="dialog" aria-label="Choose sorts">
           <div className="ibx-sortpick-head">
-            <p>{view === 'recent' ? 'Sorts from this past week' : 'Every sort'}</p>
+            <p>{HEADS[view] || HEADS.sorted}</p>
             {selected.length > 0 && <button type="button" className="ibx-sortpick-clear" onClick={() => onChange([])}>Show all</button>}
           </div>
           <div className="ibx-sortpick-list">
@@ -68,7 +79,9 @@ export default function SortPicker({ api, view, selected, onChange }) {
                     <label key={s.key} className={`ibx-sortpick-item${on ? ' is-on' : ''}`}>
                       <input type="checkbox" checked={on} onChange={() => toggle(s)} />
                       <span className="ibx-sortpick-time">{at ? at.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : 'Sorted'}</span>
-                      <span className="ibx-sortpick-meta">{sortMeta({ source: s.source, count: s.count, inInbox: s.in_inbox })}</span>
+                      <span className="ibx-sortpick-meta">{view === 'highlights'
+                        ? sortMeta({ source: s.source, count: s.highlights, noun: 'highlight' })
+                        : sortMeta({ source: s.source, count: s.count, inInbox: s.in_inbox })}</span>
                     </label>
                   )
                 })}
@@ -76,10 +89,10 @@ export default function SortPicker({ api, view, selected, onChange }) {
             ))}
             {state.loading && <p className="ibx-sortpick-note"><span className="ibx-spinner ibx-spinner--quiet" /> Loading sorts…</p>}
             {state.error && (
-              <p className="ibx-sortpick-note">{state.error.message} <button type="button" className="ibx-link-btn" onClick={() => load(0)}>Try again</button></p>
+              <p className="ibx-sortpick-note">{problem(state.error)} <button type="button" className="ibx-link-btn" onClick={() => load(0)}>Try again</button></p>
             )}
             {!state.loading && !state.error && !state.items.length && (
-              <p className="ibx-sortpick-note">{view === 'recent' ? 'Nothing was sorted this past week.' : 'Nothing has been sorted yet.'}</p>
+              <p className="ibx-sortpick-note">{NONE[view] || NONE.sorted}</p>
             )}
             {state.next != null && !state.loading && (
               <button type="button" className="ibx-more ibx-sortpick-older" onClick={() => load(state.next)}>

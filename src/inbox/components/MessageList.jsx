@@ -103,7 +103,9 @@ export default function MessageList({ inbox, peopleKinds, onSort }) {
   }
   const [title, sub] = query ? [`No emails match “${query}”.`, 'Try a sender, a subject word, or part of the summary.']
     : label ? [`Nothing under ${label}.`, '']
-      : sorts.length ? [`Nothing from ${sorts.length === 1 ? 'that sort' : 'those sorts'} is here anymore.`, 'Mail that was sorted again moves to its newest sort, and trashed mail leaves.']
+      : sorts.length ? (view === 'highlights'
+        ? [`No highlights from ${sorts.length === 1 ? 'that sort' : 'those sorts'}.`, 'Mail that was sorted again moves to its newest sort.']
+        : [`Nothing from ${sorts.length === 1 ? 'that sort' : 'those sorts'} is here anymore.`, 'Mail that was sorted again moves to its newest sort, and trashed mail leaves.'])
         : (EMPTY[view] || EMPTY.sorted)
   const only = sorts.length === 1 ? { ...sorts[0], ...sortInfo[sorts[0].key] } : null
   const chosenNote = only?.summary && !label && !query

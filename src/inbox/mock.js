@@ -187,6 +187,7 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
   function sortGroups(view = 'sorted') {
     let items = list().filter((m) => m.sorted_at)
     if (view === 'recent') items = items.filter((m) => now() - new Date(m.sorted_at) < 7 * 24 * H)
+    if (view === 'highlights') items = items.filter(hl)
     const groups = new Map()
     for (const m of items.sort((a, b) => (a.sorted_at < b.sorted_at ? 1 : -1))) {
       const key = `b${m.batch_id}`
@@ -202,13 +203,13 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
     return [...groups.values()]
   }
 
-  const sortKeys = (view, sort) => ((view === 'recent' || view === 'sorted') && sort ? new Set(String(sort).split(',')) : null)
+  const sortKeys = (view, sort) => (['highlights', 'recent', 'sorted'].includes(view) && sort ? new Set(String(sort).split(',')) : null)
 
   function filtered({ view = 'highlights', label, q, sort }) {
     let items = list()
     const keys = sortKeys(view, sort)
     if (keys) items = items.filter((m) => keys.has(`b${m.batch_id}`))
-    if (view === 'highlights') items = items.filter((m) => hl(m) && (!m.read || now() - new Date(m.date) < 14 * 24 * H))
+    if (view === 'highlights') items = items.filter((m) => hl(m) && (keys || !m.read || now() - new Date(m.date) < 14 * 24 * H))
     if (view === 'recent') items = items.filter((m) => now() - new Date(m.sorted_at) < 7 * 24 * H)
     if (view === 'pinned') items = items.filter((m) => m.pinned)
     if (view === 'inbox') items = items.filter((m) => m.in_inbox)

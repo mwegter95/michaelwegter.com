@@ -117,9 +117,9 @@ export function groupBySort(items, now = new Date()) {
 }
 
 /** "via Claude · 26 emails · 7 in inbox" for a sort, in the list and in the sort picker. */
-export function sortMeta({ source, count, inInbox }) {
+export function sortMeta({ source, count, inInbox, noun = 'email' }) {
   const parts = [source === 'import' ? 'Imported' : `via ${SOURCE_NAMES[source] || source || 'triage'}`]
-  parts.push(plural(count, 'email'))
+  parts.push(plural(count, noun))
   if (inInbox) parts.push(`${inInbox} in inbox`)
   return parts.join(' · ')
 }
