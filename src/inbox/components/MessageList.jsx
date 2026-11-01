@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef, useState } from 'react'
 import Icon from './Icons'
-import { groupByDay, groupBySort, labelText, looksUnread, senderName, sortGroupMeta, timeLabel, toDate } from '../format'
+import { groupByDay, groupBySort, labelText, looksUnread, senderName, sortFromGroup, sortGroupMeta, sortKeyOf, sortNoteHead, timeLabel, toDate } from '../format'
 
 const KIND_WORDS = { family: 'family', friend: 'friend', vip: 'close contact', work: 'work' }
 
@@ -45,18 +45,22 @@ export const MessageRow = memo(function MessageRow({ m, selected, onOpen, onAct,
   )
 })
 
-function LatestSort({ batch }) {
+function SortNote({ summary, head, label }) {
   const [open, setOpen] = useState(false)
-  if (!batch?.summary) return null
-  const at = toDate(batch.finished_at || batch.created_at)
-  if (!at || Date.now() - at.getTime() > 36 * 3600e3) return null
   return (
-    <aside className={`ibx-note${open ? ' is-open' : ''}`} aria-label="Notes from the latest sort">
-      <p className="ibx-note-head">From the {timeLabel(at)} sort</p>
-      <p>{batch.summary}</p>
+    <aside className={`ibx-note${open ? ' is-open' : ''}`} aria-label={label}>
+      <p className="ibx-note-head">{head}</p>
+      <p>{summary}</p>
       <button type="button" className="ibx-note-more" onClick={() => setOpen(true)}>Read all</button>
     </aside>
   )
+}
+
+function LatestSort({ batch }) {
+  if (!batch?.summary) return null
+  const at = toDate(batch.finished_at || batch.created_at)
+  if (!at || Date.now() - at.getTime() > 36 * 3600e3) return null
+  return <SortNote summary={batch.summary} head={`From the ${timeLabel(at)} sort`} label="Notes from the latest sort" />
 }
 
 const EMPTY = {
@@ -68,9 +72,10 @@ const EMPTY = {
 }
 
 export default function MessageList({ inbox, peopleKinds, onSort }) {
-  const { list, view, label, query, selectedId, open, act, summary } = inbox
+  const { list, view, label, query, selectedId, open, act, summary, sorts = [], sortInfo = {}, chooseSorts } = inbox
   const ref = useRef(null)
-  const bySort = view === 'recent' && !label && !query
+  const bySort = (view === 'recent' || sorts.length > 0) && !label && !query
+  const onlyKey = sorts.length === 1 ? sorts[0].key : null
   const groups = bySort ? groupBySort(list.items) : groupByDay(list.items, new Date(), view === 'pinned' ? 'pinned_at' : 'date')
 
   useEffect(() => {
@@ -97,21 +102,33 @@ export default function MessageList({ inbox, peopleKinds, onSort }) {
     )
   }
   const [title, sub] = query ? [`No emails match “${query}”.`, 'Try a sender, a subject word, or part of the summary.']
-    : label ? [`Nothing under ${label}.`, ''] : (EMPTY[view] || EMPTY.sorted)
+    : label ? [`Nothing under ${label}.`, '']
+      : sorts.length ? [`Nothing from ${sorts.length === 1 ? 'that sort' : 'those sorts'} is here anymore.`, 'Mail that was sorted again moves to its newest sort, and trashed mail leaves.']
+        : (EMPTY[view] || EMPTY.sorted)
+  const only = sorts.length === 1 ? { ...sorts[0], ...sortInfo[sorts[0].key] } : null
+  const chosenNote = only?.summary && !label && !query
   return (
     <div className="ibx-list" ref={ref}>
-      {(view === 'highlights' || view === 'recent' || view === 'sorted') && !label && !query && <LatestSort batch={summary?.latest_batch} />}
+      {(view === 'highlights' || view === 'recent' || view === 'sorted') && !label && !query && !sorts.length && <LatestSort batch={summary?.latest_batch} />}
+      {chosenNote && <SortNote key={only.key} summary={only.summary} head={sortNoteHead(only.at)} label="Notes from this sort" />}
       {!list.items.length && (
         <div className="ibx-empty">
           <p className="ibx-empty-title">{title}</p>
           {sub && <p>{sub}</p>}
-          {(view === 'sorted' || view === 'recent') && !label && !query && <button type="button" className="ibx-btn" onClick={onSort}>Sort new mail</button>}
+          {(view === 'sorted' || view === 'recent') && !label && !query && !sorts.length && <button type="button" className="ibx-btn" onClick={onSort}>Sort new mail</button>}
         </div>
       )}
       {groups.map((g) => (
         <section key={g.key || 'none'} className="ibx-day" aria-label={g.label}>
           {bySort ? (
-            <h3 className="ibx-day-h ibx-sort-h"><span>{g.label}</span><span className="ibx-sort-meta">{sortGroupMeta(g)}</span></h3>
+            <h3 className="ibx-day-h ibx-sort-h">
+              <span>{g.label}</span>
+              <span className="ibx-sort-meta">{sortGroupMeta(g)}</span>
+              {chooseSorts && sortKeyOf(g) && sortKeyOf(g) !== onlyKey && (
+                <button type="button" className="ibx-sort-only" onClick={() => chooseSorts([sortFromGroup(g)])}
+                  aria-label={`Show only the ${g.label} sort`} title="Show only this sort">Only this</button>
+              )}
+            </h3>
           ) : (
             <h3 className="ibx-day-h">{view === 'pinned' ? `Pinned ${g.label.toLowerCase() === 'today' || g.label.toLowerCase() === 'yesterday' ? g.label.toLowerCase() : g.label}` : g.label}</h3>
           )}

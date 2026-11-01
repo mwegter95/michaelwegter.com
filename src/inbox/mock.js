@@ -183,8 +183,31 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
     }
   }
 
-  function filtered({ view = 'highlights', label, q }) {
+  // The sorts that filed the mail on hand, newest first, like GET /inbox/sorts.
+  function sortGroups(view = 'sorted') {
+    let items = list().filter((m) => m.sorted_at)
+    if (view === 'recent') items = items.filter((m) => now() - new Date(m.sorted_at) < 7 * 24 * H)
+    const groups = new Map()
+    for (const m of items.sort((a, b) => (a.sorted_at < b.sorted_at ? 1 : -1))) {
+      const key = `b${m.batch_id}`
+      if (!groups.has(key)) {
+        groups.set(key, { key, batch_id: m.batch_id, at: m.sorted_at, source: m.source, count: 0, in_inbox: 0, highlights: 0,
+          summary: batches.find((b) => b.id === m.batch_id)?.summary || '' })
+      }
+      const g = groups.get(key)
+      g.count++
+      g.in_inbox += m.in_inbox ? 1 : 0
+      g.highlights += hl(m) ? 1 : 0
+    }
+    return [...groups.values()]
+  }
+
+  const sortKeys = (view, sort) => ((view === 'recent' || view === 'sorted') && sort ? new Set(String(sort).split(',')) : null)
+
+  function filtered({ view = 'highlights', label, q, sort }) {
     let items = list()
+    const keys = sortKeys(view, sort)
+    if (keys) items = items.filter((m) => keys.has(`b${m.batch_id}`))
     if (view === 'highlights') items = items.filter((m) => hl(m) && (!m.read || now() - new Date(m.date) < 14 * 24 * H))
     if (view === 'recent') items = items.filter((m) => now() - new Date(m.sorted_at) < 7 * 24 * H)
     if (view === 'pinned') items = items.filter((m) => m.pinned)
@@ -194,7 +217,7 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
       const s = q.toLowerCase()
       items = items.filter((m) => [m.subject, m.from_name, m.from_email, m.summary, m.snippet].some((x) => (x || '').toLowerCase().includes(s)))
     }
-    if (view === 'recent') return items.sort((a, b) => (a.sorted_at === b.sorted_at ? byDate(a, b) : a.sorted_at < b.sorted_at ? 1 : -1))
+    if (view === 'recent' || keys) return items.sort((a, b) => (a.sorted_at === b.sorted_at ? byDate(a, b) : a.sorted_at < b.sorted_at ? 1 : -1))
     return items.sort(view === 'pinned' ? (a, b) => (a.pinned_at < b.pinned_at ? 1 : -1) : byDate)
   }
 
@@ -256,7 +279,17 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
   return {
     demo: true,
     summary: () => reply(summary()),
-    messages: (params) => reply({ view: params.view, items: filtered(params), total: filtered(params).length, next_offset: null }),
+    messages: (params) => {
+      const keys = sortKeys(params.view, params.sort)
+      return reply({
+        view: params.view, items: filtered(params), total: filtered(params).length, next_offset: null,
+        ...(keys ? { sorts: sortGroups('sorted').filter((g) => keys.has(g.key)) } : {}),
+      })
+    },
+    sorts: ({ view = 'sorted', limit = 60, offset = 0 } = {}) => {
+      const all = sortGroups(view)
+      return reply({ sorts: all.slice(offset, offset + limit), total: all.length, next_offset: offset + limit < all.length ? offset + limit : null })
+    },
     live: () => reply({ items: list().filter((m) => m.in_inbox).sort(byDate), inbox_unread: 4, complete: true, fetched_at: new Date(now()).toISOString() }),
     status: () => reply({ inbox_unread: 4, waiting, waiting_capped: false, checked_at: new Date(now()).toISOString() }),
     async thread(id) {

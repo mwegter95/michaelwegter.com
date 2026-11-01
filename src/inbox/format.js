@@ -116,13 +116,53 @@ export function groupBySort(items, now = new Date()) {
   return groups
 }
 
-/** "via Claude · 26 emails · 7 in inbox" under a sort's heading. */
-export function sortGroupMeta(group) {
-  const parts = [group.source === 'import' ? 'Imported' : `via ${SOURCE_NAMES[group.source] || group.source || 'triage'}`]
-  parts.push(plural(group.items.length, 'email'))
-  const inInbox = group.items.filter((m) => m.in_inbox).length
+/** "via Claude · 26 emails · 7 in inbox" for a sort, in the list and in the sort picker. */
+export function sortMeta({ source, count, inInbox }) {
+  const parts = [source === 'import' ? 'Imported' : `via ${SOURCE_NAMES[source] || source || 'triage'}`]
+  parts.push(plural(count, 'email'))
   if (inInbox) parts.push(`${inInbox} in inbox`)
   return parts.join(' · ')
+}
+
+export function sortGroupMeta(group) {
+  return sortMeta({ source: group.source, count: group.items.length, inInbox: group.items.filter((m) => m.in_inbox).length })
+}
+
+/** The key /messages?sort= takes for a group in the list. Only whole batches have one here:
+ *  a run of imported history is chosen from the picker, where the server knows its edges. */
+export function sortKeyOf(group) {
+  return group.batch != null && group.source !== 'import' ? `b${group.batch}` : null
+}
+
+/** A group in the list as the picker would describe it, so it can be chosen from its heading. */
+export function sortFromGroup(group) {
+  const first = group.items[0] || {}
+  return {
+    key: sortKeyOf(group), batch_id: group.batch, at: first.sorted_at, source: group.source,
+    count: group.items.length, in_inbox: group.items.filter((m) => m.in_inbox).length,
+  }
+}
+
+/** The heading of a chosen sort's note: "From today’s 7:02 AM sort", "From the Oct 25, 10:30 AM sort". */
+export function sortNoteHead(value, now = new Date()) {
+  const d = toDate(value)
+  if (!d) return 'From this sort'
+  const day = dayLabel(dayKey(d), now)
+  const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  if (day === 'Today' || day === 'Yesterday') return `From ${day.toLowerCase()}’s ${time} sort`
+  if (/day$/.test(day)) return `From ${day}’s ${time} sort`
+  return `From the ${day}, ${time} sort`
+}
+
+/** Sorts (newest first) under day headings, for the picker. */
+export function groupSortsByDay(sorts, now = new Date()) {
+  const days = []
+  for (const s of sorts) {
+    const key = dayKey(s.at)
+    if (!days.length || days[days.length - 1].key !== key) days.push({ key, label: dayLabel(key, now), items: [] })
+    days[days.length - 1].items.push(s)
+  }
+  return days
 }
 
 export function senderName(m) {

@@ -16,6 +16,11 @@ const PATCHES = {
   trash: () => ({ trashed: true, in_inbox: false, pinned: false }),
 }
 
+const toTime = (iso) => new Date(iso || 0).getTime() || 0
+
+/** Views that can be narrowed to chosen sorts. */
+export const SORT_VIEWS = ['recent', 'sorted']
+
 const UNDO = { archive: 'inbox', trash: 'inbox', unpin: 'pin', pin: 'unpin', unread: 'read' }
 const DONE_WORDS = {
   archive: 'Archived', trash: 'Moved to trash', unpin: 'Unpinned', pin: 'Pinned',
@@ -37,6 +42,8 @@ export function useInbox(api) {
   const [gmail, setGmail] = useState(null)
   const [view, setView] = useState('highlights')
   const [label, setLabel] = useState('')
+  const [sorts, setSorts] = useState([])   // chosen sorts, as the picker describes them
+  const [sortInfo, setSortInfo] = useState({})   // key → the server's latest description (note, counts)
   const [query, setQuery] = useState('')
   const [list, setList] = useState({ items: [], total: 0, loading: true, error: null, refreshing: false })
   const [selectedId, setSelectedId] = useState(null)
@@ -75,14 +82,18 @@ export function useInbox(api) {
     try {
       const data = view === 'inbox' && !label && !query
         ? await api.live(refresh)
-        : await api.messages({ view, label: label || undefined, q: query || undefined })
+        : await api.messages({
+          view, label: label || undefined, q: query || undefined,
+          sort: SORT_VIEWS.includes(view) && sorts.length ? sorts.map((s) => s.key).join(',') : undefined,
+        })
       if (req !== listReq.current) return
+      if (data.sorts?.length) setSortInfo((m) => ({ ...m, ...Object.fromEntries(data.sorts.map((s) => [s.key, s])) }))
       setList({ items: data.items || [], total: data.total ?? (data.items || []).length, loading: false, refreshing: false, error: null, fetchedAt: data.fetched_at })
     } catch (e) {
       if (req !== listReq.current) return
       setList((l) => ({ ...l, loading: false, refreshing: false, error: e }))
     }
-  }, [api, view, label, query])
+  }, [api, view, label, query, sorts])
 
   useEffect(() => { loadSummary(); loadGmail() }, [loadSummary, loadGmail])
   useEffect(() => { setList((l) => ({ ...l, items: [], loading: true })); loadList() }, [loadList])
@@ -189,12 +200,14 @@ export function useInbox(api) {
     loadList({ refresh: true, quiet: true })
   }, [loadSummary, loadGmail, loadList])
 
-  const chooseView = useCallback((v) => { setView(v); setLabel(''); setQuery('') }, [])
-  const chooseLabel = useCallback((l) => { setLabel(l); setView('sorted'); setQuery('') }, [])
+  const chooseView = useCallback((v) => { setView(v); setLabel(''); setQuery(''); setSorts([]) }, [])
+  const chooseLabel = useCallback((l) => { setLabel(l); setView('sorted'); setQuery(''); setSorts([]) }, [])
+  // Newest first, whatever order they were ticked in.
+  const chooseSorts = useCallback((list) => setSorts(list.filter((s) => s?.key).sort((a, b) => toTime(b.at) - toTime(a.at))), [])
 
   return {
-    summary, summaryError, gmail, view, label, query, list, selected, selectedId, threads, toasts,
-    setQuery, chooseView, chooseLabel, open, close: () => setSelectedId(null), act, loadThread,
+    summary, summaryError, gmail, view, label, query, sorts, sortInfo, list, selected, selectedId, threads, toasts,
+    setQuery, chooseView, chooseLabel, chooseSorts, open, close: () => setSelectedId(null), act, loadThread,
     refreshAll, loadSummary, loadList, loadGmail, toast, dismissToast,
   }
 }

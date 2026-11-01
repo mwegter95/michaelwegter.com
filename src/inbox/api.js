@@ -48,6 +48,7 @@ export function createApi(token) {
   return {
     summary: (opts) => call('/summary', opts),
     messages: (params, opts) => call('/messages' + q(params), opts),
+    sorts: (params) => call('/sorts' + q(params)),
     live: (refresh, opts) => call('/live' + q({ refresh: refresh ? 1 : undefined }), opts),
     status: (refresh) => call('/status' + q({ refresh: refresh ? 1 : undefined })),
     thread: (id, refresh) => call(`/thread/${encodeURIComponent(id)}` + q({ refresh: refresh ? 1 : undefined })),

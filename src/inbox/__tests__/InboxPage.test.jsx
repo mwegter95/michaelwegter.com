@@ -82,6 +82,47 @@ describe('Inbox dashboard', () => {
     await waitFor(() => expect(screen.getByText('30% off fall lawn care').closest('.ibx-row')).toHaveClass('is-unread'))
   })
 
+  it('chooses one or several sorts to see only their mail', async () => {
+    renderInbox()
+    await screen.findByText('Thanksgiving plans')
+    fireEvent.click(screen.getByRole('button', { name: 'Recently sorted' }))
+    await screen.findByText('via wegter-pc · 7 emails · 2 in inbox')
+    fireEvent.click(screen.getByRole('button', { name: 'All sorts' }))
+    const picker = await screen.findByRole('dialog', { name: 'Choose sorts' })
+    const row = (meta) => within(picker).getByText(meta).closest('label')
+    fireEvent.click(within(await waitFor(() => row('via wegter-pc · 7 emails · 2 in inbox'))).getByRole('checkbox'))
+    await waitFor(() => expect(screen.queryByText('Thanksgiving plans')).not.toBeInTheDocument())
+    expect(screen.getByText('Photos from the lake')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '1 sort' })).toBeInTheDocument()
+    fireEvent.click(within(row('via Claude · 9 emails · 5 in inbox')).getByRole('checkbox'))
+    expect(await screen.findByText('Thanksgiving plans')).toBeInTheDocument()
+    const chips = screen.getByRole('group', { name: 'Showing only these sorts' })
+    expect(chips.querySelectorAll('.ibx-sortchip')).toHaveLength(2)
+    expect(screen.queryByText('Leaf pickup starts Oct 20')).toBeInTheDocument() // wegter-pc's sort
+    expect(screen.queryByText('Payment received')).not.toBeInTheDocument()
+    fireEvent.click(within(picker).getByRole('button', { name: 'Done' }))
+    expect(screen.queryByRole('dialog', { name: 'Choose sorts' })).not.toBeInTheDocument()
+    fireEvent.click(within(chips).getByRole('button', { name: 'Show all sorts' }))
+    expect(await screen.findByText('via the Sheet · 3 emails')).toBeInTheDocument()
+    expect(screen.queryByRole('group', { name: 'Showing only these sorts' })).not.toBeInTheDocument()
+  })
+
+  it('picks a sort from its heading to see it alone with its note', async () => {
+    renderInbox()
+    await screen.findByText('Thanksgiving plans')
+    fireEvent.click(screen.getByRole('button', { name: 'Recently sorted' }))
+    const only = await screen.findAllByRole('button', { name: /^Show only the .* sort$/ })
+    fireEvent.click(only[0])
+    expect(await screen.findByText(/^From (today|yesterday)’s .* sort$/)).toBeInTheDocument()
+    expect(screen.getByLabelText('Notes from this sort')).toHaveTextContent('Mom asked about hosting Thanksgiving')
+    expect(screen.queryByText('Photos from the lake')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'All sorted' }))
+    expect(await screen.findByText('Photos from the lake')).toBeInTheDocument() // switching views starts over
+    fireEvent.click(screen.getByRole('button', { name: 'All sorts' }))
+    const picker = await screen.findByRole('dialog', { name: 'Choose sorts' })
+    expect(await within(picker).findByText('via Claude · 2 emails')).toBeInTheDocument() // 8 days ago: All sorted only
+  })
+
   it('copies for Claude, takes the pasted reply and applies it', async () => {
     renderInbox(createMockApi({ delay: 0 }))
     await screen.findByText('Thanksgiving plans')

@@ -4,14 +4,15 @@ import { useSiteAuth } from '../auth/SiteAuth'
 import SignInModal from '../components/SignInModal'
 import { createApi, createLocalAi } from './api'
 import { createMockApi } from './mock'
-import { useInbox } from './useInbox'
+import { SORT_VIEWS, useInbox } from './useInbox'
 import Icon from './components/Icons'
 import Sidebar, { VIEWS, viewCount } from './components/Sidebar'
 import MessageList from './components/MessageList'
 import Reader from './components/Reader'
 import SortDrawer from './components/SortDrawer'
 import SettingsDrawer from './components/SettingsDrawer'
-import { headingDate, labelText, senderName, timeLabel, todaySentences, waitingSentence } from './format'
+import SortPicker from './components/SortPicker'
+import { headingDate, labelText, senderName, sortTimeLabel, timeLabel, todaySentences, waitingSentence } from './format'
 import './inbox.css'
 
 const SHORTCUTS = [
@@ -216,8 +217,22 @@ export function Inbox({ api, localAi, demo }) {
               <Icon name="search" size={14} />
               <input ref={searchRef} type="search" placeholder="Search mail" value={search} onChange={(e) => setSearch(e.target.value)} aria-label="Search mail" />
             </label>
+            {SORT_VIEWS.includes(view) && !label && <SortPicker api={api} view={view} selected={inbox.sorts} onChange={inbox.chooseSorts} />}
             {list.refreshing && <span className="ibx-spinner ibx-spinner--quiet" aria-label="Refreshing" />}
           </div>
+          {inbox.sorts.length > 0 && SORT_VIEWS.includes(view) && !label && (
+            <div className="ibx-sortbar" role="group" aria-label="Showing only these sorts">
+              {inbox.sorts.map((s) => (
+                <span key={s.key} className="ibx-sortchip">
+                  <Icon name="layers" size={12} />
+                  {sortTimeLabel(s.at)}
+                  <button type="button" onClick={() => inbox.chooseSorts(inbox.sorts.filter((x) => x.key !== s.key))}
+                    aria-label={`Stop showing the ${sortTimeLabel(s.at)} sort`}><Icon name="close" size={11} /></button>
+                </span>
+              ))}
+              <button type="button" className="ibx-sortbar-all" onClick={() => inbox.chooseSorts([])}>Show all sorts</button>
+            </div>
+          )}
           <MessageList inbox={inbox} peopleKinds={peopleKinds} onSort={() => setDrawer('sort')} />
         </div>
 

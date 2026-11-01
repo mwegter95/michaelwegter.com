@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import {
   batchSentence, dayKey, dayLabel, emailDocument, groupByDay, groupBySort, initials, isHighlight, labelText,
-  looksUnread, sortGroupMeta, sortTimeLabel, timeLabel, todaySentences, waitingSentence,
+  groupSortsByDay, looksUnread, sortFromGroup, sortGroupMeta, sortKeyOf, sortMeta, sortNoteHead, sortTimeLabel, timeLabel,
+  todaySentences, waitingSentence,
 } from '../format'
 
 const NOW = new Date(2026, 9, 10, 14, 30) // Sat Oct 10 2026, 2:30 PM local
@@ -49,6 +50,24 @@ describe('recently sorted', () => {
     expect(sortGroupMeta(groups[1])).toBe('via wegter-pc · 1 email')
     expect(sortGroupMeta(groups[2])).toBe('Imported · 2 emails')
     expect(sortTimeLabel(new Date(2026, 9, 9, 18, 2), NOW)).toBe('Yesterday, 6:02 PM')
+  })
+
+  it('names sorts for choosing: keys, day headings, notes', () => {
+    const [claude, , , importRun] = groupBySort([
+      { id: 'a', batch_id: 9, sorted_at: at(9, 14), source: 'claude', in_inbox: true },
+      { id: 'c', batch_id: 8, sorted_at: at(9, 10), source: 'wegter-pc' },
+      { id: 'n', batch_id: null, sorted_at: at(8, 50), source: 'sheet' },
+      { id: 'd', batch_id: 2, sorted_at: at(8, 30), source: 'import' },
+    ], NOW)
+    expect(sortKeyOf(claude)).toBe('b9')
+    expect(sortKeyOf(importRun)).toBe(null) // chosen from the picker, which knows where the run starts and ends
+    expect(sortFromGroup(claude)).toMatchObject({ key: 'b9', at: at(9, 14), source: 'claude', count: 1, in_inbox: 1 })
+    expect(sortMeta({ source: 'sheet', count: 12, inInbox: 0 })).toBe('via the Sheet · 12 emails')
+    const days = groupSortsByDay([{ key: 'b2', at: at(9) }, { key: 'b1', at: new Date(2026, 9, 9, 18).toISOString() }], NOW)
+    expect(days.map((d) => [d.label, d.items.map((s) => s.key)])).toEqual([['Today', ['b2']], ['Yesterday', ['b1']]])
+    expect(sortNoteHead(at(7, 2), NOW)).toBe('From today’s 7:02 AM sort')
+    expect(sortNoteHead(new Date(2026, 9, 7, 9).toISOString(), NOW)).toBe('From Wednesday’s 9:00 AM sort')
+    expect(sortNoteHead(new Date(2026, 8, 25, 10, 30).toISOString(), NOW)).toBe('From the Sep 25, 10:30 AM sort')
   })
 
   it('only mail still waiting on Michael looks unread', () => {
