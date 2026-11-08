@@ -6,8 +6,18 @@ import { batchSentence, dayLabel, dayKey, labelText, plural, SOURCE_NAMES, toDat
 const ACTIVE = new Set(['running', 'applying'])
 const SIZES = [10, 25, 50, 100]
 const CHUNK = 8               // emails per call to wegter-pc: each call has to finish inside Cloudflare's 100 s
+const MAX_LANES = 4           // calls in flight at once; wegter-pc's /health says how many it takes (LM Studio batches them)
 const BUSY_RETRIES = 40       // wegter-pc answers 409 while it's sorting something else; wait it out
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+
+/** How many calls to send at once. A wegter-pc that doesn't report it is the older one-at-a-time server. */
+export const lanesFor = (pc, chunks = Infinity) => Math.max(1, Math.min(MAX_LANES, Number(pc?.parallel) || 1, chunks))
+
+/** The start of an email's own text, taken from its ---EMAIL-n--- export block. */
+export function openingText(block, max = 140) {
+  const body = String(block || '').split('\nBody: ')[1] || ''
+  return body.replace(/\s+/g, ' ').trim().slice(0, max)
+}
 
 async function copyLater(textPromise) {
   // ClipboardItem with a promise keeps the click's permission across the fetch (Safari needs this).
@@ -44,7 +54,7 @@ function ReviewRow({ a, include, onInclude, onChange }) {
       <div className="ibx-review-main">
         <p className="ibx-review-from">{(a.from || '').replace(/<.*>/, '').trim() || a.from || 'Unknown sender'}{a.personal && <span className="ibx-kind">personal</span>}</p>
         <p className="ibx-review-subject"><span className={a.importance === 'high' ? 'ibx-mark' : undefined}>{a.subject || a.id}</span></p>
-        {a.summary && <p className="ibx-review-summary">{a.summary}</p>}
+        {(a.snippet || a.summary) && <p className="ibx-review-summary">{a.snippet || a.summary}</p>}
         <div className="ibx-review-controls">
           <span className="ibx-review-labels">
             {a.labels.map((l) => (
@@ -108,7 +118,7 @@ function PcProgress({ run, review, onStop }) {
   const at = order.indexOf(run.phase)
   const steps = [
     run.total ? `Read ${plural(run.total, 'unread email')} from Gmail` : 'Read unread email from Gmail',
-    run.total ? `Sort them on wegter-pc (${Math.min(run.done, run.total)} of ${run.total})` : 'Sort them on wegter-pc',
+    run.total ? `Sort them on wegter-pc (${Math.min(run.done, run.total)} of ${run.total}${run.lanes > 1 ? `, ${run.lanes} groups at once` : ''})` : 'Sort them on wegter-pc',
     'Write the batch summary',
     review ? 'Get the review ready' : 'Apply labels, read and archive in Gmail',
   ]
@@ -229,21 +239,30 @@ export default function SortDrawer({ api, localAi, summary, gmail, labels, onClo
       if (stopped()) throw new DOMException('stopped', 'AbortError')
       if (!exp.count) { setRun(null); setError('Gmail has nothing new to sort.'); return }
       const ids = exp.items.map((i) => i.id)
-      const actions = []
+      const chunks = []
       for (let i = 0; i < ids.length; i += CHUNK) {
-        setRun({ phase: 'sort', done: i, total: ids.length })
-        const part = { prompt: exp.prompt, emails: exp.blocks.slice(i, i + CHUNK).join('\n'), ids: ids.slice(i, i + CHUNK) }
+        chunks.push({ prompt: exp.prompt, emails: exp.blocks.slice(i, i + CHUNK).join('\n'), ids: ids.slice(i, i + CHUNK) })
+      }
+      // Several calls in flight at once ("lanes"); each lane takes the next chunk as soon as its last one is back.
+      const lanes = lanesFor(pc, chunks.length)
+      const results = new Array(chunks.length)
+      let next = 0
+      let done = 0
+      let waiting = 0
+      let failure = null
+      const show = () => setRun({ phase: 'sort', done, total: ids.length, lanes,
+        note: waiting ? 'wegter-pc is finishing something else. Waiting…' : undefined })
+      const sortChunk = async (part) => {
         for (let attempt = 0; ; attempt++) {
           if (stopped()) throw new DOMException('stopped', 'AbortError')
           try {
-            const res = await localAi.sort(part, ctl.signal)
-            actions.push(...res.actions)
-            break
+            return (await localAi.sort(part, ctl.signal)).actions || []
           } catch (e) {
             if (e.name === 'AbortError') throw e
             if (e.status === 409 && attempt < BUSY_RETRIES) {
-              setRun({ phase: 'sort', done: i, total: ids.length, note: 'wegter-pc is finishing something else. Waiting…' })
+              waiting++; show()
               await sleep(3000)
+              waiting--
               continue
             }
             if (e.body?.code === 'timeout' && attempt === 0) continue   // one more try for a slow answer
@@ -251,9 +270,31 @@ export default function SortDrawer({ api, localAi, summary, gmail, labels, onClo
           }
         }
       }
-      setRun({ phase: 'summary', done: ids.length, total: ids.length })
-      const byId = Object.fromEntries(exp.items.map((it) => [it.id, it]))
-      const lines = actions.map((a) => `${(byId[a.id]?.from || '').replace(/<.*>/, '').trim()}: ${byId[a.id]?.subject || ''} (${a.importance}). ${a.summary}`)
+      const lane = async () => {
+        while (next < chunks.length && !failure) {
+          const k = next++
+          try {
+            results[k] = await sortChunk(chunks[k])
+          } catch (e) {
+            failure = failure || e
+            ctl.abort()   // the first failure ends the run: stop the calls still out
+            return
+          }
+          done += chunks[k].ids.length
+          show()
+        }
+      }
+      show()
+      await Promise.all(Array.from({ length: lanes }, lane))
+      if (failure) throw failure
+      const actions = results.flat()   // export order, whichever call came back first
+      setRun({ phase: 'summary', done: ids.length, total: ids.length, lanes })
+      // The batch note works from each email's own subject and opening text: the model no longer writes per-email summaries.
+      const byId = Object.fromEntries(exp.items.map((it, i) => [it.id, { ...it, opening: openingText(exp.blocks[i]) }]))
+      const lines = actions.map((a) => {
+        const it = byId[a.id] || {}
+        return `${(it.from || '').replace(/<.*>/, '').trim()}: ${it.subject || ''} (${a.importance}). ${it.opening || ''}`.trim()
+      })
       let note = ''
       try { note = (await localAi.summarize(lines)).summary } catch { /* the note is a nicety */ }
       setRun({ phase: 'apply', done: ids.length, total: ids.length })
@@ -368,7 +409,7 @@ export default function SortDrawer({ api, localAi, summary, gmail, labels, onClo
           ) : (
             <div className="ibx-mode" role="tabpanel">
               <PcStatus pc={pc} onCheck={checkPc} />
-              <p>Your browser takes the next {size} unread emails to Gemma in LM Studio on wegter-pc, {CHUNK} at a time, with your prompt and people list. No outside AI service sees them, and nothing changes in Gmail until the end.</p>
+              <p>Your browser takes the next {size} unread emails to Gemma in LM Studio on wegter-pc in groups of {CHUNK}{lanesFor(pc) > 1 ? `, ${lanesFor(pc)} groups at once` : ''}, with your prompt and people list. No outside AI service sees them, and nothing changes in Gmail until the end.</p>
               <label className="ibx-check">
                 <input type="checkbox" checked={reviewPc} onChange={(e) => setReviewPc(e.target.checked)} />
                 <span>Let me review before anything changes in Gmail</span>

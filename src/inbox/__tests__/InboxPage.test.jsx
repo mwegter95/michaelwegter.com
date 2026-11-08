@@ -182,11 +182,101 @@ describe('Inbox dashboard', () => {
     expect(sort).toHaveBeenCalledTimes(3) // 23 emails, 8 per call
     expect(sort.mock.calls.every(([part]) => part.ids.length <= 8)).toBe(true)
     expect(screen.getByText(/Batch summary from wegter-pc/)).toBeInTheDocument()
+    // Review rows show each email's own opening text (the export's snippet), not a model-written summary.
+    expect(screen.getAllByText('Says the league shirts arrived; pick yours up Thursday.').length).toBeGreaterThan(0)
     fireEvent.click(screen.getAllByRole('checkbox', { name: 'Include this email' })[0])
     fireEvent.click(screen.getByRole('button', { name: /Apply to 22 emails/ }))
     expect(await screen.findByText('Done.', {}, { timeout: 4000 })).toBeInTheDocument()
     expect(screen.getByText('Done.').closest('.ibx-result')).toHaveTextContent('Sorted 22 emails')
     await waitFor(() => expect(screen.getByText(/Triage sorted 48 emails today/)).toBeInTheDocument())
+  })
+
+  it('sends wegter-pc several batches at once and keeps the export order', async () => {
+    const api = createMockApi({ delay: 0 })
+    const real = api.localAi.sort
+    let inFlight = 0
+    let most = 0
+    const finishOrder = []
+    api.localAi.sort = async (part, signal) => {
+      inFlight++
+      most = Math.max(most, inFlight)
+      // the first batch is the slowest, so later ones come back before it
+      await new Promise((r) => setTimeout(r, part.ids[0].endsWith('-0') ? 60 : 10))
+      inFlight--
+      finishOrder.push(part.ids[0])
+      return real(part, signal)
+    }
+    const summarize = vi.spyOn(api.localAi, 'summarize')
+    const apply = vi.spyOn(api, 'applySorted')
+    renderInbox(api)
+    await screen.findByText('Thanksgiving plans')
+    fireEvent.click(screen.getByRole('button', { name: /Sort 23 new/ }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Sort on wegter-pc' }))
+    expect(await screen.findByText(/groups of 8, 4 groups at once/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Sort 50 emails on wegter-pc' }))
+    await screen.findByText('Nothing has changed in Gmail yet. Adjust anything that looks off, then apply.', {}, { timeout: 4000 })
+    expect(most).toBe(3) // 23 emails make 3 batches, all in flight together
+    expect(finishOrder[finishOrder.length - 1]).toMatch(/-0$/)
+    const sent = apply.mock.calls[0][0].actions.map((a) => a.id)
+    expect(sent).toHaveLength(23)
+    expect(sent[0]).toMatch(/-0$/) // export order, not the order the answers came back in
+    expect(apply.mock.calls[0][0].actions.every((a) => !('summary' in a) || !a.summary)).toBe(true)
+    // The batch note is written from the emails' own subjects and opening text.
+    const lines = summarize.mock.calls[0][0]
+    expect(lines[0]).toBe('Marcus Lee: Bowling shirts are in (medium). Says the league shirts arrived; pick yours up Thursday.')
+  })
+
+  it('sends one batch at a time to an older wegter-pc that does not say how many it takes', async () => {
+    const api = createMockApi({ delay: 0 })
+    const health = api.localAi.health
+    api.localAi.health = async () => { const h = await health(); delete h.parallel; return h }
+    const real = api.localAi.sort
+    let inFlight = 0
+    let most = 0
+    api.localAi.sort = async (part, signal) => {
+      inFlight++; most = Math.max(most, inFlight)
+      await new Promise((r) => setTimeout(r, 10))
+      inFlight--
+      return real(part, signal)
+    }
+    renderInbox(api)
+    await screen.findByText('Thanksgiving plans')
+    fireEvent.click(screen.getByRole('button', { name: /Sort 23 new/ }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Sort on wegter-pc' }))
+    expect(await screen.findByText(/wegter-pc is ready/)).toBeInTheDocument()
+    expect(screen.queryByText(/groups at once/)).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Sort 50 emails on wegter-pc' }))
+    await screen.findByText('Nothing has changed in Gmail yet. Adjust anything that looks off, then apply.', {}, { timeout: 4000 })
+    expect(most).toBe(1)
+  })
+
+  it('stops the other batches when one fails, and says why', async () => {
+    const api = createMockApi({ delay: 0 })
+    const signals = []
+    api.localAi.sort = async (part, signal) => {
+      signals.push(signal)
+      await new Promise((r) => setTimeout(r, 10))
+      if (part.ids[0].endsWith('-8')) throw Object.assign(new Error('LM Studio answered HTTP 500: boom'), { status: 424, body: { code: 'lmstudio_error' } })
+      await new Promise((r) => setTimeout(r, 40))
+      return { actions: [] }
+    }
+    const apply = vi.spyOn(api, 'applySorted')
+    renderInbox(api)
+    await screen.findByText('Thanksgiving plans')
+    fireEvent.click(screen.getByRole('button', { name: /Sort 23 new/ }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Sort on wegter-pc' }))
+    await screen.findByText(/wegter-pc is ready/)
+    fireEvent.click(screen.getByRole('button', { name: 'Sort 50 emails on wegter-pc' }))
+    expect(await screen.findByText('LM Studio answered HTTP 500: boom', {}, { timeout: 4000 })).toBeInTheDocument()
+    expect(signals.every((s) => s.aborted)).toBe(true)
+    expect(apply).not.toHaveBeenCalled()
+  })
+
+  it('shows each email’s own opening text in the list, not the triage summary', async () => {
+    renderInbox()
+    const row = (await screen.findByText('Thanksgiving plans')).closest('article')
+    expect(within(row).getByText(/Hi honey,/)).toBeInTheDocument()
+    expect(within(row).queryByText(/Asks whether you can host/)).not.toBeInTheDocument()
   })
 
   it('says when wegter-pc is unreachable and keeps its button off', async () => {

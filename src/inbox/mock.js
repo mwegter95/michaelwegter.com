@@ -370,14 +370,15 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
     connection: () => reply({ script: { configured: true, url: 'https://script.google.com/macros/s/AKfycb…demo/exec', ok: true, version: 1, query: 'label:inbox is:unread newer_than:150d', inbox_unread: 4, reports_to: 'https://api.michaelwegter.com/inbox/ingest' } }),
     // A pretend wegter-pc: answers from what the export "really" contains, a few seconds per call.
     localAi: {
-      health: () => reply({ ok: true, model: 'google/gemma-4-12b-qat', model_ready: true, models: ['google/gemma-4-12b-qat'], busy: false }),
+      health: () => reply({ ok: true, model: 'google/gemma-4-12b-qat', model_ready: true, models: ['google/gemma-4-12b-qat'], busy: false, running: 0, parallel: 4 }),
       async sort({ ids }) {
         await wait(delay * 3)
+        // Like the real one: labels and flags only, no per-email summary.
         const actions = ids.filter((id) => lastExport[id]).map((id) => {
-          const { summary, labels, importance, personal, archive_ok } = lastExport[id]
-          return { id, summary, labels, importance, personal, archive_ok }
+          const { labels, importance, personal, archive_ok } = lastExport[id]
+          return { id, labels, importance, personal, archive_ok }
         })
-        return { actions, summary: '', model: 'google/gemma-4-12b-qat', seconds: 4.2, missing: [] }
+        return { actions, model: 'google/gemma-4-12b-qat', seconds: 4.2, missing: [] }
       },
       summarize: () => reply({ summary: 'A bank alert about a $612 purchase and a rehearsal-dinner inquiry need you. Marcus says the bowling shirts are in. The rest is newsletters and delivery notices.' }),
     },

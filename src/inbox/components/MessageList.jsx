@@ -23,7 +23,8 @@ export const MessageRow = memo(function MessageRow({ m, selected, onOpen, onAct,
           <time dateTime={m.date}>{timeLabel(m.date)}</time>
         </span>
         <span className="ibx-subject"><span className={high ? 'ibx-mark' : undefined}>{m.subject || '(no subject)'}</span></span>
-        {(m.summary || m.snippet) && <span className="ibx-summary">{m.summary || m.snippet}</span>}
+        {/* The email's own opening text, as in Gmail. A triage summary only stands in when there's no text. */}
+        {(m.snippet || m.summary) && <span className="ibx-summary">{m.snippet || m.summary}</span>}
         {m.labels?.length > 0 && (
           <span className="ibx-row-labels">
             {m.labels.map((l) => <span key={l} className="ibx-chip" title={l}>{labelText(l)}</span>)}
