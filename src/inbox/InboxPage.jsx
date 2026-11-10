@@ -182,12 +182,21 @@ export function Inbox({ api, localAi, demo }) {
         </div>
       </header>
 
-      {gmail?.error && (
+      {gmail?.error && (gmail.code === 'quota' ? (
+        <div className="ibx-problem ibx-problem--quota" role="status">
+          <p>
+            <strong>Gmail’s daily limit is used up.</strong> Google allows a personal account 20,000 Gmail reads a day
+            across all of its Apps Scripts and frees them up within 24 hours. Until then you’re seeing what the dashboard
+            already has, and it won’t keep asking.
+          </p>
+          <button type="button" className="ibx-btn" onClick={() => inbox.loadGmail(true)}>Try now</button>
+        </div>
+      ) : (
         <div className="ibx-problem" role="alert">
           <p><strong>{gmail.code === 'config' ? 'Gmail isn’t connected yet.' : 'Gmail didn’t answer.'}</strong> {gmail.error}</p>
           <button type="button" className="ibx-btn" onClick={() => inbox.loadGmail(true)}>Try again</button>
         </div>
-      )}
+      ))}
 
       <PinRail pins={summary?.pins} selectedId={selectedId} onOpen={open} onUnpin={(id) => act([id], 'unpin')} />
 

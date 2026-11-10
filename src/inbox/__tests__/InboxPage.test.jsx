@@ -4,6 +4,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { SiteAuthProvider } from '../../auth/SiteAuth'
 import InboxPage, { Inbox } from '../InboxPage'
 import { createMockApi } from '../mock'
+import { GMAIL_EVERY_MS } from '../useInbox'
 
 function renderInbox(api = createMockApi({ delay: 0 })) {
   render(
@@ -147,6 +148,42 @@ describe('Inbox dashboard', () => {
     const picker = await screen.findByRole('dialog', { name: 'Choose sorts' })
     expect(await within(picker).findByText(/still running an older version/)).toBeInTheDocument()
     expect(within(picker).getByRole('button', { name: 'Try again' })).toBeInTheDocument()
+  })
+
+  it('when Gmail’s daily limit is used up, says so calmly and keeps the last counts', async () => {
+    const api = createMockApi({ delay: 0 })
+    const status = api.status
+    api.status = async (refresh) => ({ ...(await status(refresh)), quota: true, error: 'used up' })
+    renderInbox(api)
+    expect(await screen.findByText('Gmail’s daily limit is used up.')).toBeInTheDocument()
+    expect(screen.getByText('Gmail’s daily limit is used up.').closest('.ibx-problem')).toHaveTextContent('20,000 Gmail reads a day')
+    expect(screen.queryByText('Gmail didn’t answer.')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^Sort 23 new$/ })).toBeInTheDocument() // the held count still shows
+  })
+
+  it('asks Gmail every ten minutes, and not at all while the tab is hidden', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
+    try {
+      const api = createMockApi({ delay: 0 })
+      const status = vi.spyOn(api, 'status')
+      renderInbox(api)
+      await screen.findByText('Thanksgiving plans')
+      expect(status).toHaveBeenCalledTimes(1)
+      await act(async () => { vi.advanceTimersByTime(GMAIL_EVERY_MS - 1000) })
+      expect(status).toHaveBeenCalledTimes(1)
+      await act(async () => { vi.advanceTimersByTime(1000) })
+      expect(status).toHaveBeenCalledTimes(2)
+      hidden.mockReturnValue(true)
+      await act(async () => { vi.advanceTimersByTime(GMAIL_EVERY_MS * 3) })
+      expect(status).toHaveBeenCalledTimes(2)
+      hidden.mockReturnValue(false)
+      await act(async () => { document.dispatchEvent(new Event('visibilitychange')) })
+      expect(status).toHaveBeenCalledTimes(3) // caught up once on coming back
+    } finally {
+      hidden.mockRestore()
+      vi.useRealTimers()
+    }
   })
 
   it('copies for Claude, takes the pasted reply and applies it', async () => {

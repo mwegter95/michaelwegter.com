@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-const SUMMARY_EVERY_MS = 60_000
-const GMAIL_EVERY_MS = 180_000
+// Each Gmail check spends reads from Google's 20,000-a-day allowance for Apps Script, so Gmail is
+// asked rarely and never while the tab is hidden. The summary comes from the server's own database.
+export const SUMMARY_EVERY_MS = 60_000
+export const GMAIL_EVERY_MS = 600_000
+const FOCUS_RELOAD_AFTER_MS = 120_000
 
 // What each action changes on screen before the server answers.
 const PATCHES = {
@@ -50,6 +53,8 @@ export function useInbox(api) {
   const [threads, setThreads] = useState({})
   const [toasts, setToasts] = useState([])
   const listReq = useRef(0)
+  const lastGmail = useRef(0)
+  const lastList = useRef(0)
   const selectedSnapshot = useRef(null)
 
   const toast = useCallback((text, opts = {}) => {
@@ -69,8 +74,11 @@ export function useInbox(api) {
   }, [api])
 
   const loadGmail = useCallback(async (refresh = false) => {
+    lastGmail.current = Date.now()
     try {
-      setGmail({ ...(await api.status(refresh)), error: null })
+      const data = await api.status(refresh)
+      // During a quota backoff the server sends its last counts, marked: keep them and say why.
+      setGmail({ ...data, error: data.quota ? (data.error || 'Gmail’s daily limit is used up.') : null, code: data.quota ? 'quota' : undefined })
     } catch (e) {
       setGmail((g) => ({ ...(g || {}), error: e.message, code: e.body?.code }))
     }
@@ -78,6 +86,7 @@ export function useInbox(api) {
 
   const loadList = useCallback(async ({ refresh = false, quiet = false } = {}) => {
     const req = ++listReq.current
+    lastList.current = Date.now()
     setList((l) => ({ ...l, loading: !quiet && !l.items.length, refreshing: quiet || Boolean(l.items.length), error: null }))
     try {
       const data = view === 'inbox' && !label && !query
@@ -98,11 +107,22 @@ export function useInbox(api) {
   useEffect(() => { loadSummary(); loadGmail() }, [loadSummary, loadGmail])
   useEffect(() => { setList((l) => ({ ...l, items: [], loading: true })); loadList() }, [loadList])
   useEffect(() => {
-    const a = setInterval(loadSummary, SUMMARY_EVERY_MS)
-    const b = setInterval(() => loadGmail(), GMAIL_EVERY_MS)
-    const onFocus = () => { loadSummary(); loadList({ quiet: true }) }
+    const visible = () => !document.hidden
+    const a = setInterval(() => { if (visible()) loadSummary() }, SUMMARY_EVERY_MS)
+    const b = setInterval(() => { if (visible()) loadGmail() }, GMAIL_EVERY_MS)
+    // Coming back to a tab that sat hidden past a check: catch up once, then the timers carry on.
+    const onVisible = () => { if (visible() && Date.now() - lastGmail.current >= GMAIL_EVERY_MS) loadGmail() }
+    const onFocus = () => {
+      loadSummary()
+      if (Date.now() - lastList.current >= FOCUS_RELOAD_AFTER_MS) loadList({ quiet: true })
+    }
     window.addEventListener('focus', onFocus)
-    return () => { clearInterval(a); clearInterval(b); window.removeEventListener('focus', onFocus) }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      clearInterval(a); clearInterval(b)
+      window.removeEventListener('focus', onFocus)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
   }, [loadSummary, loadGmail, loadList])
 
   // Apply a change to every copy of an email on screen.
