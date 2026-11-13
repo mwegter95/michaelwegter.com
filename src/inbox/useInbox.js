@@ -5,6 +5,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 export const SUMMARY_EVERY_MS = 60_000
 export const GMAIL_EVERY_MS = 600_000
 const FOCUS_RELOAD_AFTER_MS = 120_000
+// How long a change made here is laid over lists that come back from the server: long enough for
+// any request that left before the change was saved to have landed.
+const KEEP_CHANGES_MS = 60_000
 
 // What each action changes on screen before the server answers.
 const PATCHES = {
@@ -55,7 +58,11 @@ export function useInbox(api) {
   const listReq = useRef(0)
   const lastGmail = useRef(0)
   const lastList = useRef(0)
+  const lastChange = useRef(undefined)   // the server's changed_at from Gmail, last seen
   const selectedSnapshot = useRef(null)
+  // id → { fields, until }: what this page changed, so a list or thread loaded while the change was
+  // still saving (read in Recently sorted, then open Highlights) shows it at once.
+  const recent = useRef(new Map())
 
   const toast = useCallback((text, opts = {}) => {
     const id = Math.random().toString(36).slice(2)
@@ -73,14 +80,33 @@ export function useInbox(api) {
     }
   }, [api])
 
+  const remember = useCallback((ids, fields, ms) => {
+    const until = Date.now() + ms
+    for (const id of ids) {
+      const prev = recent.current.get(id)
+      recent.current.set(id, { fields: { ...(prev?.fields || {}), ...fields }, until })
+    }
+  }, [])
+  const overlay = useCallback((items) => {
+    const now = Date.now()
+    return items.map((m) => {
+      const r = recent.current.get(m.id)
+      if (!r) return m
+      if (r.until < now) { recent.current.delete(m.id); return m }
+      return { ...m, ...r.fields }
+    })
+  }, [])
+
   const loadGmail = useCallback(async (refresh = false) => {
     lastGmail.current = Date.now()
     try {
       const data = await api.status(refresh)
       // During a quota backoff the server sends its last counts, marked: keep them and say why.
       setGmail({ ...data, error: data.quota ? (data.error || 'Gmail’s daily limit is used up.') : null, code: data.quota ? 'quota' : undefined })
+      return data
     } catch (e) {
       setGmail((g) => ({ ...(g || {}), error: e.message, code: e.body?.code }))
+      return null
     }
   }, [api])
 
@@ -97,12 +123,25 @@ export function useInbox(api) {
         })
       if (req !== listReq.current) return
       if (data.sorts?.length) setSortInfo((m) => ({ ...m, ...Object.fromEntries(data.sorts.map((s) => [s.key, s])) }))
-      setList({ items: data.items || [], total: data.total ?? (data.items || []).length, loading: false, refreshing: false, error: null, fetchedAt: data.fetched_at })
+      const items = overlay(data.items || []).filter((m) => belongs(view, m))
+      setList({ items, total: data.total ?? items.length, loading: false, refreshing: false, error: null, fetchedAt: data.fetched_at })
     } catch (e) {
       if (req !== listReq.current) return
       setList((l) => ({ ...l, loading: false, refreshing: false, error: e }))
     }
-  }, [api, view, label, query, sorts])
+  }, [api, view, label, query, sorts, overlay])
+
+  // Reading, archiving or marking unread in Gmail reaches the server with the Gmail counts; when it
+  // changed something, show it.
+  useEffect(() => {
+    const at = gmail?.changed_at
+    if (lastChange.current === undefined) { lastChange.current = at ?? null; return }
+    if (at && at !== lastChange.current) {
+      lastChange.current = at
+      loadSummary()
+      loadList({ quiet: true })
+    }
+  }, [gmail?.changed_at, loadSummary, loadList])
 
   useEffect(() => { loadSummary(); loadGmail() }, [loadSummary, loadGmail])
   useEffect(() => { setList((l) => ({ ...l, items: [], loading: true })); loadList() }, [loadList])
@@ -150,7 +189,11 @@ export function useInbox(api) {
   const act = useCallback(async (ids, action, { labels, silent = false, undoable = true } = {}) => {
     if (!ids.length) return
     const before = [...list.items, ...(summary?.pins || []), selectedSnapshot.current].filter(Boolean)
-    if (PATCHES[action]) patch(ids, PATCHES[action]())
+    if (PATCHES[action]) {
+      const fields = PATCHES[action]()
+      patch(ids, fields)
+      remember(ids, fields, 10 * 60_000)   // until the server answers (shortened below)
+    }
     if (action === 'add_labels' || action === 'remove_labels') {
       patch(ids, (m) => ({
         labels: action === 'add_labels' ? [...new Set([...(m.labels || []), ...labels])] : (m.labels || []).filter((l) => !labels.includes(l)),
@@ -160,19 +203,16 @@ export function useInbox(api) {
       const res = await api.act(ids, action, labels)
       const byId = Object.fromEntries((res.updated || []).map((m) => [m.id, m]))
       if (Object.keys(byId).length) patch(Object.keys(byId), (m) => byId[m.id])
+      for (const [id, row] of Object.entries(byId)) remember([id], row, KEEP_CHANGES_MS)
       const failed = Object.keys(res.failed || {})
       if (failed.length) toast(`Gmail couldn't update ${failed.length === ids.length ? 'that email' : `${failed.length} of them`}: ${Object.values(res.failed)[0]}`, { error: true })
       else if (!silent) {
         const undo = undoable && UNDO[action]
         toast(DONE_WORDS[action] || 'Done', undo ? { action: { label: 'Undo', run: () => act(ids, undo, { silent: true, undoable: false, labels }) } } : {})
       }
-      if (action !== 'read') loadSummary()
-      else setSummary((s) => s && {
-        ...s,
-        today: { ...s.today, read: s.today.read + ids.filter((id) => !before.find((m) => m.id === id)?.read).length },
-        highlights: { ...s.highlights, unread: Math.max(0, s.highlights.unread - ids.filter((id) => { const m = before.find((x) => x.id === id); return m && !m.read && (m.importance === 'high' || m.personal) }).length) },
-      })
+      loadSummary()
     } catch (e) {
+      for (const id of ids) recent.current.delete(id)
       const restore = Object.fromEntries(before.map((m) => [m.id, m]))
       setList((l) => {
         const present = new Set(l.items.map((m) => m.id))
@@ -182,18 +222,18 @@ export function useInbox(api) {
       loadSummary()
       toast(e.message || 'That didn’t work.', { error: true })
     }
-  }, [api, list.items, summary, patch, toast, loadSummary])
+  }, [api, list.items, summary, patch, toast, loadSummary, remember])
 
   const loadThread = useCallback(async (id, refresh = false) => {
     setThreads((t) => ({ ...t, [id]: { ...(t[id] || {}), loading: true, error: null } }))
     try {
       const data = await api.thread(id, refresh)
       setThreads((t) => ({ ...t, [id]: { loading: false, error: null, data: data.thread } }))
-      if (data.message) patch([id], data.message)
+      if (data.message) patch([id], overlay([data.message])[0])
     } catch (e) {
       setThreads((t) => ({ ...t, [id]: { loading: false, error: e } }))
     }
-  }, [api, patch])
+  }, [api, patch, overlay])
 
   const allKnown = useMemo(() => {
     const map = new Map()
@@ -211,12 +251,20 @@ export function useInbox(api) {
     const m = allKnown.get(id)
     if (m) selectedSnapshot.current = m
     if (!threads[id]?.data && !threads[id]?.loading) loadThread(id)
-    if (m && !m.read) act([id], 'read', { silent: true })
+    if (m && !m.read) {
+      act([id], 'read', { silent: true })
+      // The counts move now, not when Gmail has answered.
+      setSummary((s) => s && {
+        ...s,
+        today: { ...s.today, read: s.today.read + 1 },
+        highlights: { ...s.highlights, unread: Math.max(0, s.highlights.unread - (m.importance === 'high' || m.personal ? 1 : 0)) },
+      })
+    }
   }, [allKnown, threads, loadThread, act])
 
   const refreshAll = useCallback(() => {
     loadSummary()
-    loadGmail(true)
+    loadGmail(true)   // also brings in what was read or archived in Gmail; the list reloads again if that changed anything
     loadList({ refresh: true, quiet: true })
   }, [loadSummary, loadGmail, loadList])
 

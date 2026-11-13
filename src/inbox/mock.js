@@ -97,6 +97,7 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
     rollup_imported: 0,
   }
   let waiting = 23
+  let gmailChangedAt = null   // when something last changed in Gmail itself (see gmailChanged)
 
   // The five earlier sorts that filed the sample mail, oldest first: [hours ago, source].
   const SORTS = [[196, 'claude'], [100, 'sheet'], [49, 'claude'], [19, 'wegter-pc'], [0.78, 'claude']]
@@ -292,7 +293,14 @@ export function createMockApi({ now = () => Date.now(), delay = 260 } = {}) {
       return reply({ sorts: all.slice(offset, offset + limit), total: all.length, next_offset: offset + limit < all.length ? offset + limit : null })
     },
     live: () => reply({ items: list().filter((m) => m.in_inbox).sort(byDate), inbox_unread: 4, complete: true, fetched_at: new Date(now()).toISOString() }),
-    status: () => reply({ inbox_unread: 4, waiting, waiting_capped: false, checked_at: new Date(now()).toISOString() }),
+    status: () => reply({ inbox_unread: 4, waiting, waiting_capped: false, checked_at: new Date(now()).toISOString(), changed_at: gmailChangedAt }),
+    // For the tests: something happened in Gmail itself (read on the phone, archived there). The next
+    // Gmail check reports it, like the server's sync does.
+    gmailChanged(id, changes) {
+      const m = messages.get(id)
+      if (m) Object.assign(m, changes)
+      gmailChangedAt = new Date(now()).toISOString()
+    },
     async thread(id) {
       await wait(delay + 150)
       const m = messages.get(id)

@@ -50,6 +50,42 @@ describe('Inbox dashboard', () => {
     await waitFor(() => expect(screen.getByText(/you've read 4\./)).toBeInTheDocument())
   })
 
+  it('an email read in Recently sorted shows read in Highlights at once, even while Gmail is still being told', async () => {
+    const api = createMockApi({ delay: 0 })
+    const act = api.act.bind(api)
+    let release
+    const gate = new Promise((resolve) => { release = resolve })
+    api.act = async (...args) => { await gate; return act(...args) } // the server hasn't saved it yet
+    renderInbox(api)
+    await screen.findByText('Thanksgiving plans')
+    const row = () => screen.getAllByText('Thanksgiving plans').map((el) => el.closest('.ibx-row')).find(Boolean)
+    expect(row()).toHaveClass('is-unread')
+    fireEvent.click(screen.getByRole('button', { name: 'Recently sorted' }))
+    await screen.findByText('via Claude · 9 emails · 5 in inbox')
+    fireEvent.click(row().querySelector('.ibx-row-main'))
+    await screen.findByTitle('Email: Thanksgiving plans')
+    fireEvent.click(screen.getByRole('button', { name: /^Highlights/ }))
+    await waitFor(() => expect(screen.queryByText('via Claude · 9 emails · 5 in inbox')).not.toBeInTheDocument())
+    await waitFor(() => expect(row()).not.toHaveClass('is-unread'))
+    release()
+    await waitFor(() => expect(row()).not.toHaveClass('is-unread'))
+  })
+
+  it('reads and archives done in Gmail show up after the next Gmail check', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    try {
+      const api = createMockApi({ delay: 0 })
+      renderInbox(api)
+      const row = () => screen.getAllByText('Photos from the lake').map((el) => el.closest('.ibx-row')).find(Boolean)
+      await waitFor(() => expect(row()).toHaveClass('is-unread'))
+      api.gmailChanged('demo-' + (0x1a2b3c + 9 * 977).toString(16), { read: true, read_at: new Date().toISOString(), gmail_unread: false, in_inbox: false })
+      await act(async () => { vi.advanceTimersByTime(GMAIL_EVERY_MS) })
+      await waitFor(() => expect(row()).not.toHaveClass('is-unread'))
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
   it('mark unread and pin from the reader, with undo', async () => {
     const api = renderInbox()
     fireEvent.click(await screen.findByText('Thanksgiving plans'))
